@@ -302,7 +302,7 @@ td:first-child a:hover{color:var(--gold-deep)}
 @media (max-width:1024px){
   .qot-burger{display:grid}
   .qot-cta .qot-btn{display:none}
-  .qot-menu{position:fixed;top:0;right:0;height:100vh;width:100%;background:var(--ink);flex-direction:column;align-items:stretch;padding:150px 24px 40px;gap:2px;transform:translateX(100%);transition:transform .3s;overflow-y:auto;z-index:-1}
+  .qot-menu{position:fixed;top:0;right:0;height:100vh;width:100%;background:var(--ink);flex-direction:column;align-items:stretch;padding:112px 24px 40px;gap:2px;transform:translateX(100%);transition:transform .3s;overflow-y:auto;z-index:-1}
   .qot-open .qot-menu{transform:translateX(0)}
   .qot-menu>li>a{padding:13px 12px;font-size:16px!important}
   .qot-menu>li>a.active::after{display:none}
@@ -471,7 +471,7 @@ a.fcard{display:block}
 .post-card .pc-media .illus{max-height:230px;width:auto;max-width:100%;margin:0 auto}
 .hero-right .form-card{margin-left:auto}
 .split-media .form-card{margin:0}
-.qot-foot .qot-btn{padding:12px 22px;margin-top:14px}
+.qot-foot .qot-btn{padding:12px 22px;margin-top:14px}.qot-foot .qot-foot-bottom{margin-top:44px}
 .qot-foot .btn-wa{color:#fff;padding:11px 20px}
 @media (max-width:640px){.qot-foot-bottom{flex-direction:column;gap:10px}}
 @media (max-width:640px){
