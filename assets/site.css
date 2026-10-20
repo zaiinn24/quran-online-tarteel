@@ -298,7 +298,7 @@ td:first-child a:hover{color:var(--gold-deep)}
 .qot-open .qot-burger span{background:transparent}
 .qot-open .qot-burger span::before{top:0;transform:rotate(45deg)}
 .qot-open .qot-burger span::after{top:0;transform:rotate(-45deg)}
-@media (max-width:1180px){.qot-menu>li>a{padding:10px 9px;font-size:14.5px!important}.qot-btn{padding:12px 18px}}
+@media (max-width:1180px){.qot-menu>li>a{padding:10px 9px;font-size:14.5px!important}.qot-btn{padding:12px 18px}}@media (min-width:1025px) and (max-width:1120px){.qot-menu>li>a{padding:10px 6px;font-size:14px!important}.qot-btn{padding:11px 14px;font-size:14px}.qot-nav{gap:14px}}
 @media (max-width:1024px){
   .qot-burger{display:grid}
   .qot-cta .qot-btn{display:none}
