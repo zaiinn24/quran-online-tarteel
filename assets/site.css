@@ -414,7 +414,7 @@ a.fcard{display:block}
 .mini-cta h3{color:#fff;font-size:24px;margin-bottom:4px}
 .mini-cta p{color:#cfc4ad}
 .mini-cta .acts{display:flex;gap:12px;flex-wrap:wrap}
-.btn-wa{background:#25d366;color:#fff}
+.btn-wa{background:#25d366;color:#fff}.btn-ghost svg{fill:#25d366}.fcard p .in-link{display:inline;margin-top:0;font-size:inherit}
 .btn-wa svg{fill:#fff}
 .kbd-ar{font-family:var(--arabic);font-size:22px;color:var(--gold-deep)}
 .rule-table td:nth-child(2){font-family:var(--arabic);font-size:20px;color:var(--gold-deep)}
