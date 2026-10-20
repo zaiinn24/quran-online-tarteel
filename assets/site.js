@@ -1,6 +1,6 @@
 /* Quran Online Tarteel - site script (menu, forms, WhatsApp, tracking) */
 (function () {
-  var LEAD_EMAIL = "rehanabashir4356@gmail.com";
+  var LEAD_EMAIL = "rehanabashir6543@gmail.com";
   var FORM_ENDPOINT = "https://formsubmit.co/ajax/" + LEAD_EMAIL;
   var WA_NUMBER = "923350548488";
   var WA_DEFAULT = "Assalamu alaikum, I would like to know more about your online Quran classes.";
