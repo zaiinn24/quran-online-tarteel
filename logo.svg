@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 72" width="330" height="72" role="img" aria-label="Quran Online Tarteel">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ecd28f"/>
+      <stop offset="1" stop-color="#b98c35"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(4,4)">
+    <polygon points="32.00,2.00 40.79,10.79 53.21,10.79 53.21,23.21 62.00,32.00 53.21,40.79 53.21,53.21 40.79,53.21 32.00,62.00 23.21,53.21 10.79,53.21 10.79,40.79 2.00,32.00 10.79,23.21 10.79,10.79 23.21,10.79" fill="#14110c" stroke="url(#g)" stroke-width="2.4" stroke-linejoin="round"/>
+    <circle cx="32" cy="32" r="21" fill="none" stroke="url(#g)" stroke-width="0.9" opacity="0.55"/>
+    <circle cx="32" cy="18.5" r="3.7" fill="url(#g)"/>
+    <circle cx="33.7" cy="17.4" r="3.1" fill="#14110c"/>
+    <path d="M31 44.5C26.5 41 21.2 40.4 16.5 41.8V25.6C21.2 24.2 26.5 24.8 31 28.3Z" fill="url(#g)"/>
+    <path d="M33 44.5C37.5 41 42.8 40.4 47.5 41.8V25.6C42.8 24.2 37.5 24.8 33 28.3Z" fill="url(#g)"/>
+    <path d="M19.5 30.2C22.6 29.6 25.6 30 28.2 31.4M19.5 34.2C22.6 33.6 25.6 34 28.2 35.4M35.8 31.4C38.4 30 41.4 29.6 44.5 30.2M35.8 35.4C38.4 34 41.4 33.6 44.5 34.2" stroke="#14110c" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.55"/>
+  </g>
+  <text x="84" y="30" font-family="'Manrope','Segoe UI',Arial,sans-serif" font-size="12.5" font-weight="700" letter-spacing="3.2" fill="#b98c35">QURAN ONLINE</text>
+  <text x="82" y="62" font-family="'Fraunces','Georgia',serif" font-size="34" font-weight="600" fill="#14110c">Tarteel</text>
+  <text x="222" y="60" font-family="'Amiri','Traditional Arabic',serif" font-size="30" fill="#b98c35">ترتيل</text>
+</svg>
