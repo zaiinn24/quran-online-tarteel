@@ -137,6 +137,7 @@ def build_hub():
             f'<div class="hero-right"><div class="illus-wrap">{frame_ar("أَدْعِيَة وَأَذْكَار")}</div></div></div></section>')
     body = (f'<section class="sec bg-white"><div class="container"><div class="section-head"><span class="eyebrow">Duas by Topic</span><h2>Masnoon Duas and Azkar with Meaning</h2>'
             f'<p>Choose a topic. Every page shows the Arabic, transliteration, English and Roman Urdu meaning, and the source.</p></div><div class="fgrid dua-hub">{cards}</div></div></section>'
+            '<section class="sec bg-cream-2 qaida-band"><div class="container"><div class="qb-in"><div class="qb-ar" lang="ar">القَاعِدَةُ النُّورَانِيَّة</div><div class="qb-txt"><span class="eyebrow">Free Download</span><h2>Free Noorani Qaida PDF</h2><p>Our own 16-page Noorani Qaida practice book: 13 lessons from the Arabic letters to Surah Al-Fatiha, for children and adults.</p><a href="../downloads/noorani-qaida-quran-online-tarteel.pdf" class="btn btn-gold" data-track="qaida_pdf_download" target="_blank" rel="noopener">Download the Qaida PDF (free)</a></div></div></div></section>'
             f'<section class="sec bg-cream" style="padding:64px 0"><div class="container"><div class="section-head" style="margin-bottom:22px"><span class="eyebrow">Learning Guides</span><h2>Free Quran Learning Guides</h2></div>'
             f'<div class="chip-row" style="justify-content:center">{guides}</div></div></section>')
     a = s.index('<section class="page-hero'); b = s.index('<section class="cta-sec')

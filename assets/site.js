@@ -136,6 +136,10 @@
     });
   });
 
+  document.querySelectorAll("a[data-track]").forEach(function (a) {
+    a.addEventListener("click", function () { track(a.getAttribute("data-track"), { page_path: location.pathname }); });
+  });
+
   var y = document.getElementById("qotYear");
   if (y) y.textContent = new Date().getFullYear();
 })();
