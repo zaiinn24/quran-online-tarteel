@@ -549,3 +549,21 @@ a.fcard{display:block}
 .fee-table td .fee-pkr{white-space:nowrap}
 @media(max-width:420px){.cur-btns{gap:2px;padding:4px}.cur-btns button{padding:7px 8px;font-size:12px;min-height:36px}.cur-label{width:100%;text-align:center}.fee-table th span{display:none}.fee-table td .fee{font-size:17px}.fee-table td .fee-pkr{font-size:10.5px}.fee-table th,.fee-table td{padding:9px 3px}.fee-table tbody th{font-size:12.5px;padding-left:6px}.fee-table tbody th span{display:block;font-size:10.5px}}
 @media(max-width:420px){.fee-table td .fee{white-space:nowrap}.fees-pkr .fee-table td .fee{font-size:13.5px}}
+/* fees: premium polish */
+.fee-card{position:relative;overflow:hidden;border-radius:22px;padding:26px 24px 18px;border:1px solid #e9dcc0;box-shadow:0 1px 0 #fff inset,0 18px 40px -22px rgba(20,17,12,.35)}
+.fee-card::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,#a97f2e,#e2c47e 50%,#a97f2e)}
+.fee-card h3{display:flex;align-items:center;gap:10px;font-size:22px}
+.fc-dot{width:10px;height:10px;flex:none;background:linear-gradient(135deg,#e2c47e,#a97f2e);transform:rotate(45deg)}
+.fee-card h3 a{border-bottom:0}
+.fee-table thead th{background:#14110c;color:#f3e6c6;font-size:13.5px}
+.fee-table thead th span{color:#bfae8a}
+.fee-table thead th.pop{background:linear-gradient(180deg,#2a2318,#14110c);color:#e2c47e;position:relative;padding-top:20px}
+.fee-table thead th.pop em{position:absolute;top:4px;left:50%;transform:translateX(-50%);font-style:normal;font-size:9.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#14110c;background:#e2c47e;border-radius:999px;padding:1px 8px;white-space:nowrap}
+.fee-table tbody tr:hover td,.fee-table tbody tr:hover th{background:rgba(199,155,69,.06)}
+.fee-table tbody tr td:nth-child(3){background:rgba(199,155,69,.1)}
+.fee-table td .fee{font-size:26px}
+@media(max-width:560px){.fee-table td .fee{font-size:19px}.fee-table thead th.pop em{font-size:8px;padding:1px 5px}}
+@media(max-width:420px){.fee-table td .fee{font-size:17px}}
+.fee-disc{display:block;max-width:760px;margin:26px auto 0;padding:14px 20px;background:#fff;border:1px dashed var(--gold);border-radius:14px;color:var(--text);font-size:15px}
+.fee-disc b{color:var(--ink)}
+.fd-ico{color:var(--gold-deep);margin-right:6px}

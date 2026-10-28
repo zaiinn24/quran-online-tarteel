@@ -48,7 +48,7 @@ def switcher(cur):
 
 
 def head_row(first):
-    th = "".join(f'<th scope="col">{d} days<span>a week</span></th>' for d in DAYS)
+    th = "".join((f'<th scope="col" class="pop"><em>Popular</em>{d} days<span>a week</span></th>' if d == 4 else f'<th scope="col">{d} days<span>a week</span></th>') for d in DAYS)
     return f'<thead><tr><th scope="col">{first}</th>{th}</tr></thead>'
 
 
@@ -60,7 +60,7 @@ def course_table(c, cur, title_tag="h3", link=True, prefix=""):
     name = c["name"]
     if link and c.get("page"):
         name = f'<a href="{prefix}{c["page"]}/">{name}</a>'
-    return (f'<div class="fee-card"><{title_tag}>{name}</{title_tag}>'
+    return (f'<div class="fee-card"><{title_tag}><span class="fc-dot" aria-hidden="true"></span>{name}</{title_tag}>'
             f'<div class="fee-scroll"><table class="fee-table">{head_row("Class length")}<tbody>{rows}</tbody></table></div></div>')
 
 
@@ -76,11 +76,7 @@ def overview_table(ids, cur, prefix):
 
 
 def note(prefix, cur):
-    where = "your currency" if cur != "PKR" else "Pakistani rupees"
-    return (f'<p class="fee-note">Monthly fee per student, paid in advance. One fair fee for every family: overseas fees are our '
-            f'Pakistan fee converted to {where} and rounded up slightly for exchange rates. Every student starts with '
-            f'<a href="{prefix}free-trial/" class="in-link">2 free classes</a>. Payment methods, refunds and makeup classes are on our '
-            f'<a href="{prefix}fees/" class="in-link">fees and plans page</a>.</p>')
+    return '<p class="fee-note fee-disc"><span class="fd-ico" aria-hidden="true">&#10022;</span><b>Family discount:</b> more than one child, or a mother and child, learning with us? You get a special family discount. <a href="https://wa.me/923350548488" data-wa="Assalamu alaikum, more than one person in my family wants to learn. Please tell me about the family discount." data-wa-loc="fee-discount" class="in-link">Just ask us on WhatsApp</a>.</p>'
 
 
 def section(inner, eyebrow, h2, sub, bg="bg-cream-2", sid="fees"):
@@ -303,7 +299,7 @@ def fees_page():
              + switcher("USD") + f'<div class="fgrid">{cards}</div></div></section>')
     table = section(
         '<div class="fee-grid">' + "".join(course_table(c, "USD", prefix=PREFIX) for c in C.values()) + "</div>"
-        + '<p class="fee-note">Monthly fee per student, paid in advance. Overseas fees are our Pakistan fee converted to your currency and rounded up slightly for exchange rates. Translation and Tafseer classes are 45 or 60 minutes. Families with more than one student get a small family discount, just ask us.</p>',
+        + note(PREFIX, 'USD'),
         "Fee Table", "Monthly Fees for Every Course",
         "Live one-to-one classes with a female teacher, 2, 4 or 5 days a week. Tap a currency above to see fees in your money.",
         bg="bg-cream-2", sid="fee-table")
@@ -348,10 +344,10 @@ def fees_page():
 
 def ensure_script(path):
     s = open(path).read()
-    s = re.sub(r'\n<script src="[^"]*assets/fees\.js" defer></script>', "", s)
+    s = re.sub(r'\n<script src="[^"]*assets/fees\.js[^"]*" defer></script>', "", s)
     if "cur-switch" in s:
-        pre = re.search(r'src="([^"]*)assets/site\.js"', s).group(1)
-        s = s.replace(f'{pre}assets/site.js" defer></script>', f'{pre}assets/site.js" defer></script>\n<script src="{pre}assets/fees.js" defer></script>', 1)
+        m = re.search(r'(<script src="([^"]*)assets/site\.js[^"]*" defer></script>)', s)
+        s = s.replace(m.group(1), m.group(1) + f'\n<script src="{m.group(2)}assets/fees.js" defer></script>', 1)
     write(path, s)
 
 
