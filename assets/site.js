@@ -122,6 +122,20 @@
     setH(); window.addEventListener("resize", setH);
   }
 
+  /* duas library: copy a dua (Arabic + transliteration + meaning) */
+  document.querySelectorAll(".dua-copy").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var card = document.getElementById(b.getAttribute("data-copy"));
+      if (!card) return;
+      var parts = [card.querySelector("h2"), card.querySelector(".dua-ar"), card.querySelector(".dua-tr"), card.querySelector(".dua-mean")]
+        .filter(Boolean).map(function (e) { return e.innerText.trim(); });
+      var text = parts.join("\n\n") + "\n\n" + location.href.split("#")[0] + "#" + card.id;
+      var done = function () { b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy dua"; }, 1600); };
+      if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, function () {}); 
+      track("dua_copy", { dua: card.id, page_path: location.pathname });
+    });
+  });
+
   var y = document.getElementById("qotYear");
   if (y) y.textContent = new Date().getFullYear();
 })();

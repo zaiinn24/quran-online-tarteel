@@ -585,3 +585,33 @@ a.fcard{display:block}
 .hero-price .hp-dot{color:#c79b45}
 .page-hero.center .hero-price{margin-left:auto;margin-right:auto}
 @media(max-width:900px){.hero-price{font-size:14px}.hero-price .fee{font-size:21px}}
+/* duas & azkar library */
+.duas-article{max-width:860px}
+.duas-article .lead-p{font-size:17px;line-height:1.75}
+.dua-toc{background:var(--cream);border:1px solid var(--line);border-radius:18px;padding:20px 24px;margin:26px 0 34px}
+.dua-toc h2{font-size:18px;margin:0 0 10px}
+.dua-toc ol{margin:0;padding-left:20px;columns:2;column-gap:28px}
+.dua-toc li{margin:4px 0;break-inside:avoid;font-size:15px}
+.dua-toc a{color:var(--ink);text-decoration:none;border-bottom:1px solid rgba(199,155,69,.45)}
+.dua{position:relative;background:#fff;border:1px solid #e9dcc0;border-radius:22px;padding:24px 26px 18px;margin:0 0 26px;box-shadow:0 18px 40px -26px rgba(20,17,12,.35);overflow:hidden;scroll-margin-top:96px}
+.dua::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,#a97f2e,#e2c47e 50%,#a97f2e)}
+.dua-q::before{background:linear-gradient(90deg,#25574a,#3a7563 50%,#25574a)}
+.dua-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+.dua-head h2{font-size:21px;margin:0;line-height:1.3}
+.dua-count{flex:none;background:var(--ink);color:#e2c47e;font-size:12px;font-weight:800;letter-spacing:.06em;padding:5px 12px;border-radius:999px;white-space:nowrap}
+.dua-ar{font-family:'Amiri','Traditional Arabic',serif;font-size:30px;line-height:2.1;color:#14110c;text-align:right;margin:6px 0 16px;padding:16px 18px;background:linear-gradient(180deg,#fdfaf3,#f7efdd);border-radius:14px;border:1px solid #efe3c6}
+.dua-ar .q-surah{display:block;margin-bottom:6px}
+.dua-tr{font-size:15.5px;font-style:italic;color:#4a4134;margin:0 0 12px}
+.dua .lbl{display:block;font-style:normal;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:3px}
+.dua-mean p{margin:0 0 12px;font-size:15.5px;line-height:1.7}
+.dua-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;border-top:1px dashed var(--line);padding-top:12px;margin-top:4px}
+.dua-ref{font-size:13.5px;color:var(--muted)}
+.dua-copy{min-height:40px;padding:8px 16px;border-radius:999px;border:1.5px solid var(--gold);background:#fff;color:var(--ink);font:700 13px var(--sans);cursor:pointer}
+.dua-copy:hover{background:var(--cream-2)}
+.dua-learn{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;background:#14110c;color:#efe3c4;border-radius:20px;padding:24px 26px;margin:34px 0 18px}
+.dua-learn h3{color:#fff;margin:0 0 6px;font-size:20px}.dua-learn p{margin:0;font-size:15px;color:#d8ccb1}
+.dua-learn .acts{display:flex;flex-wrap:wrap;gap:10px}
+.dua-source{font-size:13px;color:var(--muted);margin-top:18px}
+.dua-hub-card .dhc-ar{display:flex;align-items:center;justify-content:center;min-height:130px;background:radial-gradient(circle at 50% 40%,#3a3124,#14110c);color:#f3e6c6;font-family:'Amiri',serif;font-size:34px;padding:16px;border-bottom:3px solid #c79b45}
+@media(max-width:640px){.dua{padding:20px 16px 14px}.dua-ar{font-size:25px;line-height:2;padding:12px}.dua-toc ol{columns:1}.dua-head h2{font-size:18px}}
+@media(max-width:640px){.dua-hero .hero-right{display:none}.dua-hero{padding-bottom:56px}}
