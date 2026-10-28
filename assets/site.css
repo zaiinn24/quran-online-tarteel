@@ -573,3 +573,4 @@ a.fcard{display:block}
 @media(max-width:1180px){.fees-pkr .fee-table td .fee{font-size:19px}}
 @media(max-width:420px){.fees-pkr .fee-table td .fee{font-size:14.5px}}
 @media(max-width:420px){.fee-table thead th{font-size:11.5px;padding:10px 2px}.fee-table thead th.pop{padding-top:18px}}
+@media(min-width:900px){.fee-grid>.fee-card:last-child:nth-child(odd){grid-column:1/-1;justify-self:center;width:100%;max-width:calc(50% - 11px)}}

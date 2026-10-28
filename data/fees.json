@@ -1,18 +1,213 @@
 {
   "_note": "Single source of truth for fees. Monthly, per student, in PKR. Edit here, then run: python3 scripts/build_fees.py",
-  "plans_days": [2, 4, 5],
+  "plans_days": [
+    2,
+    4,
+    5
+  ],
   "rates": {
     "_note": "PKR per 1 unit, open-market buying rate (Pakistan Observer, 20 Oct 2026). Overseas price = PKR / rate, rounded UP to the next step.",
     "date": "2026-10-20",
-    "USD": 277, "GBP": 370, "CAD": 195, "AUD": 192, "AED": 75.6
+    "USD": 277,
+    "GBP": 370,
+    "CAD": 195,
+    "AUD": 192,
+    "AED": 75.6
   },
-  "round_step": {"USD": 5, "GBP": 5, "CAD": 5, "AUD": 5, "AED": 10},
+  "round_step": {
+    "USD": 5,
+    "GBP": 5,
+    "CAD": 5,
+    "AUD": 5,
+    "AED": 10
+  },
   "courses": [
-    {"id": "qaida",   "name": "Noorani Qaida",           "page": "noorani-qaida-online",              "prices": {"30": [3500, 6000, 7500],  "45": [4500, 7500, 9500]}},
-    {"id": "nazra",   "name": "Quran Reading (Nazra)",   "page": "learn-quran-online-for-beginners",  "prices": {"30": [4000, 6500, 8000],  "45": [5000, 8000, 10000]}},
-    {"id": "tajweed", "name": "Tajweed",                 "page": "online-tajweed-classes",            "prices": {"30": [4500, 7000, 8500],  "45": [5500, 8500, 10500]}},
-    {"id": "hifz",    "name": "Hifz (Memorisation)",     "page": "online-hifz-program",               "prices": {"30": [5000, 8000, 10000], "45": [6500, 10000, 12500]}},
-    {"id": "tafseer", "name": "Translation and Tafseer", "page": "quran-translation-tafseer-classes",  "prices": {"45": [8000, 12000, 16000], "60": [13000, 20000, 25000]}},
-    {"id": "islamic", "name": "Islamic Studies",         "page": "online-islamic-studies",            "prices": {"30": [3500, 6000, 7500],  "45": [4500, 7500, 9500]}}
+    {
+      "id": "qaida",
+      "name": "Noorani Qaida",
+      "page": "noorani-qaida-online",
+      "prices": {
+        "30": [
+          3500,
+          6000,
+          7500
+        ],
+        "45": [
+          4500,
+          7500,
+          9500
+        ]
+      }
+    },
+    {
+      "id": "nazra",
+      "name": "Quran Reading (Nazra)",
+      "page": "learn-quran-online-for-beginners",
+      "prices": {
+        "30": [
+          4000,
+          6500,
+          8000
+        ],
+        "45": [
+          5000,
+          8000,
+          10000
+        ]
+      }
+    },
+    {
+      "id": "tajweed",
+      "name": "Tajweed",
+      "page": "online-tajweed-classes",
+      "prices": {
+        "30": [
+          4500,
+          7000,
+          8500
+        ],
+        "45": [
+          5500,
+          8500,
+          10500
+        ]
+      }
+    },
+    {
+      "id": "hifz",
+      "name": "Hifz (Memorisation)",
+      "page": "online-hifz-program",
+      "prices": {
+        "30": [
+          5000,
+          8000,
+          10000
+        ],
+        "45": [
+          6500,
+          10000,
+          12500
+        ]
+      }
+    },
+    {
+      "id": "tafseer",
+      "name": "Translation and Tafseer",
+      "page": "quran-translation-tafseer-classes",
+      "prices": {
+        "45": [
+          8000,
+          12000,
+          16000
+        ],
+        "60": [
+          13000,
+          20000,
+          25000
+        ]
+      }
+    },
+    {
+      "id": "islamic",
+      "name": "Islamic Studies",
+      "page": "online-islamic-studies",
+      "prices": {
+        "30": [
+          3500,
+          6000,
+          7500
+        ],
+        "45": [
+          4500,
+          7500,
+          9500
+        ]
+      }
+    },
+    {
+      "id": "juzamma",
+      "name": "Juz Amma Memorisation",
+      "page": "juz-amma-memorization-online",
+      "prices": {
+        "30": [
+          4000,
+          6500,
+          8000
+        ],
+        "45": [
+          5000,
+          8000,
+          10000
+        ]
+      }
+    },
+    {
+      "id": "salah",
+      "name": "Salah (Prayer) Lessons",
+      "page": "online-salah-classes",
+      "prices": {
+        "30": [
+          3500,
+          6000,
+          7500
+        ],
+        "45": [
+          4500,
+          7500,
+          9500
+        ]
+      }
+    },
+    {
+      "id": "duas",
+      "name": "Daily Duas Course",
+      "page": "online-duas-course",
+      "prices": {
+        "30": [
+          3500,
+          6000,
+          7500
+        ],
+        "45": [
+          4500,
+          7500,
+          9500
+        ]
+      }
+    },
+    {
+      "id": "hadith40",
+      "name": "40 Hadith for Kids",
+      "page": "40-hadith-for-kids",
+      "prices": {
+        "30": [
+          3500,
+          6000,
+          7500
+        ],
+        "45": [
+          4500,
+          7500,
+          9500
+        ]
+      }
+    },
+    {
+      "id": "newmuslim",
+      "name": "Classes for New Muslims",
+      "page": "quran-classes-for-new-muslims",
+      "prices": {
+        "30": [
+          3500,
+          6000,
+          7500
+        ],
+        "45": [
+          4500,
+          7500,
+          9500
+        ]
+      }
+    }
   ]
 }

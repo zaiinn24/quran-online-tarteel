@@ -65,7 +65,7 @@ def course_table(c, cur, title_tag="h3", link=True, prefix=""):
         + "".join(f'<td>{cell(p, cur)}</td>' for p in prices) + "</tr>"
         for mins, prices in c["prices"].items())
     name = c["name"]
-    if link and c.get("page"):
+    if link and c.get("page") and os.path.exists(os.path.join(ROOT, c["page"], "index.html")):
         name = f'<a href="{prefix}{c["page"]}/">{name}</a>'
     return (f'<div class="fee-card"><{title_tag}><span class="fc-dot" aria-hidden="true"></span>{name}</{title_tag}>'
             f'<div class="fee-scroll"><table class="fee-table">{head_row("Class length")}<tbody>{rows}</tbody></table></div></div>')
@@ -76,7 +76,8 @@ def overview_table(ids, cur, prefix):
     for cid in ids:
         c = C[cid]
         mins = "30" if "30" in c["prices"] else "45"
-        rows += (f'<tr><th scope="row"><a href="{prefix}{c["page"]}/">{c["name"]}</a><span>{mins} min classes</span></th>'
+        nm = f'<a href="{prefix}{c["page"]}/">{c["name"]}</a>' if os.path.exists(os.path.join(ROOT, c["page"], "index.html")) else c["name"]
+        rows += (f'<tr><th scope="row">{nm}<span>{mins} min classes</span></th>'
                  + "".join(f'<td>{cell(p, cur)}</td>' for p in c["prices"][mins]) + "</tr>")
     return (f'<div class="fee-card fee-card-wide"><div class="fee-scroll"><table class="fee-table">'
             f'{head_row("Course")}<tbody>{rows}</tbody></table></div></div>')
@@ -110,10 +111,15 @@ COURSE_PAGES = {
     "online-hifz-program": ["hifz"],
     "quran-translation-tafseer-classes": ["tafseer"],
     "online-islamic-studies": ["islamic"],
+    "juz-amma-memorization-online": ["juzamma"],
+    "online-salah-classes": ["salah"],
+    "online-duas-course": ["duas"],
+    "40-hadith-for-kids": ["hadith40"],
+    "quran-classes-for-new-muslims": ["newmuslim"],
 }
 AUDIENCE_PAGES = {
-    "online-quran-classes-for-kids": (["qaida", "nazra", "tajweed", "hifz", "islamic"], "USD"),
-    "online-quran-classes-for-women": (["qaida", "nazra", "tajweed", "hifz", "tafseer", "islamic"], "USD"),
+    "online-quran-classes-for-kids": (["qaida", "nazra", "tajweed", "hifz", "islamic", "juzamma", "salah", "duas", "hadith40"], "USD"),
+    "online-quran-classes-for-women": (["qaida", "nazra", "tajweed", "hifz", "tafseer", "islamic", "salah", "duas", "newmuslim"], "USD"),
 }
 COUNTRY = {
     "online-quran-classes-usa": ("USD", "the USA", "US dollars"),
@@ -123,7 +129,7 @@ COUNTRY = {
     "online-quran-classes-uae": ("AED", "the UAE", "dirhams"),
     "online-quran-classes-pakistan": ("PKR", "Pakistan", "rupees"),
 }
-OVERVIEW = ["qaida", "nazra", "tajweed", "hifz", "tafseer", "islamic"]
+OVERVIEW = ["qaida", "nazra", "tajweed", "hifz", "tafseer", "islamic", "juzamma", "salah", "duas", "hadith40", "newmuslim"]
 ENROL = '<section class="cta-sec dark pattern-dark" id="enrol">'
 
 
@@ -204,6 +210,8 @@ def main():
     # course pages
     for page, ids in COURSE_PAGES.items():
         p = os.path.join(ROOT, page, "index.html")
+        if not os.path.exists(p):
+            continue  # page not built yet; its fees still show on the fees, country and audience pages
         s = open(p).read()
         inner = switcher("USD") + '<div class="fee-grid">' + "".join(course_table(C[i], "USD", link=len(ids) > 1, prefix=PREFIX) for i in ids) + "</div>" + note(PREFIX, "USD")
         name = C[ids[0]]["name"] if len(ids) == 1 else "Noorani Qaida and Quran Reading"
