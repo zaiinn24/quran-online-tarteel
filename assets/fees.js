@@ -21,7 +21,8 @@
   }
   var saved = null;
   try { saved = localStorage.getItem("qot-cur"); } catch (e) {}
-  var start = saved && SYM[saved] ? saved : sw[0].getAttribute("data-default");
+  var locked = sw[0].hasAttribute("data-lock"); /* country pages always open in their own currency */
+  var start = !locked && saved && SYM[saved] ? saved : sw[0].getAttribute("data-default");
   if (start !== sw[0].getAttribute("data-default") || start === "PKR") show(start);
   sw.forEach(function (s) {
     s.addEventListener("click", function (ev) {
@@ -29,7 +30,7 @@
       if (!b) return;
       var cur = b.getAttribute("data-cur");
       show(cur);
-      try { localStorage.setItem("qot-cur", cur); } catch (e) {}
+      if (!locked) { try { localStorage.setItem("qot-cur", cur); } catch (e) {} }
       if (typeof window.gtag === "function") window.gtag("event", "fee_currency", { currency: cur, page_path: location.pathname });
     });
   });

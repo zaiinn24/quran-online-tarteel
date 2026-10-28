@@ -43,12 +43,13 @@ def cell(pkr, cur):
     return main + f'<small class="fee-pkr">Rs {pkr:,}</small>'
 
 
-def switcher(cur):
+def switcher(cur, lock=False):
     rates = html.escape(json.dumps({"rates": RATES, "step": STEP}), quote=True)
     btns = "".join(
         f'<button type="button" data-cur="{c}" aria-pressed="{"true" if c == cur else "false"}">{CUR_LABEL[c]}</button>'
         for c in CUR_ORDER)
-    return (f'<div class="cur-switch" data-fee-rates="{rates}" data-default="{cur}">'
+    lk = ' data-lock="1"' if lock else ""
+    return (f'<div class="cur-switch" data-fee-rates="{rates}" data-default="{cur}"{lk}>'
             f'<span class="cur-label" id="curLbl">Show fees in</span>'
             f'<div class="cur-btns" role="group" aria-labelledby="curLbl">{btns}</div></div>')
 
@@ -104,7 +105,7 @@ def put(s, key, block, before):
 # ---------- per-page configuration ----------
 COURSE_PAGES = {
     "noorani-qaida-online": ["qaida"],
-    "learn-quran-online-for-beginners": ["qaida", "nazra"],
+    "learn-quran-online-for-beginners": ["nazra"],
     "online-tajweed-classes": ["tajweed"],
     "online-hifz-program": ["hifz"],
     "quran-translation-tafseer-classes": ["tafseer"],
@@ -222,10 +223,10 @@ def main():
     for page, (cur, place, word) in COUNTRY.items():
         p = os.path.join(ROOT, page, "index.html")
         s = open(p).read()
-        inner = switcher(cur) + overview_table(OVERVIEW, cur, PREFIX) + note(PREFIX, cur)
+        inner = switcher(cur, lock=True) + '<div class="fee-grid">' + "".join(course_table(C[i], cur, prefix=PREFIX) for i in OVERVIEW) + "</div>" + note(PREFIX, cur)
         s = put(s, "country", section(inner, "Fees in " + word.title(),
                                       f"Online Quran Class Fees in {place}",
-                                      f"Monthly fee per student in {word}, for 2, 4 or 5 days a week. 45 minute class fees are on the fees page."), ENROL)
+                                      f"Monthly fee per student in {word} for every course, 2, 4 or 5 days a week."), ENROL)
         for q in re.findall(r'"name": "(How much [^"]*)"', s)[:1]:
             s = set_faq(s, q, how_much_answer(cur, place))
         write(p, s)
