@@ -30,8 +30,14 @@ def fmt(pkr, cur):
     return SYM[cur] + f"{v:,}"
 
 
+def fmt_html(pkr, cur):
+    v = f"{conv(pkr, cur):,}"
+    sym = SYM[cur]
+    return f'<span class="cs">{sym.strip()}</span> {v}' if sym.endswith(" ") else sym + v
+
+
 def cell(pkr, cur):
-    main = f'<span class="fee" data-pkr="{pkr}">{fmt(pkr, cur)}</span>'
+    main = f'<span class="fee" data-pkr="{pkr}">{fmt_html(pkr, cur)}</span>'
     if cur == "PKR":
         return main
     return main + f'<small class="fee-pkr">Rs {pkr:,}</small>'
@@ -290,7 +296,7 @@ def fees_page():
         tag = '<span class=tag>Most popular</span>' if feat else ""
         btn = "btn-gold" if feat else "btn-dark"
         cards += (f'<div class="price-card{feat}">{tag}<h3>{h}</h3><div class="from">from</div>'
-                  f'<div class="days"><span class="fee" data-pkr="{low}">{fmt(low, "USD")}</span></div>'
+                  f'<div class="days"><span class="fee" data-pkr="{low}">{fmt_html(low, "USD")}</span></div>'
                   f'<div class="per">a month<span class="fee-pkr"> &middot; Rs {low:,}</span></div>'
                   f'<ul><li>{cnt}</li><li>Live 1-on-1 with a female teacher</li><li>30 or 45 minute classes</li><li>{why}</li></ul>'
                   f'<a href="https://wa.me/923350548488" data-wa="Assalamu alaikum, I would like to know more about the {d} days a week plan." data-wa-loc="fees-card" class="btn {btn}">Ask About This Plan</a></div>')

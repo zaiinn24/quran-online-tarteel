@@ -11,7 +11,8 @@
   }
   function show(cur) {
     document.querySelectorAll(".fee[data-pkr]").forEach(function (e) {
-      e.textContent = SYM[cur] + conv(+e.getAttribute("data-pkr"), cur).toLocaleString("en-US");
+      var v = conv(+e.getAttribute("data-pkr"), cur).toLocaleString("en-US"), sym = SYM[cur];
+      if (/ $/.test(sym)) { e.innerHTML = '<span class="cs">' + sym.trim() + "</span> " + v; } else { e.textContent = sym + v; }
     });
     document.documentElement.classList.toggle("fees-pkr", cur === "PKR");
     document.querySelectorAll(".cur-switch button").forEach(function (b) {
