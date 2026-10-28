@@ -19,8 +19,11 @@ jobs:
           mkdir -p dist
           rsync -a --exclude='.git' --exclude='.github' --exclude='scripts' --exclude='README.md' --exclude='dist' ./ dist/
       - name: Deploy to old Cloudflare Pages project
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CF_OLD_PROJECT_TOKEN }}
-          accountId: e3c86765f950a32752eeaaf60df851b4
-          command: pages deploy dist --project-name=quran-online-tarteel --branch=main --commit-dirty=true
+        env:
+          RAW_TOKEN: ${{ secrets.CF_OLD_PROJECT_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: e3c86765f950a32752eeaaf60df851b4
+        run: |
+          # use the first non-empty line of the secret, without spaces (guards against extra pasted lines)
+          export CLOUDFLARE_API_TOKEN="$(printf '%s\n' "$RAW_TOKEN" | grep -v '^[[:space:]]*$' | head -n1 | tr -d '[:space:]')"
+          echo "::add-mask::$CLOUDFLARE_API_TOKEN"
+          npx --yes wrangler@4 pages deploy dist --project-name=quran-online-tarteel --branch=main --commit-dirty=true
