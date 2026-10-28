@@ -113,6 +113,15 @@
     });
   });
 
+  /* since-2010 ribbon: keep the years current + sit just under the header */
+  var now = new Date().getFullYear();
+  document.querySelectorAll("[data-yr-now]").forEach(function (e) { e.textContent = now; });
+  document.querySelectorAll("[data-yr-count]").forEach(function (e) { e.textContent = now - 2010; });
+  if (head) {
+    var setH = function () { document.documentElement.style.setProperty("--qot-head-h", head.offsetHeight + "px"); };
+    setH(); window.addEventListener("resize", setH);
+  }
+
   var y = document.getElementById("qotYear");
   if (y) y.textContent = new Date().getFullYear();
 })();

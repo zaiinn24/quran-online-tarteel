@@ -485,12 +485,14 @@ a.fcard{display:block}
   .table-wrap td[data-label]:not([data-label=""])::before{content:attr(data-label);display:block;font-family:var(--sans);font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:2px}
   .table-wrap tbody tr:nth-child(even){background:#fdfaf3}
 }
-/* since-2010 banner */
-.since-bar{background:linear-gradient(90deg,#1d1913,#2a2318 50%,#1d1913);border-bottom:1px solid rgba(199,155,69,.28);color:#efe3c4}
-.since-in{max-width:1240px;margin:0 auto;padding:7px 16px;font:500 13px/1.45 'Manrope','Segoe UI',Arial,sans-serif;text-align:center;display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap}
-.since-in strong{color:#e2c47e;font-weight:800;letter-spacing:.01em}
-.since-star{width:8px;height:8px;background:#c79b45;transform:rotate(45deg);flex:none}
-@media(max-width:640px){.since-more{display:none}.since-in{font-size:12.5px;padding:6px 12px}}
+/* since-2010 corner ribbon */
+.since-ribbon{position:absolute;right:0;top:var(--qot-head-h,82px);width:200px;height:200px;overflow:hidden;z-index:40;pointer-events:none}
+.sr-sash{position:absolute;top:50px;right:-68px;width:290px;transform:rotate(45deg);display:flex;flex-direction:column;align-items:center;gap:1px;padding:7px 0 8px;text-align:center;line-height:1.2;font-family:'Manrope','Segoe UI',Arial,sans-serif;background:linear-gradient(180deg,#3a7563 0%,#25574a 55%,#1c463b 100%);border-top:2px solid #e2c47e;border-bottom:2px solid #e2c47e;box-shadow:0 10px 22px rgba(0,0,0,.38)}
+.sr-sash::before{content:"";position:absolute;left:0;right:0;top:3px;bottom:3px;border-top:1px solid rgba(226,196,126,.45);border-bottom:1px solid rgba(226,196,126,.45)}
+.sr-years{color:#e2c47e;font-size:11px;font-weight:800;letter-spacing:.2em}
+.sr-sash strong{color:#fbf7ee;font-size:12.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;text-shadow:0 1px 0 rgba(0,0,0,.35)}
+.sr-sub{color:#e2c47e;font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase}
+@media(max-width:640px){.since-ribbon{width:150px;height:150px}.sr-sash{top:44px;right:-46px;width:220px;padding:4px 0 5px}.sr-years{font-size:8.5px}.sr-sash strong{font-size:9.5px}.sr-sub{font-size:7px}}
 /* how did you hear about us */
 .sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .field.heard .heard-other{margin-top:8px;padding:11px 15px;border-style:dashed;font-size:14.5px}
