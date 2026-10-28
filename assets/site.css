@@ -574,3 +574,6 @@ a.fcard{display:block}
 @media(max-width:420px){.fees-pkr .fee-table td .fee{font-size:14.5px}}
 @media(max-width:420px){.fee-table thead th{font-size:11.5px;padding:10px 2px}.fee-table thead th.pop{padding-top:18px}}
 @media(min-width:900px){.fee-grid>.fee-card:last-child:nth-child(odd){grid-column:1/-1;justify-self:center;width:100%;max-width:calc(50% - 11px)}}
+/* keep hero text clear of the corner ribbon on phones and small tablets */
+@media(max-width:900px){.page-hero{padding-top:96px}.hero{padding-top:100px}}
+@media(max-width:900px){.since-ribbon{width:128px;height:128px}.sr-sash{top:34px;right:-50px;width:200px}.sr-years{font-size:8px}.sr-sash strong{font-size:9px}.sr-sub{font-size:6.5px}}

@@ -139,7 +139,8 @@
           8000,
           10000
         ]
-      }
+      },
+      "faq_name": "Juz Amma memorization"
     },
     {
       "id": "salah",
@@ -156,7 +157,8 @@
           7500,
           9500
         ]
-      }
+      },
+      "faq_name": "online salah"
     },
     {
       "id": "duas",
@@ -173,7 +175,8 @@
           7500,
           9500
         ]
-      }
+      },
+      "faq_name": "online duas"
     },
     {
       "id": "hadith40",
@@ -190,7 +193,8 @@
           7500,
           9500
         ]
-      }
+      },
+      "faq_name": "40 Hadith"
     },
     {
       "id": "newmuslim",
@@ -207,7 +211,8 @@
           7500,
           9500
         ]
-      }
+      },
+      "faq_name": "new Muslim"
     }
   ]
 }

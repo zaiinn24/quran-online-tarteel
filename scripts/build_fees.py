@@ -216,7 +216,7 @@ def main():
         name = C[ids[0]]["name"] if len(ids) == 1 else "Noorani Qaida and Quran Reading"
         s = put(s, "course", section(inner, "Monthly Fees", f"{name} Fees", "Simple monthly plans for 2, 4 or 5 days a week. Pick the class length that suits you."), ENROL)
         for i in ids[:1] if len(ids) == 1 else ids:
-            s = set_faq(s, f"How much do {C[i]['name']} classes cost?", course_answer(i), add_if_missing=True)
+            s = set_faq(s, f"How much do {C[i].get('faq_name', C[i]['name'])} classes cost?", course_answer(i), add_if_missing=True)
         s = set_offer(s, ids[-1] if page != "learn-quran-online-for-beginners" else "nazra")
         write(p, s)
     # audience pages
