@@ -1,0 +1,26 @@
+# TEMPORARY (remove after the domain moves to the zaiinn Cloudflare account, Fri 30 Oct 2026).
+# Every push to main is also deployed to the OLD Cloudflare Pages project (hangul account),
+# which still serves quranonlinetarteel.net, so changes go live immediately.
+name: Deploy to live site (temporary)
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+concurrency:
+  group: deploy-live
+  cancel-in-progress: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Collect site files
+        run: |
+          mkdir -p dist
+          rsync -a --exclude='.git' --exclude='.github' --exclude='scripts' --exclude='README.md' --exclude='dist' ./ dist/
+      - name: Deploy to old Cloudflare Pages project
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CF_OLD_PROJECT_TOKEN }}
+          accountId: e3c86765f950a32752eeaaf60df851b4
+          command: pages deploy dist --project-name=quran-online-tarteel --branch=main --commit-dirty=true
