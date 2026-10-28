@@ -170,6 +170,29 @@
     show(start, false);
   }
 
+  /* duas library: topic tabs + search */
+  var lib = document.querySelector(".lib-grid");
+  if (lib) {
+    var tiles = [].slice.call(lib.querySelectorAll(".lib-tile")), q = document.getElementById("libq"), cat = "all";
+    var empty = document.querySelector(".lib-empty");
+    var apply = function () {
+      var term = (q && q.value || "").trim().toLowerCase(), n = 0;
+      tiles.forEach(function (t) {
+        var ok = (cat === "all" || (" " + t.getAttribute("data-cat") + " ").indexOf(" " + cat + " ") > -1) && (!term || t.getAttribute("data-kw").indexOf(term) > -1);
+        t.hidden = !ok; if (ok) n++;
+      });
+      if (empty) empty.hidden = n > 0;
+    };
+    document.querySelectorAll(".lib-tab").forEach(function (b) {
+      b.addEventListener("click", function () {
+        cat = b.getAttribute("data-cat");
+        document.querySelectorAll(".lib-tab").forEach(function (x) { x.classList.toggle("on", x === b); x.setAttribute("aria-pressed", String(x === b)); });
+        apply();
+      });
+    });
+    if (q) q.addEventListener("input", apply);
+  }
+
   var y = document.getElementById("qotYear");
   if (y) y.textContent = new Date().getFullYear();
 })();

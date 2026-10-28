@@ -131,19 +131,41 @@ def build_hub():
             ("Are the translations in Urdu?", "Each dua has its meaning in English and in Roman Urdu (Urdu written in English letters), so the whole family can understand it.")]
     s = head(TPL, title, desc, url, [("Home", SITE), ("Duas & Azkar", url)], faqs, article=False)
     s = s.replace('"../../', '"../').replace("'../../", "'../")
-    cards = "".join(f'<a class="post-card dua-hub-card" href="{o}/"><div class="dhc-ar" lang="ar" dir="rtl">{PAGES[o]["ar_title"]}</div><div class="pc-body"><span class="pc-tag">{len(PAGES[o]["items"])} duas</span>'
-                    f'<h3>{re.sub(r"<[^>]+>", "", PAGES[o]["h1"])}</h3><p>{PAGES[o]["card"]}</p><span class="in-link" style="display:inline-block;margin-top:10px">Read with meaning</span></div></a>' for o in ORDER)
-    guides = ('<a class="chip" href="../resources/tajweed-rules/">Tajweed rules for beginners</a><a class="chip" href="../resources/noorani-qaida-guide/">Noorani Qaida lesson guide</a>'
-              '<a class="chip" href="../resources/how-many-rakats/">How many rakats in each prayer</a>')
-    hero = ('<section class="page-hero pattern-dark dua-hero"><div class="container page-hero-grid"><div class="hero-text"><span class="eyebrow">Free Library</span>'
-            '<h1>Duas &amp; Azkar <span class="gold">in English and Urdu</span></h1>'
-            '<p class="hero-lead">Authentic duas and azkar from the Quran and Sunnah for every part of the day, each with the Arabic, an easy transliteration, its meaning in English and Roman Urdu, and the reference. Free for every family.</p></div>'
-            f'<div class="hero-right"><div class="illus-wrap">{frame_ar("أَدْعِيَة وَأَذْكَار")}</div></div></div></section>')
-    body = (f'<section class="sec bg-white"><div class="container"><div class="section-head"><span class="eyebrow">Duas by Topic</span><h2>Masnoon Duas and Azkar with Meaning</h2>'
-            f'<p>Choose a topic. Every page shows the Arabic, transliteration, English and Roman Urdu meaning, and the source.</p></div><div class="fgrid dua-hub">{cards}</div></div></section>'
-            '<section class="sec bg-cream-2 qaida-band"><div class="container"><div class="qb-in"><div class="qb-ar" lang="ar">القَاعِدَةُ النُّورَانِيَّة</div><div class="qb-txt"><span class="eyebrow">Free Download</span><h2>Free Noorani Qaida PDF</h2><p>Our own 16-page Noorani Qaida practice book: 13 lessons from the Arabic letters to Surah Al-Fatiha, for children and adults.</p><a href="../downloads/noorani-qaida-quran-online-tarteel.pdf" class="btn btn-gold" data-track="qaida_pdf_download" target="_blank" rel="noopener">Download the Qaida PDF (free)</a></div></div></div></section>'
-            f'<section class="sec bg-cream" style="padding:64px 0"><div class="container"><div class="section-head" style="margin-bottom:22px"><span class="eyebrow">Learning Guides</span><h2>Free Quran Learning Guides</h2></div>'
-            f'<div class="chip-row" style="justify-content:center">{guides}</div></div></section>')
+    CAT = {"morning-evening-azkar": "daily", "azkar-after-namaz": "daily", "daily-duas-for-kids": "daily kids", "new-clothes-dua": "daily kids",
+           "rabbana-duas": "quran", "ayatul-kursi-and-4-quls": "quran kids", "duas-for-anxiety": "heart", "maghfirat-duas": "heart",
+           "duas-for-illness": "heart", "nikah-dua": "life", "janaza-and-mayyat-duas": "life", "ramadan-duas": "life"}
+    tiles = []
+    for o in ORDER:
+        P = PAGES[o]
+        SHORT = {"morning-evening-azkar": "الصَّبَاح<br>وَالمَسَاء", "azkar-after-namaz": "بَعْدَ<br>الصَّلَاة", "daily-duas-for-kids": "أَدْعِيَة", "duas-for-anxiety": "الهَمّ<br>وَالحُزْن",
+                 "rabbana-duas": "رَبَّنَا", "ayatul-kursi-and-4-quls": "آيَةُ<br>الكُرْسِيّ", "duas-for-illness": "الشِّفَاء", "maghfirat-duas": "اسْتِغْفَار",
+                 "ramadan-duas": "رَمَضَان", "nikah-dua": "نِكَاح", "new-clothes-dua": "ثَوْب<br>جَدِيد", "janaza-and-mayyat-duas": "جَنَازَة"}
+        tiles.append(dict(href=f"{o}/", ar=SHORT.get(o, P["ar_title"]), title=re.sub(r"\s*\(.*?\)", "", re.sub(r"<[^>]+>", "", P["h1"])).strip(), desc=P["card"],
+                          meta=f'{len(P["items"])} duas', cat=CAT.get(o, "daily"), kw=P["title"]))
+    tiles += [
+        dict(href="../downloads/noorani-qaida-quran-online-tarteel.pdf", ar="القَاعِدَة", title="Noorani Qaida PDF", desc="Our free 16-page practice book: 13 lessons, letters to Al-Fatiha.", meta="Free PDF", cat="learn kids", kw="qaida download pdf", pdf=True),
+        dict(href="../resources/noorani-qaida-guide/", ar="أ ب ت", title="Noorani Qaida Lesson Guide", desc="What each Qaida lesson teaches and how long it takes.", meta="Guide", cat="learn", kw="qaida lessons"),
+        dict(href="../resources/tajweed-rules/", ar="تَجْوِيد", title="Tajweed Rules for Beginners", desc="Noon sakinah, meem sakinah, qalqalah, ghunnah and madd.", meta="Guide", cat="learn", kw="tajweed rules"),
+        dict(href="../resources/how-many-rakats/", ar="صَلَاة", title="How Many Rakats in Each Prayer", desc="A simple chart of the five daily prayers.", meta="Guide", cat="learn kids", kw="salah rakats namaz"),
+    ]
+    tab_list = [("all", "All"), ("daily", "Daily Duas"), ("quran", "From the Quran"), ("heart", "Hard Times"), ("life", "Life Events & Ramadan"), ("kids", "For Kids"), ("learn", "Learn to Read")]
+    tabs = "".join(f'<button type="button" class="lib-tab{" on" if k == "all" else ""}" data-cat="{k}" aria-pressed="{"true" if k == "all" else "false"}">{v}</button>' for k, v in tab_list)
+    cards = "".join(
+        f'<a class="lib-tile" href="{t["href"]}" data-cat="{t["cat"]}" data-kw="{H.escape((t["title"] + " " + t["desc"] + " " + t["kw"]).lower())}"'
+        + (' data-track="qaida_pdf_download" target="_blank" rel="noopener"' if t.get("pdf") else "") + '>'
+        f'<span class="lt-ar" lang="ar" dir="rtl">{t["ar"]}</span><span class="lt-body"><span class="lt-meta">{t["meta"]}</span>'
+        f'<span class="lt-title">{H.escape(t["title"])}</span><span class="lt-desc">{H.escape(t["desc"])}</span></span><span class="lt-go" aria-hidden="true">&rarr;</span></a>'
+        for t in tiles)
+    hero = ('<section class="page-hero pattern-dark dua-hero lib-hero"><div class="container"><div class="hero-text" style="max-width:820px">'
+            '<span class="eyebrow">Free Islamic Library</span><h1>Duas &amp; Azkar <span class="gold">in English and Urdu</span></h1>'
+            '<p class="hero-lead">Authentic duas and azkar from the Quran and Sunnah, each with the Arabic, an easy transliteration, its meaning in English and Roman Urdu, and the reference. Plus free Quran learning guides and our Noorani Qaida PDF.</p>'
+            f'<div class="lib-stats"><span><b>{sum(len(PAGES[o]["items"]) for o in ORDER)}</b> duas</span><span><b>{len(ORDER)}</b> topics</span><span><b>100%</b> Quran &amp; authentic Sunnah</span><span><b>Free</b> for every family</span></div></div></div></section>')
+    body = (f'<section class="sec bg-cream lib-sec"><div class="container"><div class="lib-bar"><div class="lib-search"><input type="search" id="libq" placeholder="Search duas, e.g. sleeping, anxiety, iftar" aria-label="Search the library"></div>'
+            f'<div class="lib-tabs" role="group" aria-label="Filter by topic">{tabs}</div></div>'
+            f'<div class="lib-grid">{cards}</div><p class="lib-empty" hidden>No matches. Try another word, or <a href="../contact/" class="in-link">ask us</a> for a dua.</p>'
+            f'<div class="dua-learn" style="margin-top:34px"><div><h3>Learn duas and Quran with a female teacher</h3><p>Correct pronunciation and meaning in live one-to-one lessons for kids and women.</p></div>'
+            f'<div class="acts"><a href="../online-duas-course/" class="btn btn-gold">Online Duas Course</a><a href="../free-trial/" class="btn btn-ghost" style="color:#e2c47e;border-color:#e2c47e">Book 2 Free Classes</a></div></div>'
+            f'</div></section>')
     a = s.index('<section class="page-hero'); b = s.index('<section class="cta-sec')
     s = s[:a] + hero + body + s[b:]
     s = re.sub(r'<h2>How Many Rakats: Questions Answered</h2>', '<h2>Duas &amp; Azkar: Questions Answered</h2>', s)
