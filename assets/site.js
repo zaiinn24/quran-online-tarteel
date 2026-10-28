@@ -40,6 +40,14 @@
     });
   });
 
+  /* ---- "How did you hear about us?": an option OR free text, never both ---- */
+  document.querySelectorAll(".heard").forEach(function (fs) {
+    var txt = fs.querySelector(".heard-other");
+    var radios = fs.querySelectorAll("input[type=radio]");
+    radios.forEach(function (r) { r.addEventListener("change", function () { if (r.checked && txt) txt.value = ""; }); });
+    if (txt) txt.addEventListener("input", function () { if (txt.value.trim()) radios.forEach(function (r) { r.checked = false; }); });
+  });
+
   /* ---- lead forms -> email via FormSubmit ---- */
   document.querySelectorAll("[data-form]").forEach(function (card) {
     var form = card.querySelector("form");
@@ -57,6 +65,9 @@
 
       var data = {};
       new FormData(form).forEach(function (v, k) { if (k !== "_honey") data[k] = v; });
+      var other = String(data.heard_other || "").trim().slice(0, 80);
+      delete data.heard_other;
+      data.heard_about = data.heard_about || (other ? "Other: " + other : "Not answered");
       data.page = location.href;
       data._subject = "New lead: " + (data.form_source || "Website form") + " - Quran Online Tarteel";
       data._template = "table";
@@ -77,7 +88,7 @@
         .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; }); })
         .then(function (res) {
           if (!res.ok || String(res.j.success) === "false") throw new Error("send failed");
-          track("generate_lead", { form_name: data.form_source || "form", course: data.course || "", page_path: location.pathname });
+          track("generate_lead", { form_name: data.form_source || "form", course: data.course || "", heard_about: data.heard_about, page_path: location.pathname });
           card.classList.add("sent");
         })
         .catch(function () {
