@@ -40,12 +40,18 @@
     });
   });
 
-  /* ---- "How did you hear about us?": an option OR free text, never both ---- */
-  document.querySelectorAll(".heard").forEach(function (fs) {
-    var txt = fs.querySelector(".heard-other");
-    var radios = fs.querySelectorAll("input[type=radio]");
-    radios.forEach(function (r) { r.addEventListener("change", function () { if (r.checked && txt) txt.value = ""; }); });
-    if (txt) txt.addEventListener("input", function () { if (txt.value.trim()) radios.forEach(function (r) { r.checked = false; }); });
+  /* ---- "How did you hear about us?": pick an option OR type one (required) ---- */
+  document.querySelectorAll(".heard").forEach(function (box) {
+    var sel = box.querySelector("select");
+    var txt = box.querySelector(".heard-other");
+    if (!sel || !txt) return;
+    var msg = document.createElement("div");
+    msg.className = "heard-msg"; msg.setAttribute("role", "alert");
+    msg.textContent = "Please choose an option or type where you heard about us.";
+    box.appendChild(msg);
+    function clear() { box.classList.remove("bad"); sel.style.borderColor = ""; txt.style.borderColor = ""; }
+    sel.addEventListener("change", function () { if (sel.value) txt.value = ""; clear(); });
+    txt.addEventListener("input", function () { if (txt.value.trim()) sel.value = ""; clear(); });
   });
 
   /* ---- lead forms -> email via FormSubmit ---- */
@@ -60,14 +66,22 @@
         f.style.borderColor = bad ? "#c0392b" : "";
         if (bad) ok = false;
       });
-      if (!ok) return;
+      var hb = form.querySelector(".heard");
+      if (hb) {
+        var hs = hb.querySelector("select"), ht = hb.querySelector(".heard-other");
+        if (!hs.value && !String(ht.value || "").trim()) {
+          hb.classList.add("bad"); hs.style.borderColor = "#c0392b"; ht.style.borderColor = "#c0392b";
+          ok = false;
+        }
+      }
+      if (!ok) { var first = form.querySelector('[style*="c0392b"]'); if (first) first.focus(); return; }
       if (form._honey && form._honey.value) return; /* spam bot */
 
       var data = {};
       new FormData(form).forEach(function (v, k) { if (k !== "_honey") data[k] = v; });
       var other = String(data.heard_other || "").trim().slice(0, 80);
       delete data.heard_other;
-      data.heard_about = data.heard_about || (other ? "Other: " + other : "Not answered");
+      data.heard_about = data.heard_about || "Other: " + other;
       data.page = location.href;
       data._subject = "New lead: " + (data.form_source || "Website form") + " - Quran Online Tarteel";
       data._template = "table";

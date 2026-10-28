@@ -493,15 +493,7 @@ a.fcard{display:block}
 @media(max-width:640px){.since-more{display:none}.since-in{font-size:12.5px;padding:6px 12px}}
 /* how did you hear about us */
 .sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-.heard{border:0;padding:0;margin:4px 0 16px;min-width:0}
-.heard legend{display:block;font-size:13px;font-weight:700;margin-bottom:8px;color:var(--ink-3);padding:0}
-.heard legend .opt{font-weight:500;color:var(--muted)}
-.heard-opts{display:flex;flex-wrap:wrap;gap:8px}
-.heard-opt{position:relative;display:inline-flex;margin:0!important;cursor:pointer}
-.heard-opt input{position:absolute;opacity:0;width:1px;height:1px}
-.heard-opt span{display:inline-flex;align-items:center;min-height:44px;padding:9px 15px;border:1.5px solid var(--line);border-radius:999px;background:#fffdf8;font:600 14px var(--sans);color:var(--text);transition:border-color .2s,background .2s,color .2s}
-.heard-opt:hover span{border-color:var(--gold)}
-.heard-opt input:checked+span{background:var(--ink);border-color:var(--ink);color:#e2c47e}
-.heard-opt input:focus-visible+span{box-shadow:0 0 0 4px rgba(199,155,69,.3)}
-.heard .heard-other{width:100%;margin-top:10px;padding:12px 15px;border:1.5px dashed var(--line);border-radius:11px;font:500 14.5px var(--sans);color:var(--text);background:#fffdf8}
-.heard .heard-other:focus{outline:none;border-style:solid;border-color:var(--gold);box-shadow:0 0 0 4px rgba(199,155,69,.16)}
+.field.heard .heard-other{margin-top:8px;padding:11px 15px;border-style:dashed;font-size:14.5px}
+.field.heard .heard-other:focus{border-style:solid}
+.heard-msg{display:none;color:#c0392b;font-size:13px;font-weight:600;margin-top:6px}
+.heard.bad .heard-msg{display:block}
