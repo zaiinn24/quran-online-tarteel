@@ -40,7 +40,7 @@ def cell(pkr, cur):
     main = f'<span class="fee" data-pkr="{pkr}">{fmt_html(pkr, cur)}</span>'
     if cur == "PKR":
         return main
-    return main + f'<small class="fee-pkr">Rs {pkr:,}</small>'
+    return main
 
 
 def switcher(cur, lock=False):
@@ -148,12 +148,11 @@ def how_much_answer(cur, place=None):
 
 def course_answer(cid, cur="USD"):
     c = C[cid]
-    parts = []
-    for mins, pr in c["prices"].items():
-        parts.append(f"{mins} minute classes cost " + ", ".join(
-            f"{fmt(p, cur)} (Rs {p:,})" + f" for {d} days" for p, d in zip(pr, DAYS)) + " a week")
-    return (f"{c['name']} fees are monthly, per student: " + "; ".join(parts) +
-            ". The first 2 classes are free, and families with more than one student can ask us about a family discount.")
+    def line(cc):
+        return "; ".join(f"{mins} minute classes are " + ", ".join(f"{fmt(p, cc)} for {d} days" for p, d in zip(pr, DAYS)) + " a week"
+                         for mins, pr in c["prices"].items())
+    return (f"{c['name']} fees are monthly, per student: {line(cur)}. In Pakistan, {line('PKR')}. "
+            "The first 2 classes are free, and families with more than one student get a family discount.")
 
 
 def set_faq(s, qname, answer, add_if_missing=False):
@@ -231,7 +230,7 @@ def main():
     for page, (cur, place, word) in COUNTRY.items():
         p = os.path.join(ROOT, page, "index.html")
         s = open(p).read()
-        inner = switcher(cur, lock=True) + '<div class="fee-grid">' + "".join(course_table(C[i], cur, prefix=PREFIX) for i in OVERVIEW) + "</div>" + note(PREFIX, cur)
+        inner = '<div class="fee-grid">' + "".join(course_table(C[i], cur, prefix=PREFIX) for i in OVERVIEW) + "</div>" + note(PREFIX, cur)
         s = put(s, "country", section(inner, "Fees in " + word.title(),
                                       f"Online Quran Class Fees in {place}",
                                       f"Monthly fee per student in {word} for every course, 2, 4 or 5 days a week."), ENROL)
@@ -306,7 +305,7 @@ def fees_page():
         btn = "btn-gold" if feat else "btn-dark"
         cards += (f'<div class="price-card{feat}">{tag}<h3>{h}</h3><div class="from">from</div>'
                   f'<div class="days"><span class="fee" data-pkr="{low}">{fmt_html(low, "USD")}</span></div>'
-                  f'<div class="per">a month<span class="fee-pkr"> &middot; Rs {low:,}</span></div>'
+                  f'<div class="per">a month</div>'
                   f'<ul><li>{cnt}</li><li>Live 1-on-1 with a female teacher</li><li>30 or 45 minute classes</li><li>{why}</li></ul>'
                   f'<a href="https://wa.me/923350548488" data-wa="Assalamu alaikum, I would like to know more about the {d} days a week plan." data-wa-loc="fees-card" class="btn {btn}">Ask About This Plan</a></div>')
     plans = (f'<section class="sec bg-cream" id="plans"><div class="container"><div class="section-head"><span class="eyebrow">Plans</span>'
