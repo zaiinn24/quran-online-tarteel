@@ -93,13 +93,17 @@ def build_page(slug, P, prefix="../../"):
             f'<nav class="crumbs" aria-label="Breadcrumb"><a href="{prefix}">Home</a><span>/</span><a href="../">Duas &amp; Azkar</a></nav>'
             f'<span class="eyebrow">{P["eyebrow"]}</span><h1>{P["h1"]}</h1><p class="hero-lead">{H.escape(P["desc"])}</p></div>'
             f'<div class="hero-right"><div class="illus-wrap">{frame_ar(P["ar_title"])}</div></div></div></section>')
-    toc = "".join(f'<li><a href="#dua-{i+1}">{H.escape(it[0])}</a></li>' for i, it in enumerate(P["items"]))
+    lab = lambda w: re.sub(r"\s*\(.*?\)", "", w).strip()
+    n = len(P["items"])
+    toc = "".join(f'<li><a href="#dua-{i+1}" data-i="{i+1}"><b>{i+1}</b><span>{H.escape(lab(it[0]))}</span></a></li>' for i, it in enumerate(P["items"]))
     cards = "".join(card(i + 1, it) for i, it in enumerate(P["items"]))
     related = "".join(f'<a class="chip" href="../{o}/">{H.escape(re.sub(r"<[^>]+>", "", PAGES[o]["h1"]))}</a>' for o in ORDER if o != slug)
     body = (f'<section class="sec bg-white"><div class="container"><div class="article prose duas-article">'
             f'<p class="lead-p">{P["intro"]}</p>'
-            f'<nav class="dua-toc" aria-label="Duas on this page"><h2>On this page</h2><ol>{toc}</ol></nav>'
-            f'{cards}'
+            f'<div class="dua-layout"><aside class="dua-nav" aria-label="Duas on this page"><div class="dn-head"><span class="dn-n">{n}</span><span>duas on this page</span></div>'
+            f'<ol>{toc}</ol><button type="button" class="dn-all" aria-pressed="false">View all on one page</button></aside>'
+            f'<div class="dua-stage">{cards}<div class="dua-pager" hidden><button type="button" class="dp-prev">&larr; Previous</button>'
+            f'<span class="dp-pos"></span><button type="button" class="dp-next">Next &rarr;</button></div></div></div>'
             f'<div class="dua-learn"><div><h3>Learn these duas with a female teacher</h3><p>Correct Arabic pronunciation, meaning and a daily habit, in live one-to-one lessons for kids and women.</p></div>'
             f'<div class="acts"><a href="{prefix}online-duas-course/" class="btn btn-gold">Online Duas Course</a><a href="{prefix}free-trial/" class="btn btn-dark">Book 2 Free Classes</a></div></div>'
             f'<p class="dua-source">Sources: Arabic of the hadith duas from Hisn al-Muslim and the cited hadith collections (sunnah.com); Quran text from the King Fahd Complex Uthmani script. English and Roman Urdu meanings written by Quran Online Tarteel.</p>'
