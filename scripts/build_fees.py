@@ -92,15 +92,26 @@ def section(inner, eyebrow, h2, sub, bg="bg-cream-2", sid="fees"):
             f'<span class="eyebrow">{eyebrow}</span><h2>{h2}</h2><p>{sub}</p></div>{inner}</div></section>')
 
 
-def put(s, key, block, before):
-    """Replace marker block if present, else insert before `before` (first occurrence)."""
+def put(s, key, block, where):
+    """Remove any old fee block, then insert it: where="hero" -> right after the hero section,
+    where="section2" -> after the first section that follows the hero."""
     start, end = f"<!--FEES:{key}-->", "<!--/FEES-->"
-    full = start + block + end
-    pat = re.compile(re.escape(start) + r".*?" + re.escape(end), re.S)
-    if pat.search(s):
-        return pat.sub(lambda m: full, s, count=1)
-    i = s.index(before)
-    return s[:i] + full + s[i:]
+    s = re.sub(re.escape(start) + r".*?" + re.escape(end), "", s, flags=re.S)
+    h = s.index('<section class="page-hero')
+    i = s.index("</section>", h) + len("</section>")
+    if where == "section2":
+        i = s.index("</section>", s.index("<section", i)) + len("</section>")
+    return s[:i] + start + block + end + s[i:]
+
+
+def hero_price(s, low, cur):
+    """One line under the hero intro: From <price> a month - 2 free classes first."""
+    s = re.sub(r"<!--FEEHERO-->.*?<!--/FEEHERO-->", "", s, flags=re.S)
+    line = (f'<!--FEEHERO--><p class="hero-price"><span class="hp-from">From</span> <span class="fee" data-pkr="{low}">{fmt_html(low, cur)}</span>'
+            f'<span class="hp-per"> a month</span><span class="hp-dot">&middot;</span><span class="hp-trial">2 free classes first</span></p><!--/FEEHERO-->')
+    m = re.search(r'<p class="hero-lead">.*?</p>', s[s.index('<section class="page-hero'):], re.S)
+    i = s.index('<section class="page-hero') + m.end()
+    return s[:i] + line + s[i:]
 
 
 # ---------- per-page configuration ----------
@@ -214,7 +225,8 @@ def main():
         s = open(p).read()
         inner = switcher("USD") + '<div class="fee-grid">' + "".join(course_table(C[i], "USD", link=len(ids) > 1, prefix=PREFIX) for i in ids) + "</div>" + note(PREFIX, "USD")
         name = C[ids[0]]["name"] if len(ids) == 1 else "Noorani Qaida and Quran Reading"
-        s = put(s, "course", section(inner, "Monthly Fees", f"{name} Fees", "Simple monthly plans for 2, 4 or 5 days a week. Pick the class length that suits you."), ENROL)
+        s = put(s, "course", section(inner, "Monthly Fees", f"{name} Fees", "Simple monthly plans for 2, 4 or 5 days a week. Pick the class length that suits you."), "section2")
+        s = hero_price(s, min(min(C[i]["prices"][m][0] for m in C[i]["prices"]) for i in ids), "USD")
         for i in ids[:1] if len(ids) == 1 else ids:
             s = set_faq(s, f"How much do {C[i].get('faq_name', C[i]['name'])} classes cost?", course_answer(i), add_if_missing=True)
         s = set_offer(s, ids[-1] if page != "learn-quran-online-for-beginners" else "nazra")
@@ -224,7 +236,8 @@ def main():
         p = os.path.join(ROOT, page, "index.html")
         s = open(p).read()
         inner = switcher(cur) + overview_table(ids, cur, PREFIX) + note(PREFIX, cur)
-        s = put(s, "overview", section(inner, "Monthly Fees", "Fees for Every Course", "Monthly fee per student for 2, 4 or 5 days a week. 45 minute class fees are on the fees page."), ENROL)
+        s = put(s, "overview", section(inner, "Monthly Fees", "Fees for Every Course", "Monthly fee per student for 2, 4 or 5 days a week. 45 minute class fees are on the fees page."), "section2")
+        s = hero_price(s, min(C[i]["prices"][min(C[i]["prices"])][0] for i in ids), cur)
         write(p, s)
     # country pages
     for page, (cur, place, word) in COUNTRY.items():
@@ -233,7 +246,8 @@ def main():
         inner = '<div class="fee-grid">' + "".join(course_table(C[i], cur, prefix=PREFIX) for i in OVERVIEW) + "</div>" + note(PREFIX, cur)
         s = put(s, "country", section(inner, "Fees in " + word.title(),
                                       f"Online Quran Class Fees in {place}",
-                                      f"Monthly fee per student in {word} for every course, 2, 4 or 5 days a week."), ENROL)
+                                      f"Monthly fee per student in {word} for every course, 2, 4 or 5 days a week."), "hero")
+        s = hero_price(s, min(C[i]["prices"][min(C[i]["prices"])][0] for i in OVERVIEW), cur)
         for q in re.findall(r'"name": "(How much [^"]*)"', s)[:1]:
             s = set_faq(s, q, how_much_answer(cur, place))
         write(p, s)
