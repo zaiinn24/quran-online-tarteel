@@ -36,7 +36,7 @@ NEW = {
   ("How do I pay for online Quran classes from Australia?", PAY_ABROAD + " See " + FEES + " for the fees in Australian dollars."),
   ("What are the easiest class times to book in Australia?", "Afternoons and evenings in Australia fall during the day in Pakistan, so these are the easiest times to book, including after school. Early mornings in Australia are night time in Pakistan, so ask us first if you need one."),
   ("What happens to my class time when Australian clocks change?", "When daylight saving starts or ends in your state, the time difference with Pakistan changes by one hour. Message us on WhatsApp beforehand and we will confirm your class time with your teacher, or offer the nearest time she is free."),
-  ("Can my child learn in English?", "Yes. Our teachers explain in English or Urdu, so children raised in Australia understand every lesson. The Quran is always read in Arabic."),
+  ("Will my child be taught in English?", "Yes. Our teachers explain in English or Urdu, so children raised in Australia understand every lesson. The Quran is always read in Arabic."),
  ],
  "online-quran-classes-uae": [
   ("How do I pay for online Quran classes from the UAE?", PAY_ABROAD + " See " + FEES + " for the fees in dirhams."),
