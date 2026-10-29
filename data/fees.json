@@ -122,7 +122,8 @@
           7500,
           9500
         ]
-      }
+      },
+      "hidden": true
     },
     {
       "id": "juzamma",
@@ -140,7 +141,8 @@
           10000
         ]
       },
-      "faq_name": "Juz Amma memorization"
+      "faq_name": "Juz Amma memorization",
+      "hidden": true
     },
     {
       "id": "salah",
@@ -158,7 +160,8 @@
           9500
         ]
       },
-      "faq_name": "online salah"
+      "faq_name": "online salah",
+      "hidden": true
     },
     {
       "id": "duas",
@@ -176,7 +179,8 @@
           9500
         ]
       },
-      "faq_name": "online duas"
+      "faq_name": "online duas",
+      "hidden": true
     },
     {
       "id": "hadith40",
@@ -194,7 +198,8 @@
           9500
         ]
       },
-      "faq_name": "40 Hadith"
+      "faq_name": "40 Hadith",
+      "hidden": true
     },
     {
       "id": "newmuslim",

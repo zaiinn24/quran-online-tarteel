@@ -12,7 +12,9 @@ D = json.load(open(os.path.join(ROOT, "data", "fees.json")))
 RATES = {k: v for k, v in D["rates"].items() if k.isupper()}
 STEP = D["round_step"]
 DAYS = D["plans_days"]
-C = {c["id"]: c for c in D["courses"]}
+C_ALL = {c["id"]: c for c in D["courses"]}
+HIDDEN = {k for k, c in C_ALL.items() if c.get("hidden")}   # courses whose prices are not shown anywhere (owner's choice)
+C = {k: c for k, c in C_ALL.items() if k not in HIDDEN}
 SYM = {"PKR": "Rs ", "USD": "$", "GBP": "£", "CAD": "C$", "AUD": "A$", "AED": "AED "}
 CUR_ORDER = ["USD", "GBP", "CAD", "AUD", "AED", "PKR"]
 CUR_LABEL = {"USD": "US $", "GBP": "UK £", "CAD": "CA $", "AUD": "AU $", "AED": "AED", "PKR": "PKR"}
@@ -142,6 +144,22 @@ COUNTRY = {
 }
 OVERVIEW = ["qaida", "nazra", "tajweed", "hifz", "tafseer", "islamic", "juzamma", "salah", "duas", "hadith40", "newmuslim"]
 ENROL = '<section class="cta-sec dark pattern-dark" id="enrol">'
+HIDDEN_PAGES = {p: ids[0] for p, ids in COURSE_PAGES.items() if ids[0] in HIDDEN}
+COURSE_PAGES = {p: ids for p, ids in COURSE_PAGES.items() if ids[0] not in HIDDEN}
+AUDIENCE_PAGES = {p: ([i for i in ids if i not in HIDDEN], cur) for p, (ids, cur) in AUDIENCE_PAGES.items()}
+OVERVIEW = [i for i in OVERVIEW if i not in HIDDEN]
+
+
+def no_price_page(s, cid):
+    """Course page without a public price: no fee table, no 'from' price; the cost question points to WhatsApp."""
+    s = re.sub(r"<!--FEES:course-->.*?<!--/FEES-->", "", s, flags=re.S)
+    s = re.sub(r"<!--FEEHERO-->.*?<!--/FEEHERO-->", "", s, flags=re.S)
+    c = C_ALL[cid]
+    s = set_faq(s, f"How much do {c.get('faq_name', c['name'])} classes cost?",
+                "Fees depend on how many days a week you study and how long each class is. Message us on WhatsApp and we will share them with you. "
+                "The first 2 classes are free, and families with more than one student get a family discount.")
+    offers = [{"@type": "Offer", "category": "Free trial", "price": "0", "priceCurrency": "USD", "description": "2 free trial classes"}]
+    return re.sub(r'"offers": (\{[^{}]*\}|\[.*?\])\}</script>', lambda m: '"offers": ' + json.dumps(offers) + '}</script>', s, count=1)
 
 
 def p2(cid, mins, i, cur):  # formatted single price
@@ -251,6 +269,10 @@ def main():
         for q in re.findall(r'"name": "(How much [^"]*)"', s)[:1]:
             s = set_faq(s, q, how_much_answer(cur, place))
         write(p, s)
+    for page, cid in HIDDEN_PAGES.items():
+        p = os.path.join(ROOT, page, "index.html")
+        if os.path.exists(p):
+            write(p, no_price_page(open(p).read(), cid))
     fees_page()
     import glob
     for f in glob.glob(os.path.join(ROOT, "**", "index.html"), recursive=True):
