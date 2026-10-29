@@ -193,6 +193,30 @@
     if (q) q.addEventListener("input", apply);
   }
 
+  /* tasbih counter for step-by-step azkar (e.g. 33 + 33 + 33 + 1) */
+  document.querySelectorAll(".dua-has-steps").forEach(function (card) {
+    var steps = [].slice.call(card.querySelectorAll(".ds-step")), box = card.querySelector(".tasbih");
+    if (!steps.length || !box) return;
+    var tap = box.querySelector(".tb-tap"), num = box.querySelector(".tb-num"), of = box.querySelector(".tb-of"),
+        lbl = box.querySelector(".tb-lbl"), stepTxt = box.querySelector(".tb-step"), reset = box.querySelector(".tb-reset");
+    var si = 0, n = 0;
+    var render = function () {
+      steps.forEach(function (s, k) { s.classList.toggle("on", k === si); s.classList.toggle("done", k < si); });
+      if (si >= steps.length) { num.textContent = "\u2713"; of.textContent = ""; lbl.textContent = "Completed, masha'Allah"; stepTxt.textContent = "All done"; tap.disabled = true; return; }
+      var t = +steps[si].getAttribute("data-target");
+      num.textContent = n; of.textContent = "of " + t; lbl.textContent = "Tap to count"; tap.disabled = false;
+      stepTxt.textContent = "Step " + (si + 1) + " of " + steps.length;
+    };
+    tap.addEventListener("click", function () {
+      var t = +steps[si].getAttribute("data-target");
+      n++; if (navigator.vibrate) navigator.vibrate(12);
+      if (n >= t) { si++; n = 0; }
+      render();
+    });
+    reset.addEventListener("click", function () { si = 0; n = 0; render(); });
+    box.hidden = false; render();
+  });
+
   var y = document.getElementById("qotYear");
   if (y) y.textContent = new Date().getFullYear();
 })();

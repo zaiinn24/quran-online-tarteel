@@ -4,6 +4,8 @@ Quran text: King Fahd Complex Uthmani text via quran-json (dist/quran.json), pat
 import os, re, json, sys, html as H
 sys.path.insert(0, os.path.dirname(__file__))
 from duas_data import PAGES, ORDER
+from duas_more import apply as _more
+_more(PAGES, ORDER)
 from faqlib import details, ld
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -19,6 +21,16 @@ def verse(s, a, w0=0, w1=None):
     seg = " ".join(words[w0:(w1 + 1 if w1 is not None else None)])
     end = f' ({str(a).translate(AR_DIGITS)})' if (w1 is None) else ""
     return seg + end
+
+
+def steps_html(steps):
+    rows = "".join(
+        f'<li class="ds-step" data-target="{n}"><div class="ds-top"><span class="ds-n">{i + 1}</span><span class="ds-count">&times; {n}</span></div>'
+        f'<p class="dua-ar ds-ar" lang="ar" dir="rtl">{H.escape(ar)}</p><p class="ds-tr">{H.escape(tr)}</p>'
+        f'<p class="ds-mean">{H.escape(en)}<br><span>{H.escape(ur)}</span></p></li>'
+        for i, (ar, tr, en, ur, n) in enumerate(steps))
+    return (f'<ol class="dua-steps">{rows}</ol><div class="tasbih" hidden><button type="button" class="tb-tap"><span class="tb-num">0</span><span class="tb-of">of 33</span><span class="tb-lbl">Tap to count</span></button>'
+            f'<div class="tb-side"><span class="tb-step"></span><button type="button" class="tb-reset">Start again</button></div></div>')
 
 
 def arabic(x):
@@ -53,12 +65,17 @@ def frame_ar(text):
 def count_label(c):
     if not c:
         return ""
-    return f'<span class="dua-count">{"Once" if c == "1" else c + (" times" if c.isdigit() else "")}</span>'
+    return f'<span class="dua-count">{"Once" if c == "1" else (c + " in total" if "+" not in c and c == "100" else c + (" times" if c.isdigit() else ""))}</span>'
 
 
 def card(i, item):
     when, ar, tr, en, ur, cnt, ref = item
-    is_q = isinstance(ar, (tuple, list)) or ar == "QULS"
+    is_q = (isinstance(ar, (tuple, list)) and not (isinstance(ar, tuple) and ar[0] == "STEPS")) or ar == "QULS"
+    if isinstance(ar, tuple) and ar[0] == "STEPS":
+        return (f'<article class="dua dua-has-steps" id="dua-{i}"><div class="dua-head"><h2>{H.escape(when)}</h2>{count_label(cnt)}</div>'
+                f'<div class="ds-how"><p><span class="lbl">How to read it</span>{H.escape(en)}<br><span class="ds-ur">{H.escape(ur)}</span></p></div>'
+                f'{steps_html(ar[1])}'
+                f'<div class="dua-foot"><span class="dua-ref"><b>Reference:</b> {ref}</span><button type="button" class="dua-copy" data-copy="dua-{i}">Copy dua</button></div></article>')
     return (f'<article class="dua{" dua-q" if is_q else ""}" id="dua-{i}"><div class="dua-head"><h2>{H.escape(when)}</h2>{count_label(cnt)}</div>'
             f'<p class="dua-ar" lang="ar" dir="rtl">{arabic(ar)}</p>'
             f'<p class="dua-tr"><span class="lbl">Transliteration</span>{H.escape(tr)}</p>'
@@ -133,13 +150,13 @@ def build_hub():
     s = s.replace('"../../', '"../').replace("'../../", "'../")
     CAT = {"morning-evening-azkar": "daily", "azkar-after-namaz": "daily", "daily-duas-for-kids": "daily kids", "new-clothes-dua": "daily kids",
            "rabbana-duas": "quran", "ayatul-kursi-and-4-quls": "quran kids", "duas-for-anxiety": "heart", "maghfirat-duas": "heart",
-           "duas-for-illness": "heart", "nikah-dua": "life", "janaza-and-mayyat-duas": "life", "ramadan-duas": "life"}
+           "duas-for-illness": "heart", "nikah-dua": "life", "janaza-and-mayyat-duas": "life", "ramadan-duas": "life", "sleeping-duas": "daily kids", "travel-dua": "daily life", "wudu-and-masjid-duas": "daily kids"}
     tiles = []
     for o in ORDER:
         P = PAGES[o]
         SHORT = {"morning-evening-azkar": "الصَّبَاح<br>وَالمَسَاء", "azkar-after-namaz": "بَعْدَ<br>الصَّلَاة", "daily-duas-for-kids": "أَدْعِيَة", "duas-for-anxiety": "الهَمّ<br>وَالحُزْن",
                  "rabbana-duas": "رَبَّنَا", "ayatul-kursi-and-4-quls": "آيَةُ<br>الكُرْسِيّ", "duas-for-illness": "الشِّفَاء", "maghfirat-duas": "اسْتِغْفَار",
-                 "ramadan-duas": "رَمَضَان", "nikah-dua": "نِكَاح", "new-clothes-dua": "ثَوْب<br>جَدِيد", "janaza-and-mayyat-duas": "جَنَازَة"}
+                 "ramadan-duas": "رَمَضَان", "nikah-dua": "نِكَاح", "new-clothes-dua": "ثَوْب<br>جَدِيد", "janaza-and-mayyat-duas": "جَنَازَة", "sleeping-duas": "النَّوْم", "travel-dua": "السَّفَر", "wudu-and-masjid-duas": "الوُضُوء"}
         tiles.append(dict(href=f"{o}/", ar=SHORT.get(o, P["ar_title"]), title=re.sub(r"\s*\(.*?\)", "", re.sub(r"<[^>]+>", "", P["h1"])).strip(), desc=P["card"],
                           meta=f'{len(P["items"])} duas', cat=CAT.get(o, "daily"), kw=P["title"]))
     tiles += [
