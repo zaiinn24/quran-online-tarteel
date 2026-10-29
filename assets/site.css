@@ -789,3 +789,7 @@ a.fcard{display:block}
 @keyframes swipeNudge{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
 @media(prefers-reduced-motion:reduce){.swipe-hint span{animation:none}}
 @media(max-width:400px){.trust-item{flex-direction:column;text-align:center;gap:8px;padding:18px 8px}}
+/* alignment fixes */
+.lib-hero .hero-lead{margin-left:auto;margin-right:auto}
+.page-hero.center .hero-actions,.lib-hero .hero-actions{justify-content:center;margin-top:26px}
+@media(max-width:900px){.hero-points,.page-hero .hero-points{width:fit-content;max-width:100%;margin-left:auto;margin-right:auto}}
