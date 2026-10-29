@@ -170,5 +170,11 @@
     "30": "25–30",
     "45": "45–60",
     "_note": "Shown on the site as the class length for each price row."
+  },
+  "overrides": {
+    "_note": "Fixed overseas prices that replace the converted value. Keyed by the PKR price.",
+    "GBP": {
+      "9000": 30
+    }
   }
 }

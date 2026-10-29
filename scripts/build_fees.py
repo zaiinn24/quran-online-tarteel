@@ -11,6 +11,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = json.load(open(os.path.join(ROOT, "data", "fees.json")))
 RATES = {k: v for k, v in D["rates"].items() if k.isupper()}
 STEP = D["round_step"]
+OVR = {k: v for k, v in D.get("overrides", {}).items() if not k.startswith("_")}   # fixed overseas prices, keyed by PKR price
 DAYS = D["plans_days"]
 LEN = {k: v for k, v in D["class_length_labels"].items() if not k.startswith("_")}   # "30" -> "25–30"
 C_ALL = {c["id"]: c for c in D["courses"]}
@@ -24,6 +25,8 @@ CUR_LABEL = {"USD": "US $", "GBP": "UK £", "CAD": "CA $", "AUD": "AU $", "AED":
 def conv(pkr, cur):
     if cur == "PKR":
         return pkr
+    if str(pkr) in OVR.get(cur, {}):
+        return OVR[cur][str(pkr)]
     step = STEP[cur]
     return int(math.ceil(pkr / RATES[cur] / step) * step)
 
@@ -47,7 +50,7 @@ def cell(pkr, cur):
 
 
 def switcher(cur, lock=False):
-    rates = html.escape(json.dumps({"rates": RATES, "step": STEP}), quote=True)
+    rates = html.escape(json.dumps({"rates": RATES, "step": STEP, "ovr": OVR}), quote=True)
     btns = "".join(
         f'<button type="button" data-cur="{c}" aria-pressed="{"true" if c == cur else "false"}">{CUR_LABEL[c]}</button>'
         for c in CUR_ORDER)

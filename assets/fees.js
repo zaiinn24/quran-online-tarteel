@@ -6,6 +6,8 @@
   var SYM = { PKR: "Rs ", USD: "$", GBP: "£", CAD: "C$", AUD: "A$", AED: "AED " };
   function conv(pkr, cur) {
     if (cur === "PKR") return pkr;
+    var o = cfg.ovr && cfg.ovr[cur];
+    if (o && o[pkr] != null) return o[pkr];
     var st = cfg.step[cur];
     return Math.ceil(pkr / cfg.rates[cur] / st) * st;
   }
