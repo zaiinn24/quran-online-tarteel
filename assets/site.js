@@ -154,7 +154,11 @@
       links.forEach(function (a, k) { a.classList.toggle("on", k === cur); if (k === cur) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
       pos.textContent = (cur + 1) + " of " + cards.length;
       prev.disabled = cur === 0; next.disabled = cur === cards.length - 1;
-      var act = links[cur]; if (act && act.scrollIntoView && window.innerWidth <= 900) act.scrollIntoView({ block: "nearest", inline: "center" });
+      var act = links[cur];
+      if (act && window.innerWidth <= 900) { /* centre the active number in the strip without moving the page */
+        var strip = act.parentNode; while (strip && strip !== lay && strip.scrollWidth <= strip.clientWidth) strip = strip.parentNode;
+        if (strip && strip !== lay) strip.scrollLeft = act.offsetLeft - (strip.clientWidth - act.offsetWidth) / 2;
+      }
       if (scroll) { var top = lay.getBoundingClientRect().top + window.pageYOffset - (window.innerWidth <= 900 ? 150 : 100); window.scrollTo({ top: top, behavior: "smooth" }); }
       if (history.replaceState) history.replaceState(null, "", "#" + cards[cur].id);
     };
