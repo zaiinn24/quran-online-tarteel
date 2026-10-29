@@ -822,3 +822,5 @@ a.fcard{display:block}
 /* header fit with "Contact Us" */
 .qot-caret{flex-shrink:0}.qot-menu>li{flex-shrink:0}
 @media (min-width:1025px) and (max-width:1120px){.qot-menu>li>a{padding:10px 5px;font-size:13.5px!important;gap:4px}.qot-nav{gap:10px}.qot-btn{padding:11px 13px;font-size:13.5px!important}}
+/* form subline: two clean lines */
+.form-card .sub b{display:block;margin-top:2px}
