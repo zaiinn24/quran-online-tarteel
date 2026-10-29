@@ -148,7 +148,7 @@
     var pager = lay.querySelector(".dua-pager"), pos = lay.querySelector(".dp-pos");
     var prev = lay.querySelector(".dp-prev"), next = lay.querySelector(".dp-next"), all = lay.querySelector(".dn-all");
     var cur = 0;
-    var show = function (i, scroll) {
+    var show = function (i, scroll, user) {
       cur = Math.max(0, Math.min(cards.length - 1, i));
       cards.forEach(function (c, k) { c.classList.toggle("on", k === cur); });
       links.forEach(function (a, k) { a.classList.toggle("on", k === cur); if (k === cur) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
@@ -160,12 +160,12 @@
         if (strip && strip !== lay) strip.scrollLeft = act.offsetLeft - (strip.clientWidth - act.offsetWidth) / 2;
       }
       if (scroll) { var top = lay.getBoundingClientRect().top + window.pageYOffset - (window.innerWidth <= 900 ? 150 : 100); window.scrollTo({ top: top, behavior: "smooth" }); }
-      if (history.replaceState) history.replaceState(null, "", "#" + cards[cur].id);
+      if (user && history.replaceState) history.replaceState(null, "", "#" + cards[cur].id);
     };
     lay.classList.add("paged"); pager.hidden = false;
-    links.forEach(function (a, k) { a.addEventListener("click", function (e) { if (!lay.classList.contains("paged")) return; e.preventDefault(); show(k, true); }); });
-    prev.addEventListener("click", function () { show(cur - 1, true); });
-    next.addEventListener("click", function () { show(cur + 1, true); });
+    links.forEach(function (a, k) { a.addEventListener("click", function (e) { if (!lay.classList.contains("paged")) return; e.preventDefault(); show(k, true, true); }); });
+    prev.addEventListener("click", function () { show(cur - 1, true, true); });
+    next.addEventListener("click", function () { show(cur + 1, true, true); });
     all.addEventListener("click", function () {
       var paged = lay.classList.toggle("paged"); pager.hidden = !paged;
       all.textContent = paged ? "View all on one page" : "Show one at a time"; all.setAttribute("aria-pressed", String(!paged));
