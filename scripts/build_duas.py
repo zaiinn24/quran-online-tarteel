@@ -160,7 +160,7 @@ def build_hub():
         tiles.append(dict(href=f"{o}/", ar=SHORT.get(o, P["ar_title"]), title=re.sub(r"\s*\(.*?\)", "", re.sub(r"<[^>]+>", "", P["h1"])).strip(), desc=P["card"],
                           meta=f'{len(P["items"])} duas', cat=CAT.get(o, "daily"), kw=P["title"]))
     tiles += [
-        dict(href="../downloads/noorani-qaida-quran-online-tarteel.pdf", ar="القَاعِدَة", title="Noorani Qaida PDF", desc="Our free 16-page practice book: 13 lessons, letters to Al-Fatiha.", meta="Free PDF", cat="learn kids", kw="qaida download pdf", pdf=True),
+        dict(href="../downloads/noorani-qaida-quran-online-tarteel.pdf", ar="القَاعِدَة", title="Noorani Qaida PDF", desc="Free 30-page colour Qaida: 17 lessons, colour harakat and hijje, Urdu instructions.", meta="Free PDF", cat="learn kids", kw="qaida download pdf", pdf=True),
         dict(href="../resources/noorani-qaida-guide/", ar="أ ب ت", title="Noorani Qaida Lesson Guide", desc="What each Qaida lesson teaches and how long it takes.", meta="Guide", cat="learn", kw="qaida lessons"),
         dict(href="../resources/tajweed-rules/", ar="تَجْوِيد", title="Tajweed Rules for Beginners", desc="Noon sakinah, meem sakinah, qalqalah, ghunnah and madd.", meta="Guide", cat="learn", kw="tajweed rules"),
         dict(href="../resources/how-many-rakats/", ar="صَلَاة", title="How Many Rakats in Each Prayer", desc="A simple chart of the five daily prayers.", meta="Guide", cat="learn kids", kw="salah rakats namaz"),
