@@ -17,6 +17,24 @@ def section(prefix, bg, limit=6, form_link=True):
             f'<div class="rv-grid"></div>{btn}</div></section><!--/REVIEWS-->')
 
 
+def anchor(rel, s):
+    """Where reviews persuade most: homepage after 'why families choose us'; course, country and fee pages right after the fees;
+    about after the founder's story; free trial and female teachers right after the first section; otherwise before the FAQ."""
+    def after_section(start):
+        return s.index("</section>", start) + len("</section>")
+    if rel == "index.html":
+        return s.index('<section class="sec bg-cream" id="how"')
+    if "<!--/FEES-->" in s:
+        return s.index("<!--/FEES-->") + len("<!--/FEES-->")
+    if "<!--/STORY-->" in s:
+        return s.index("<!--/STORY-->") + len("<!--/STORY-->")
+    if rel.split(os.sep)[0] in ("free-trial", "female-quran-teachers"):
+        h = s.index('<section class="page-hero')
+        return after_section(s.index('<section class="sec', after_section(h)))
+    m = re.search(r'<section class="sec ([\w-]+)"[^>]*id="faq"', s) or re.search(r'<section class="cta-sec', s) or re.search(r'<footer', s)
+    return m.start() if m else None
+
+
 def add_script(s, prefix):
     s = re.sub(r'<script src="[^"]*assets/reviews\.js[^"]*" defer></script>', "", s)
     return s.replace("</body>", f'<script src="{prefix}assets/reviews.js" defer></script></body>', 1)
@@ -56,12 +74,14 @@ def main():
         prefix = "../" * depth
         s = open(f).read()
         s = re.sub(r"<!--REVIEWS-->.*?<!--/REVIEWS-->", "", s, flags=re.S)
-        m = re.search(r'<section class="sec ([\w-]+)"[^>]*id="faq"', s) or re.search(r'<section class="cta-sec', s) or re.search(r'<footer', s)
-        if not m:
+        pos = anchor(rel, s)
+        if pos is None:
             print("no anchor", rel); continue
-        prev = re.findall(r'<section class="(?:sec )?[^"]*?(bg-[\w-]+)', s[:m.start()])
-        bg = "bg-white" if (prev and prev[-1].startswith("bg-cream")) else "bg-cream"
-        s = s[:m.start()] + section(prefix, bg) + s[m.start():]
+        prev = re.findall(r'<section class="(?:sec )?[^"]*?(bg-[\w-]+|dark)', s[:pos])
+        nxt = re.findall(r'<section class="(?:sec )?[^"]*?(bg-[\w-]+|dark)', s[pos:])
+        used = {(prev[-1] if prev else ""), (nxt[0] if nxt else "")}
+        bg = next(b for b in ("bg-white", "bg-cream", "bg-cream-2") if b not in used)
+        s = s[:pos] + section(prefix, bg) + s[pos:]
         s = add_script(s, prefix)
         open(f, "w").write(s)
         done.append(rel)

@@ -818,3 +818,4 @@ a.fcard{display:block}
 .chip-gold{background:linear-gradient(135deg,#e2c47e,#b8913f)!important;color:#14110c!important;border-color:transparent!important;font-weight:800}
 @media(max-width:640px){#resources .lib-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin:0 -20px;padding:4px 20px 14px;scrollbar-width:none}
 #resources .lib-grid::-webkit-scrollbar{display:none}#resources .lib-grid>*{flex:0 0 84%;scroll-snap-align:center}.country-sec{padding:48px 0}}
+@media(max-width:640px){.rv-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin:0 -20px;padding:4px 20px 14px;scrollbar-width:none}.rv-grid::-webkit-scrollbar{display:none}.rv-grid>*{flex:0 0 86%;scroll-snap-align:center}}
