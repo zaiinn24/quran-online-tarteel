@@ -48,7 +48,7 @@ UPEM = _f["head"].unitsPerEm
 REV = {}
 for cp, gn in _f.getBestCmap().items():
     REV.setdefault(gn, chr(cp))
-ASC, DESC = 1200, -700   # tight box for drill text (font units)
+BOX_TOP, BOX_BOT, PAD = 820, -380, 40   # minimum box (font units); grows to fit marks and tails
 _paths = {}
 
 
@@ -68,7 +68,15 @@ def ar(text, size=40, base_colors=None, title=None):
     x = 0
     parts = []
     used = {}
+    top, bot, left, right = BOX_TOP, BOX_BOT, 0, 0
     for info, pos in zip(buf.glyph_infos, buf.glyph_positions):
+        ext = FONT.get_glyph_extents(info.codepoint)
+        if ext and ext.width:
+            gx, gy = x + pos.x_offset, pos.y_offset
+            top = max(top, gy + ext.y_bearing + PAD)
+            bot = min(bot, gy + ext.y_bearing + ext.height - PAD)
+            left = min(left, gx + ext.x_bearing - PAD)
+            right = max(right, gx + ext.x_bearing + ext.width + PAD)
         gn = NAMES[info.codepoint]
         cl = info.cluster
         is_mark = GDEF.get(gn) == 3
@@ -87,11 +95,12 @@ def ar(text, size=40, base_colors=None, title=None):
         if d:
             parts.append(f'<path transform="translate({x + pos.x_offset},{pos.y_offset})" fill="{col}" d="{d}"/>')
         x += pos.x_advance
-    w = max(x, 1)
-    hpx = size * (ASC - DESC) / UPEM
+    right = max(right, x)
+    w, hh = right - left, top - bot
+    hpx = size * hh / UPEM
     wpx = size * w / UPEM
     t = f'<title>{H.escape(title or text)}</title>'
-    return (f'<svg class="a" role="img" aria-label="{H.escape(title or text)}" width="{wpx:.1f}" height="{hpx:.1f}" viewBox="0 {-ASC} {w} {ASC - DESC}">{t}'
+    return (f'<svg class="a" role="img" aria-label="{H.escape(title or text)}" width="{wpx:.1f}" height="{hpx:.1f}" viewBox="{left} {-top} {w} {hh}">{t}'
             f'<g transform="scale(1,-1)">{"".join(parts)}</g></svg>')
 
 
@@ -226,7 +235,10 @@ def grid(items, cols, cls="", rows=None):
 
 
 def chunks(lst, n):
-    return [lst[i:i + n] for i in range(0, len(lst), n)]
+    """split into pages of at most n items, balanced so the last page is not nearly empty"""
+    pages = max(1, -(-len(lst) // n))
+    per = -(-len(lst) // pages)
+    return [lst[i:i + per] for i in range(0, len(lst), per)]
 
 
 def part_label(i, total):
@@ -234,9 +246,14 @@ def part_label(i, total):
 
 
 def word_pages(lesson, ur_title, en_title, words, ur_note, en_note, per=12, size=56):
+    import re as _re
+    longest = max(len(_re.sub("<[^>]+>", "", hijje(w))) for w in words)
+    cols = 3
+    if longest > 95:
+        per, size, cols = 8, 56, 2
     cs = chunks(words, per)
     for i, ch in enumerate(cs):
-        page(lesson, ur_title, en_title, grid([(ar(w, size), hijje(w) + f'<small>{ref(*QM.REF[w])}</small>') for w in ch], 3, "hj"),
+        page(lesson, ur_title, en_title, grid([(ar(w, size), hijje(w)) for w in ch], cols, "hj"),
              ur_note, en_note, part=part_label(i, len(cs)))
 
 
@@ -255,7 +272,7 @@ def phrase(a, b, s, v, hl_a=None, hl_b=0, ca=ORANGE, cb=TEAL, size=44, whole_b=F
         cols.update({k: cb for k in range(len(a) + 1, len(text))})
     else:
         cols[len(a) + 1 + hl_b] = cb
-    return (ar(text, size, cols), f'<small>{ref(s, v)}</small>')
+    return (ar(text, size, cols), "")
 
 
 def last_base_index(w):
@@ -317,7 +334,7 @@ for i, ch in enumerate(chunks(forms, 14)):
 
 def formula(a, b):
     top = f'{ar(b, 24, {0: BLUE})}<span class="plus">+</span>{ar(a, 24, {0: RED})}'
-    return f'<span class="fx">{top}</span>{ar(a + b, 44, {0: RED, 1: BLUE})}'
+    return f'{ar(a + b, 46, {0: RED, 1: BLUE})}<span class="fx">{top}</span>'
 
 
 seq = [l for l in ALL if l != "ء"]
@@ -350,7 +367,7 @@ MUQ_UR = {2: "الف لام میم", 7: "الف لام میم صاد", 10: "ال
           26: "طا سین میم", 27: "طا سین", 36: "یا سین", 38: "صاد", 40: "حا میم", 42: "عین سین قاف", 50: "قاف", 68: "نون"}
 first = lambda s, a: Q[s - 1]["verses"][a - 1]["text"].split(" ")[0].rstrip("ۚۖۗۛ")
 page(n, "حروفِ مقطعات", "Disjoined Letters",
-     grid([(ar(first(s, a), 50), f'{MUQ_UR[s]}<small>{ref(s, a)}</small>') for s, a in muq], 4, "words"),
+     grid([(ar(first(s, a), 50), MUQ_UR[s]) for s, a in muq], 4, "words"),
      "یہ حروف قرآن مجید کی بعض سورتوں کے شروع میں آتے ہیں۔ انہیں ملا کر نہیں بلکہ الگ الگ ان کے ناموں سے پڑھا جاتا ہے، جیسے: الٓمٓ = الف لام میم۔ گلابی نشان (مد) پر آواز لمبی کریں۔",
      "Read these letters one by one by their names, e.g. Alif Laam Meem. Stretch the sound where you see the pink madd sign.")
 
@@ -460,19 +477,19 @@ page(n, "مد", "The Madd Sign", grid([(ar(x, 46), "") for x in mdd], 4, "words"
      "حرفِ مدّہ پر مد کی علامت (گلابی ~) ہو تو آواز کو ایک الف سے زیادہ، تقریباً چار سے پانچ حرکت تک کھینچیں۔ صحیح مقدار استاد سے سن کر سیکھیں۔",
      "When the pink madd sign is on a long vowel, stretch it longer, about four to five counts. Learn the length from your teacher.")
 page(n, "مد کی مشق: قرآنی الفاظ", "Practice: Madd (Quran words)",
-     grid([(ar(w, 52), f'<small>{ref(*QM.REF[w])}</small>') for w in QM.madd_sign(12)], 3, "ph"),
+     grid([(ar(w, 52), "") for w in QM.madd_sign(12)], 3, "ph"),
      "ان الفاظ میں مد کی علامت ہے۔ مد والی جگہ پر آواز کو چار سے پانچ حرکت تک کھینچیں، جیسے: جَآءَ، شَآءَ۔",
      "These words carry the madd sign. Stretch those vowels four to five counts, as in jaaa'a.", part=" (مشق)")
 
 # ===== 14. ghunnah + qalqalah =====
 n = lesson()
 page(n, "غنہ: نون مشدد اور میم مشدد", "Ghunnah (Nasal Sound)",
-     grid([(ar(w, 52), f'<small>{ref(*QM.REF[w])}</small>') for w in QM.ghunna(12)], 3, "ph"),
+     grid([(ar(w, 52), "") for w in QM.ghunna(12)], 3, "ph"),
      "نون مشدد (نّ) اور میم مشدد (مّ) پر غنہ کریں، یعنی آواز کو ناک میں لے جا کر تقریباً دو حرکت تک روکیں، جیسے: اِنَّ، ثُمَّ۔",
      "On a doubled noon or meem, hold a nasal sound (ghunnah) for about two counts: inna, thumma.")
 n = lesson()
 page(n, "قلقلہ: ق ط ب ج د", "Qalqalah (Echo Letters)",
-     grid([(ar(w, 52, {i: TEAL for i, c in enumerate(w) if c in "قطبجد" and w[i + 1:i + 2] == SUK}), f'<small>{ref(*QM.REF[w])}</small>') for w in QM.qalqala(12)], 3, "ph"),
+     grid([(ar(w, 52, {i: TEAL for i, c in enumerate(w) if c in "قطبجد" and w[i + 1:i + 2] == SUK}), "") for w in QM.qalqala(12)], 3, "ph"),
      "حروفِ قلقلہ پانچ ہیں: ق ط ب ج د (قُطْبُ جَدٍّ)۔ جب یہ ساکن ہوں تو ان کی آواز میں ہلکی سی گونج (جھٹکا) دیں، جیسے: قَدْ، قَبْلُ۔",
      "The five qalqalah letters are ق ط ب ج د. When they have sukoon, give a light bounce to the sound: qad, qabl.")
 
@@ -513,8 +530,8 @@ hv, lt = QM.ra(6)
 body = (f'<div class="rule"><h4><b>لفظ اللہ</b> پہلے حرف پر زبر یا پیش ہو تو اللہ کا لام پُر (موٹا) پڑھیں، زیر ہو تو باریک۔</h4></div>'
         + grid([phrase(a, b, s, v, None, 2, cb=RED, whole_b=True) for a, b, s, v in AL["heavy"][:3]] + [phrase(a, b, s, v, None, 2, cb=BLUE, whole_b=True) for a, b, s, v in AL["light"][:3]], 3, "ph")
         + f'<div class="rule"><h4><b>حرف را</b> را پر زبر یا پیش ہو تو پُر (موٹا) پڑھیں، زیر ہو تو باریک۔</h4></div>'
-        + grid([(ar(w, 46, {i: RED for i, c in enumerate(w) if c == "ر"}), f'<small>پُر · {ref(*QM.REF[w])}</small>') for w in hv[:3]]
-               + [(ar(w, 46, {i: BLUE for i, c in enumerate(w) if c == "ر"}), f'<small>باریک · {ref(*QM.REF[w])}</small>') for w in lt[:3]], 3, "ph"))
+        + grid([(ar(w, 46, {i: RED for i, c in enumerate(w) if c == "ر"}), "پُر") for w in hv[:3]]
+               + [(ar(w, 46, {i: BLUE for i, c in enumerate(w) if c == "ر"}), "باریک") for w in lt[:3]], 3, "ph"))
 page(n, "پُر اور باریک: لفظ اللہ اور را", "Heavy and Light: Allah and Ra", body,
      "سرخ = پُر (موٹی آواز)، نیلا = باریک (پتلی آواز)۔ حروفِ مستعلیہ (خ ص ض غ ط ق ظ) ہمیشہ پُر پڑھے جاتے ہیں۔",
      "Red = heavy (full), blue = light (thin). The letters خ ص ض غ ط ق ظ are always heavy.", legend=False)
@@ -524,7 +541,7 @@ n = lesson()
 body = (f'<div class="rule"><h4><b>ہمزۃ الوصل (ٱ)</b> ملا کر پڑھتے وقت یہ الف نہیں پڑھا جاتا، پچھلا حرف سیدھا اگلے حرف سے مل جاتا ہے: بِسْمِ اللّٰہ = بِسْمِلّٰہ۔</h4></div>'
         + grid([phrase(a, b, s, v, None, 0, cb=GREY) for a, b, s, v in QM.wasl(6)], 3, "ph")
         + f'<div class="rule"><h4><b>گول نشان (۟)</b> جس حرف پر یہ نشان ہو وہ لکھا تو جاتا ہے مگر پڑھا نہیں جاتا، جیسے: قَالُوا۟ = قَالُوْ۔</h4></div>'
-        + grid([(ar(w, 46), f'<small>{ref(*QM.REF[w])}</small>') for w in QM.silent(6)], 3, "ph"))
+        + grid([(ar(w, 46), "") for w in QM.silent(6)], 3, "ph"))
 page(n, "ہمزۃ الوصل اور خاموش حروف", "Joining Alif and Silent Letters", body,
      "سرمئی حروف لکھے ہوئے ہیں مگر ملا کر پڑھنے میں آواز نہیں دیتے۔ استاد سے سن کر ملا کر پڑھنے کی مشق کریں۔",
      "Grey letters are written but not sounded when you read on. Practise joining the words with your teacher.", legend=False)
@@ -539,7 +556,7 @@ rows = []
 for sign, nm, expl in SIGNS:
     ex = WX.get(sign)
     rows.append((ar("\u0640\u0640" + sign + "\u0640\u0640", 34, {0: "#cccccc", 1: "#cccccc", 3: "#cccccc", 4: "#cccccc"}), f'<b>{nm}</b> {expl}'))
-    rows.append((ar(ex[0], 30) if ex else "", f'<small>{ref(ex[1], ex[2])}</small>' if ex else ""))
+    rows.append((ar(ex[0], 30) if ex else "", ""))
 rows += [(ar("\u06dd", 34), '<b>آیت</b> گول دائرہ آیت کا اختتام ہے۔ یہاں رکنا سنت ہے، سانس لے کر اگلی آیت شروع کریں۔'), ("", "")]
 page(n, "وقف کی علامات", "Stopping Signs (Madinah Mushaf)", grid(rows, 2, "waqf"),
      "تلاوت میں سانس صرف وقف کی جگہ پر لیں۔ اوپر کی علامات مصحفِ مدینہ کی ہیں، ہر علامت کے ساتھ قرآن سے ایک مثال دی گئی ہے۔",
@@ -574,8 +591,8 @@ n = lesson()
 page(n, "قرآنی مشق: سورۃ الفاتحہ", "Quran Practice: Al-Fatiha", surah(1, 44),
      "اب قرآن مجید کی پہلی سورت پڑھیں۔ آہستہ، ٹھہر ٹھہر کر اور صحیح مخارج کے ساتھ۔ (رسم الخط: مصحفِ مدینہ)",
      "Now read the opening surah of the Quran, slowly and carefully. (Madinah Mushaf script.)", legend=False)
-for i, grp in enumerate([(103, 104, 105), (106, 107, 108), (109, 110, 111), (112, 113, 114)]):
-    page(n, "قرآنی مشق: آخری سورتیں", "Quran Practice: The Last Surahs", "".join(surah(x, 27) for x in grp),
+for i, grp in enumerate([(103, 104), (105, 106, 107), (108, 109, 110), (111, 112), (113, 114)]):
+    page(n, "قرآنی مشق: آخری سورتیں", "Quran Practice: The Last Surahs", "".join(surah(x, 28 if len(grp) == 2 else 26) for x in grp),
          "یہ سورتیں نماز میں کثرت سے پڑھی جاتی ہیں۔ استاد کے ساتھ پڑھ کر روزانہ دہرائیں اور یاد کریں۔",
          "These surahs are read often in salah. Read them with your teacher and revise them every day.", legend=False,
          part=f" ({str(i + 1).translate(UD)})")
@@ -612,7 +629,7 @@ h2{{font-family:Nastaliq,serif;font-weight:700;font-size:26px;line-height:2.35;m
 .legend span{{font-family:Nastaliq,serif;font-size:11.5px;line-height:1.9;color:var(--c);border:1.2px solid var(--c);border-radius:99px;padding:0 9px;display:flex;align-items:center;gap:5px;background:#fff}}
 .legend i{{width:8px;height:8px;border-radius:50%;background:var(--c);display:inline-block}}
 .body{{flex:1;display:flex;flex-direction:column;min-height:0}}
-.grid{{display:grid;grid-auto-rows:1fr;min-height:0;direction:rtl;border:2px solid {G1};border-radius:8px;overflow:hidden;background:{G1};gap:1.2px}}
+.grid{{display:grid;grid-auto-rows:1fr;min-height:0;direction:rtl;border:2px solid {G1};border-radius:8px;overflow:hidden;background:{G1};gap:1.5px}}
 .cell{{background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:0;padding:1mm 1mm;gap:1mm}}
 .cell:nth-child(even){{background:#fbfaf3}}
 .grid.tight .cell:nth-child(6n+1),.grid.tight .cell:nth-child(6n+2),.grid.tight .cell:nth-child(6n+3){{background:{G2}}}
@@ -623,7 +640,7 @@ svg.a{{display:block;overflow:visible}}
 .big .nm{{font-size:15px}}
 .fx{{display:flex;align-items:center;gap:3px;direction:ltr;opacity:.95}}.plus{{font-weight:800;color:#666;font-size:14px}}
 .hj .cell{{justify-content:space-between;padding:1.5mm 2mm 1mm}}
-.hj .nm{{font-size:12.5px;line-height:2.3;color:#222}}
+.hj .nm{{font-size:12.5px;line-height:2.15;color:#222}}
 .sy{{font-family:Amiri,serif;font-size:17px;font-weight:700}}
 .gap{{height:3mm;flex:none}}
 .note{{margin-top:3mm;border:1.5px solid {GOLD};border-radius:8px;padding:1.2mm 4mm 1.5mm;background:#fff8e1}}
@@ -695,6 +712,8 @@ open(OUT_HTML, "w").write(doc)
 os.makedirs(os.path.dirname(OUT_PDF), exist_ok=True)
 js = f"""const {{chromium}}=require('playwright');(async()=>{{const b=await chromium.launch();const p=await b.newPage();
 await p.goto('file://{OUT_HTML}',{{waitUntil:'networkidle'}});await p.evaluate(()=>document.fonts.ready);
+const ov=await p.evaluate(()=>{{const pgs=[...document.querySelectorAll('.pg')];return [...document.querySelectorAll('.cell,.note,.body,.surah')].filter(e=>e.scrollHeight>e.clientHeight+2).map(e=>pgs.indexOf(e.closest('.pg'))+1)}});
+console.log('OVERFLOW pages', JSON.stringify([...new Set(ov)]));
 await p.pdf({{path:'{OUT_PDF}',format:'A4',printBackground:true,preferCSSPageSize:true}});await b.close();}})();"""
 subprocess.run(["node", "-e", js], check=True)
 print("PDF:", OUT_PDF, os.path.getsize(OUT_PDF) // 1024, "KB,", len(PAGES) + 3, "pages,", len(LESSONS), "lessons")
