@@ -30,19 +30,23 @@ async function sha(text) {
 }
 
 export async function onRequestGet({ env, request }) {
-  if (!env.DB) return json({ reviews: [], count: 0, avg: 0 });
+  const sitekey = env.TURNSTILE_SITEKEY || "";
+  if (!env.DB) return json({ reviews: [], count: 0, avg: 0, sitekey: "" });
   await ensure(env.DB);
   const url = new URL(request.url);
   const limit = Math.min(Math.max(parseInt(url.searchParams.get("limit") || "6", 10) || 6, 1), 50);
   const rows = await env.DB.prepare(
     "SELECT name,country,course,who,stars,body,created FROM reviews WHERE status='live' ORDER BY created DESC LIMIT ?").bind(limit).all();
   const agg = await env.DB.prepare("SELECT COUNT(*) AS c, AVG(stars) AS a FROM reviews WHERE status='live'").first();
-  return json({ reviews: rows.results || [], count: agg?.c || 0, avg: agg?.a ? Math.round(agg.a * 10) / 10 : 0 },
+  return json({ reviews: rows.results || [], count: agg?.c || 0, avg: agg?.a ? Math.round(agg.a * 10) / 10 : 0, sitekey: env.TURNSTILE_SECRET ? sitekey : "" },
     200, { "cache-control": "public, max-age=60" });
 }
 
 export async function onRequestPost({ env, request }) {
-  if (!env.DB) return json({ ok: false, error: "Reviews are not set up yet." }, 503);
+  // no spam check configured = no reviews accepted (never open the form to bots)
+  if (!env.DB || !env.TURNSTILE_SECRET) return json({ ok: false, error: "Reviews are opening very soon. Please try again later." }, 503);
+  const ct = request.headers.get("content-type") || "";
+  if (!ct.includes("application/json") || Number(request.headers.get("content-length") || 0) > 8000) return json({ ok: false, error: "Bad request." }, 400);
   let d;
   try { d = await request.json(); } catch { return json({ ok: false, error: "Bad request." }, 400); }
   if (d.website) return json({ ok: true }); // honeypot: bots fill hidden field, pretend success
@@ -55,7 +59,7 @@ export async function onRequestPost({ env, request }) {
     return json({ ok: false, error: "Please add your name, a star rating and at least a few words." }, 400);
 
   const ip = request.headers.get("CF-Connecting-IP") || "";
-  if (env.TURNSTILE_SECRET) {
+  {
     const form = new FormData();
     form.append("secret", env.TURNSTILE_SECRET);
     form.append("response", String(d.turnstile || ""));

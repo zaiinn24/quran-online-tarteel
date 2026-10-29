@@ -2,7 +2,7 @@
 """Add ?v=<content hash> to site.css / site.js / fees.js links on every page so browsers never use a stale copy."""
 import hashlib, glob, os, re
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-h = {n: hashlib.md5(open(os.path.join(ROOT, "assets", n), "rb").read()).hexdigest()[:8] for n in ("site.css", "site.js", "fees.js")}
+h = {n: hashlib.md5(open(os.path.join(ROOT, "assets", n), "rb").read()).hexdigest()[:8] for n in ("site.css", "site.js", "fees.js", "reviews.js")}
 for f in glob.glob(os.path.join(ROOT, "**", "*.html"), recursive=True):
     s = o = open(f).read()
     for n, v in h.items():
