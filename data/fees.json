@@ -217,7 +217,8 @@
           9500
         ]
       },
-      "faq_name": "new Muslim"
+      "faq_name": "new Muslim",
+      "hidden": true
     }
   ]
 }
