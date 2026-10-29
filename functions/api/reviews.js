@@ -30,7 +30,7 @@ async function sha(text) {
 }
 
 export async function onRequestGet({ env, request }) {
-  const sitekey = env.TURNSTILE_SITEKEY || "";
+  const sitekey = env.TURNSTILE_SITEKEY || "0x4AAAAAAFqWWrp-GAWAcPaL"; // public Turnstile site key (not secret)
   if (!env.DB) return json({ reviews: [], count: 0, avg: 0, sitekey: "" });
   await ensure(env.DB);
   const url = new URL(request.url);
