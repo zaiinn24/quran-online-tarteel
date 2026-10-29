@@ -12,6 +12,7 @@ D = json.load(open(os.path.join(ROOT, "data", "fees.json")))
 RATES = {k: v for k, v in D["rates"].items() if k.isupper()}
 STEP = D["round_step"]
 DAYS = D["plans_days"]
+LEN = {k: v for k, v in D["class_length_labels"].items() if not k.startswith("_")}   # "30" -> "25–30"
 C_ALL = {c["id"]: c for c in D["courses"]}
 HIDDEN = {k for k, c in C_ALL.items() if c.get("hidden")}   # courses whose prices are not shown anywhere (owner's choice)
 C = {k: c for k, c in C_ALL.items() if k not in HIDDEN}
@@ -63,7 +64,7 @@ def head_row(first):
 
 def course_table(c, cur, title_tag="h3", link=True, prefix=""):
     rows = "".join(
-        f'<tr><th scope="row">{mins} min<span>per class</span></th>'
+        f'<tr><th scope="row">{LEN[mins]} min<span>per class</span></th>'
         + "".join(f'<td>{cell(p, cur)}</td>' for p in prices) + "</tr>"
         for mins, prices in c["prices"].items())
     name = c["name"]
@@ -79,7 +80,7 @@ def overview_table(ids, cur, prefix):
         c = C[cid]
         mins = "30" if "30" in c["prices"] else "45"
         nm = f'<a href="{prefix}{c["page"]}/">{c["name"]}</a>' if os.path.exists(os.path.join(ROOT, c["page"], "index.html")) else c["name"]
-        rows += (f'<tr><th scope="row">{nm}<span>{mins} min classes</span></th>'
+        rows += (f'<tr><th scope="row">{nm}<span>{LEN[mins]} min classes</span></th>'
                  + "".join(f'<td>{cell(p, cur)}</td>' for p in c["prices"][mins]) + "</tr>")
     return (f'<div class="fee-card fee-card-wide"><div class="fee-scroll"><table class="fee-table">'
             f'{head_row("Course")}<tbody>{rows}</tbody></table></div></div>')
@@ -169,7 +170,7 @@ def p2(cid, mins, i, cur):  # formatted single price
 def how_much_answer(cur, place=None):
     f = lambda cid, mins, i: fmt(C[cid]["prices"][mins][i], cur)
     where = f" in {place}" if place else ""
-    return (f"Monthly fees{where} start at {f('qaida','30',0)} for Noorani Qaida, 2 days a week with 30 minute classes. "
+    return (f"Monthly fees{where} start at {f('qaida','30',0)} for Noorani Qaida, 2 days a week with 25–30 minute classes. "
             f"Quran reading (Nazra) is {f('nazra','30',0)} for 2 days, {f('nazra','30',1)} for 4 days and {f('nazra','30',2)} for 5 days a week. "
             + ("" if cur == "PKR" else "It is the same fair fee we charge in Pakistan, simply converted to your currency. ") +
             f"Every new student starts with 2 free classes, so you pay nothing until you decide to continue. See the full fees table for every course.")
@@ -178,7 +179,7 @@ def how_much_answer(cur, place=None):
 def course_answer(cid, cur="USD"):
     c = C[cid]
     def line(cc):
-        return "; ".join(f"{mins} minute classes are " + ", ".join(f"{fmt(p, cc)} for {d} days" for p, d in zip(pr, DAYS)) + " a week"
+        return "; ".join(f"{LEN[mins]} minute classes are " + ", ".join(f"{fmt(p, cc)} for {d} days" for p, d in zip(pr, DAYS)) + " a week"
                          for mins, pr in c["prices"].items())
     return (f"{c['name']} fees are monthly, per student: {line(cur)}. In Pakistan, {line('PKR')}. "
             "The first 2 classes are free, and families with more than one student get a family discount.")
@@ -254,7 +255,7 @@ def main():
         p = os.path.join(ROOT, page, "index.html")
         s = open(p).read()
         inner = switcher(cur) + overview_table(ids, cur, PREFIX) + note(PREFIX, cur)
-        s = put(s, "overview", section(inner, "Monthly Fees", "Fees for Every Course", "Monthly fee per student for 2, 4 or 5 days a week. 45 minute class fees are on the fees page."), "section2")
+        s = put(s, "overview", section(inner, "Monthly Fees", "Fees for Every Course", "Monthly fee per student for 2, 4 or 5 days a week, with 25–30 minute classes."), "section2")
         s = hero_price(s, min(C[i]["prices"][min(C[i]["prices"])][0] for i in ids), cur)
         write(p, s)
     # country pages
@@ -342,7 +343,7 @@ def fees_page():
         cards += (f'<div class="price-card{feat}">{tag}<h3>{h}</h3><div class="from">from</div>'
                   f'<div class="days"><span class="fee" data-pkr="{low}">{fmt_html(low, "USD")}</span></div>'
                   f'<div class="per">a month</div>'
-                  f'<ul><li>{cnt}</li><li>Live 1-on-1 with a female teacher</li><li>30 or 45 minute classes</li><li>{why}</li></ul>'
+                  f'<ul><li>{cnt}</li><li>Live 1-on-1 with a female teacher</li><li>25–30 minute classes (Tafseer 45–60)</li><li>{why}</li></ul>'
                   f'<a href="https://wa.me/923350548488" data-wa="Assalamu alaikum, I would like to know more about the {d} days a week plan." data-wa-loc="fees-card" class="btn {btn}">Ask About This Plan</a></div>')
     plans = (f'<section class="sec bg-cream" id="plans"><div class="container"><div class="section-head"><span class="eyebrow">Plans</span>'
              f'<h2>Choose How Many Days a Week You Study</h2><p>One fair monthly fee per student, wherever you live. Every plan starts with 2 free classes.</p></div>'

@@ -11,7 +11,7 @@ SECTIONS = [
   ("Can you really learn Quran online?", "Yes. In a live one-to-one class your teacher hears every letter and corrects you on the spot, just as she would sitting beside you. Students read from a shared screen, repeat after the teacher and practise between lessons. Since 2010, we have taught more than 500 children around the world this way."),
   ("What courses do you offer?", "We teach " + L("noorani-qaida-online/", "Noorani Qaida") + ", " + L("learn-quran-online-for-beginners/", "Quran reading (Nazra)") + ", " + L("online-tajweed-classes/", "Tajweed") + ", " + L("online-hifz-program/", "Hifz") + ", " + L("quran-translation-tafseer-classes/", "Translation and Tafseer") + " and " + L("online-islamic-studies/", "Islamic Studies") + ", plus Juz Amma memorisation, Salah lessons, a daily Duas course, 40 Hadith for kids and classes for new Muslims. We do not teach Arabic language, Ijazah or Qirat courses."),
   ("Are classes one-to-one or in groups?", "Every class is one-to-one: one student, one teacher, full attention. There are no group classes."),
-  ("How long is each class?", "Classes are 30 or 45 minutes. Translation and Tafseer classes are 45 or 60 minutes. You choose 2, 4 or 5 days a week. Young children usually start with 30 minutes."),
+  ("How long is each class?", "Classes are 25 to 30 minutes. Translation and Tafseer classes are 45 to 60 minutes. You choose 2, 4 or 5 days a week. Young children do well with this length too."),
   ("Which language do teachers use?", "Our teachers explain in Urdu and English, whichever the student understands best. The Quran itself is always read in Arabic."),
   ("Which app are classes on?", "Whichever you prefer: WhatsApp video, Skype, Google Meet or Zoom. A laptop, tablet or phone with a camera, a steady internet connection and a quiet corner are all you need. A headset helps."),
   ("Do I need to know Arabic before starting?", "No. Beginners of any age start with Noorani Qaida, which teaches the Arabic letters and sounds step by step until you can read the Quran yourself."),
@@ -27,7 +27,7 @@ SECTIONS = [
  ]),
  ("Trial, Fees and Payment", [
   ("Is there a free trial?", "Yes. Every new student gets 2 free classes with a female teacher, with no card or payment details needed. " + L("free-trial/", "Book your 2 free classes") + "."),
-  ("How much are the fees?", "Fees are monthly, per student, and start at $15 (Rs 3,500) a month for 2 days a week. For example, Quran reading 5 days a week is $30 (Rs 8,000) for 30 minute classes. Every course and currency is on our " + L("fees/", "fees and plans page") + "."),
+  ("How much are the fees?", "Fees are monthly, per student, and start at $15 (Rs 3,500) a month for 2 days a week. For example, Quran reading 5 days a week is $30 (Rs 8,000) for 25–30 minute classes. Every course and currency is on our " + L("fees/", "fees and plans page") + "."),
   ("How do I pay in Pakistan?", "By JazzCash, Easypaisa or bank transfer. The fee is paid monthly, in advance."),
   ("How do I pay from abroad?", "Families in the USA, UK, Canada, Australia, the UAE and elsewhere pay by bank transfer or Western Union, or a relative in Pakistan pays for them by JazzCash, Easypaisa or bank transfer. We share the payment details on WhatsApp after your free classes. We do not take card or PayPal payments at the moment."),
   ("Is there a family discount?", "Yes. When more than one child, or a mother and child, learn with us, you get a special family discount. Just ask us on WhatsApp."),
