@@ -9,4 +9,14 @@ for f in glob.glob(os.path.join(ROOT, "**", "*.html"), recursive=True):
         s = re.sub(r'(assets/' + re.escape(n) + r')(\?v=[0-9a-f]+)?"', r'\1?v=' + v + '"', s)
     if s != o:
         open(f, "w").write(s)
+# PDFs: version the download links so browsers never keep an old copy
+for pdf in glob.glob(os.path.join(ROOT, "downloads", "*.pdf")):
+    v = hashlib.md5(open(pdf, "rb").read()).hexdigest()[:8]
+    name = os.path.basename(pdf)
+    for f in glob.glob(os.path.join(ROOT, "**", "*.html"), recursive=True):
+        t = o = open(f).read()
+        t = re.sub(r'(downloads/' + re.escape(name) + r')(\?v=[0-9a-f]+)?"', r'\1?v=' + v + '"', t)
+        if t != o:
+            open(f, "w").write(t)
+    h[name] = v
 print(h)

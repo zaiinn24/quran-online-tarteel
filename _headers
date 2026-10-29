@@ -12,3 +12,6 @@
 
 /scripts/*
   X-Robots-Tag: noindex
+
+/downloads/*
+  Cache-Control: public, max-age=300, must-revalidate
