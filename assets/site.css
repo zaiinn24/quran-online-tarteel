@@ -717,7 +717,7 @@ a.fcard{display:block}
 .tb-num{font-family:var(--serif);font-size:36px;font-weight:700;color:#e2c47e;line-height:1}
 .tb-of{font-size:12px;color:#cdb98d;margin-top:2px}.tb-lbl{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-top:4px}
 .tb-side{display:flex;flex-direction:column;gap:10px;color:#e9e0cd;font-weight:700}
-.tb-reset{align-self:flex-start;min-height:38px;padding:6px 16px;border-radius:999px;border:1.5px solid rgba(226,196,126,.6);background:transparent;color:#e2c47e;font:700 13px var(--sans);cursor:pointer}
+.tb-reset{align-self:flex-start;min-height:44px;padding:6px 16px;border-radius:999px;border:1.5px solid rgba(226,196,126,.6);background:transparent;color:#e2c47e;font:700 13px var(--sans);cursor:pointer}
 .ds-step{display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"n ar c" "n tr tr" "n mn mn";column-gap:14px;align-items:center;padding:10px 14px}
 .ds-top{display:contents}
 .ds-n{grid-area:n;align-self:start;margin-top:6px}.ds-count{grid-area:c}
@@ -775,3 +775,17 @@ a.fcard{display:block}
 .founder-note{flex-direction:column;text-align:center;padding:20px 18px;gap:14px}.fn-q{font-size:16.5px}}
 
 .form-human{margin:12px 0 0;text-align:center;font-family:var(--serif);font-style:italic;font-size:15px;line-height:1.5;color:var(--ink)}.form-human span{display:block;font-family:var(--sans);font-style:normal;font-size:12px;color:var(--muted);margin-top:2px}
+
+/* mobile carousels (less scrolling on phones) */
+.swipe-hint{display:none}
+@media(max-width:640px){
+.course-grid,#resources .fgrid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;margin:0 -20px;padding:6px 20px 16px;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.course-grid::-webkit-scrollbar,#resources .fgrid::-webkit-scrollbar{display:none}
+.course-grid>*,#resources .fgrid>*{flex:0 0 80%;scroll-snap-align:center;min-width:0}
+.swipe-hint{display:block;text-align:center;font-size:13px;font-weight:700;letter-spacing:.04em;color:var(--gold-deep);margin:4px 0 18px}
+.swipe-hint.swipe-top{margin:-6px 0 12px}
+.swipe-hint span{display:inline-block;animation:swipeNudge 1.6s ease-in-out infinite}
+}
+@keyframes swipeNudge{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+@media(prefers-reduced-motion:reduce){.swipe-hint span{animation:none}}
+@media(max-width:400px){.trust-item{flex-direction:column;text-align:center;gap:8px;padding:18px 8px}}
