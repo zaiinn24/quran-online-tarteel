@@ -90,7 +90,7 @@ def overview_table(ids, cur, prefix):
 
 
 def note(prefix, cur):
-    return '<p class="fee-note fee-disc"><span class="fd-ico" aria-hidden="true">&#10022;</span><b>Family discount:</b> more than one child, or a mother and child, learning with us? You get a special family discount. <a href="https://wa.me/923350548488" data-wa="Assalamu alaikum, more than one person in my family wants to learn. Please tell me about the family discount." data-wa-loc="fee-discount" class="in-link">Just ask us on WhatsApp</a>.</p>'
+    return '<p class="fee-note fee-disc"><span class="fd-ico" aria-hidden="true">&#10022;</span><b>Family discount:</b> more than one child, or a mother and child, learning with us? You get a special family discount. <a href="https://wa.me/923345259952" data-wa="Assalamu alaikum, more than one person in my family wants to learn. Please tell me about the family discount." data-wa-loc="fee-discount" class="in-link">Just ask us on WhatsApp</a>.</p>'
 
 
 def section(inner, eyebrow, h2, sub, bg="bg-cream-2", sid="fees"):
@@ -347,7 +347,7 @@ def fees_page():
                   f'<div class="days"><span class="fee" data-pkr="{low}">{fmt_html(low, "USD")}</span></div>'
                   f'<div class="per">a month</div>'
                   f'<ul><li>{cnt}</li><li>Live 1-on-1 with a female teacher</li><li>25–30 minute classes (Tafseer 45–60)</li><li>{why}</li></ul>'
-                  f'<a href="https://wa.me/923350548488" data-wa="Assalamu alaikum, I would like to know more about the {d} days a week plan." data-wa-loc="fees-card" class="btn {btn}">Ask About This Plan</a></div>')
+                  f'<a href="https://wa.me/923345259952" data-wa="Assalamu alaikum, I would like to know more about the {d} days a week plan." data-wa-loc="fees-card" class="btn {btn}">Ask About This Plan</a></div>')
     plans = (f'<section class="sec bg-cream" id="plans"><div class="container"><div class="section-head"><span class="eyebrow">Plans</span>'
              f'<h2>Choose How Many Days a Week You Study</h2><p>One fair monthly fee per student, wherever you live. Every plan starts with 2 free classes.</p></div>'
              + switcher("USD") + f'<div class="fgrid">{cards}</div></div></section>')

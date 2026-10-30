@@ -296,7 +296,7 @@ def build(slug, P):
             '<div class="divider on-cream2" aria-hidden="true"><span><i></i></span></div>'
             f'<section class="sec bg-cream-2"><div class="container"><div class="section-head"><span class="eyebrow">How to Start</span><h2>{P["steps_h2"]}</h2></div><ol class="steps">{st}</ol>'
             f'<div class="mini-cta"><div><h3>{P["mini"][0]}</h3><p>{P["mini"][1]}</p></div><div class="acts"><a href="../free-trial/" class="btn btn-gold">Book 2 Free Classes <svg width="16" height="16"><use href="#i-arrow"/></svg></a>'
-            f'<a href="https://wa.me/923350548488" data-wa="{P["wa"]}" data-wa-loc="mini-cta" class="btn btn-wa"><svg width="18" height="18"><use href="#i-wa"/></svg>WhatsApp</a></div></div></div></section>')
+            f'<a href="https://wa.me/923345259952" data-wa="{P["wa"]}" data-wa-loc="mini-cta" class="btn btn-wa"><svg width="18" height="18"><use href="#i-wa"/></svg>WhatsApp</a></div></div></div></section>')
     s = s[:a] + body + s[b:]
     # remove old fees block (rebuilt by build_fees.py)
     s = re.sub(r"<!--FEES:course-->.*?<!--/FEES-->", "", s, flags=re.S)

@@ -170,7 +170,7 @@ h2{font-family:Fraunces,serif;font-size:25px;margin:0;color:#14110c}.ur{font-siz
 cover = ('<section class="pg cover"><div class="frame"><div class="ar" lang="ar">القَاعِدَةُ النُّورَانِيَّة</div><h1>Noorani Qaida</h1>'
          '<p>Learn to read the Quran step by step, from the very first letter. A free practice book for children and adults.</p>'
          '<p style="color:#cdb98d">13 lessons · Arabic letters · harakat · tanween · madd · sukoon · shaddah · Surah Al-Fatiha</p>'
-         '<div class="brand">QURAN ONLINE TARTEEL · SINCE 2010</div><p style="font-size:12.5px">quranonlinetarteel.net · WhatsApp +92 335 0548488</p></div></section>')
+         '<div class="brand">QURAN ONLINE TARTEEL · SINCE 2010</div><p style="font-size:12.5px">quranonlinetarteel.net · WhatsApp +92 334 5259952</p></div></section>')
 howto = ('<section class="pg"><header><span class="ln">Before You Start</span><h2>How to Use This Qaida</h2><span class="ur">Walidain ke liye</span></header>'
          '<ol class="howto"><li><b>Little and often.</b> Ten to fifteen minutes every day works better than one long session a week.</li>'
          '<li><b>Read right to left.</b> Arabic starts on the right. Point to each box as you read.</li>'

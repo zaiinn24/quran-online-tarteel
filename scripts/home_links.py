@@ -93,7 +93,7 @@ def main():
              "> Online Quran academy (since 2010) teaching children under 18 and women in live one-to-one classes, taught only by female teachers. "
              "Families in the USA, UK, Canada, Australia, the UAE and Pakistan. Every new student starts with 2 free classes.", "",
              "Key facts: female teachers only, each with 10+ years of experience; 500+ children taught; 1-to-1 live classes; parents can sit in; "
-             "plans of 2, 4 or 5 days a week; 25–30 minute classes (Tafseer 45–60); fees from $20 a month; WhatsApp +92 335 0548488.", "",
+             "plans of 2, 4 or 5 days a week; 25–30 minute classes (Tafseer 45–60); fees from $20 a month; WhatsApp +92 334 5259952.", "",
              "## Courses"] + [f"- [{n}]({SITE}{u})" for n, u in COURSES] + ["", "## Fees and booking",
              f"- [Fees and plans]({SITE}fees/)", f"- [Book 2 free classes]({SITE}free-trial/)", f"- [FAQ and safeguarding]({SITE}faq/)",
              f"- [About us]({SITE}about/)", f"- [Female Quran teachers]({SITE}female-quran-teachers/)", "", "## Countries"] + \
