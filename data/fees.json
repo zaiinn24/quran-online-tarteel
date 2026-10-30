@@ -82,11 +82,17 @@
       "page": "online-hifz-program",
       "prices": {
         "30": [
-          8000,
-          14000,
+          12000,
+          18000,
           20000
         ]
-      }
+      },
+      "plans": [
+        "2",
+        "4",
+        "weekend"
+      ],
+      "round_to": 10
     },
     {
       "id": "tafseer",
@@ -94,11 +100,17 @@
       "page": "quran-translation-tafseer-classes",
       "prices": {
         "45": [
-          15000,
-          25000,
-          30000
+          12000,
+          18000,
+          20000
         ]
-      }
+      },
+      "plans": [
+        "2",
+        "4",
+        "weekend"
+      ],
+      "round_to": 10
     },
     {
       "id": "islamic",
