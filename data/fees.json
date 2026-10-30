@@ -28,11 +28,17 @@
       "page": "noorani-qaida-online",
       "prices": {
         "30": [
-          5000,
-          7500,
-          9000
+          10000,
+          15000,
+          15000
         ]
-      }
+      },
+      "plans": [
+        "2",
+        "4",
+        "weekend"
+      ],
+      "round_to": 10
     },
     {
       "id": "nazra",
@@ -40,11 +46,17 @@
       "page": "learn-quran-online-for-beginners",
       "prices": {
         "30": [
-          5000,
-          7500,
-          9000
+          10000,
+          15000,
+          15000
         ]
-      }
+      },
+      "plans": [
+        "2",
+        "4",
+        "weekend"
+      ],
+      "round_to": 10
     },
     {
       "id": "tajweed",
@@ -52,11 +64,17 @@
       "page": "online-tajweed-classes",
       "prices": {
         "30": [
-          5000,
-          7500,
-          9000
+          10000,
+          15000,
+          15000
         ]
-      }
+      },
+      "plans": [
+        "2",
+        "4",
+        "weekend"
+      ],
+      "round_to": 10
     },
     {
       "id": "hifz",
@@ -172,9 +190,26 @@
     "_note": "Shown on the site as the class length for each price row."
   },
   "overrides": {
-    "_note": "Fixed overseas prices that replace the converted value. Keyed by the PKR price.",
-    "GBP": {
-      "9000": 30
-    }
-  }
+    "_note": "Fixed overseas prices that replace the converted value. Keyed by the PKR price."
+  },
+  "plan_labels": {
+    "_note": "Column labels. Each course lists its own 'plans' (default plans_days).",
+    "2": [
+      "2 days",
+      "a week"
+    ],
+    "4": [
+      "4 days",
+      "a week"
+    ],
+    "5": [
+      "5 days",
+      "a week"
+    ],
+    "weekend": [
+      "Weekend",
+      "Sat & Sun"
+    ]
+  },
+  "_rounding_note": "Overseas price = PKR / rate, rounded UP to round_step (or the course's round_to, e.g. 10 -> $36.10 becomes $40)."
 }

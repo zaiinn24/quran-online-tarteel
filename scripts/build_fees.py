@@ -13,6 +13,7 @@ RATES = {k: v for k, v in D["rates"].items() if k.isupper()}
 STEP = D["round_step"]
 OVR = {k: v for k, v in D.get("overrides", {}).items() if not k.startswith("_")}   # fixed overseas prices, keyed by PKR price
 DAYS = D["plans_days"]
+PL = {k: v for k, v in D["plan_labels"].items() if not k.startswith("_")}   # plan key -> (label, sub)
 LEN = {k: v for k, v in D["class_length_labels"].items() if not k.startswith("_")}   # "30" -> "25–30"
 C_ALL = {c["id"]: c for c in D["courses"]}
 HIDDEN = {k for k, c in C_ALL.items() if c.get("hidden")}   # courses whose prices are not shown anywhere (owner's choice)
@@ -22,28 +23,37 @@ CUR_ORDER = ["USD", "GBP", "CAD", "AUD", "AED", "PKR"]
 CUR_LABEL = {"USD": "US $", "GBP": "UK £", "CAD": "CA $", "AUD": "AU $", "AED": "AED", "PKR": "PKR"}
 
 
-def conv(pkr, cur):
+def plans(c):
+    return [str(x) for x in c.get("plans", DAYS)]
+
+
+def plan_txt(k):  # words used in FAQ answers
+    return "weekend classes (Saturday and Sunday)" if k == "weekend" else f"{k} days a week"
+
+
+def conv(pkr, cur, rnd=None):
     if cur == "PKR":
         return pkr
     if str(pkr) in OVR.get(cur, {}):
         return OVR[cur][str(pkr)]
-    step = STEP[cur]
+    step = max(STEP[cur], rnd or 0)
     return int(math.ceil(pkr / RATES[cur] / step) * step)
 
 
-def fmt(pkr, cur):
-    v = conv(pkr, cur)
+def fmt(pkr, cur, rnd=None):
+    v = conv(pkr, cur, rnd)
     return SYM[cur] + f"{v:,}"
 
 
-def fmt_html(pkr, cur):
-    v = f"{conv(pkr, cur):,}"
+def fmt_html(pkr, cur, rnd=None):
+    v = f"{conv(pkr, cur, rnd):,}"
     sym = SYM[cur]
     return f'<span class="cs">{sym.strip()}</span> {v}' if sym.endswith(" ") else sym + v
 
 
-def cell(pkr, cur):
-    main = f'<span class="fee" data-pkr="{pkr}">{fmt_html(pkr, cur)}</span>'
+def cell(pkr, cur, rnd=None):
+    r = f' data-r="{rnd}"' if rnd else ""
+    main = f'<span class="fee" data-pkr="{pkr}"{r}>{fmt_html(pkr, cur, rnd)}</span>'
     if cur == "PKR":
         return main
     return main
@@ -60,33 +70,36 @@ def switcher(cur, lock=False):
             f'<div class="cur-btns" role="group" aria-labelledby="curLbl">{btns}</div></div>')
 
 
-def head_row(first):
-    th = "".join((f'<th scope="col" class="pop"><em>Popular</em>{d} days<span>a week</span></th>' if d == 4 else f'<th scope="col">{d} days<span>a week</span></th>') for d in DAYS)
+def head_row(first, keys=None):
+    keys = keys or [str(d) for d in DAYS]
+    th = "".join((f'<th scope="col" class="pop"><em>Popular</em>{PL[k][0]}<span>{PL[k][1]}</span></th>' if k == "4" else f'<th scope="col">{PL[k][0]}<span>{PL[k][1]}</span></th>') for k in keys)
     return f'<thead><tr><th scope="col">{first}</th>{th}</tr></thead>'
 
 
 def course_table(c, cur, title_tag="h3", link=True, prefix=""):
     rows = "".join(
         f'<tr><th scope="row">{LEN[mins]} min<span>per class</span></th>'
-        + "".join(f'<td>{cell(p, cur)}</td>' for p in prices) + "</tr>"
+        + "".join(f'<td>{cell(p, cur, c.get("round_to"))}</td>' for p in prices) + "</tr>"
         for mins, prices in c["prices"].items())
     name = c["name"]
     if link and c.get("page") and os.path.exists(os.path.join(ROOT, c["page"], "index.html")):
         name = f'<a href="{prefix}{c["page"]}/">{name}</a>'
     return (f'<div class="fee-card"><{title_tag}><span class="fc-dot" aria-hidden="true"></span>{name}</{title_tag}>'
-            f'<div class="fee-scroll"><table class="fee-table">{head_row("Class length")}<tbody>{rows}</tbody></table></div></div>')
+            f'<div class="fee-scroll"><table class="fee-table">{head_row("Class length", plans(c))}<tbody>{rows}</tbody></table></div></div>')
 
 
 def overview_table(ids, cur, prefix):
     rows = ""
+    order = ["2", "4", "5", "weekend"]
+    keys = [k for k in order if any(k in plans(C[i]) for i in ids)]
     for cid in ids:
         c = C[cid]
         mins = "30" if "30" in c["prices"] else "45"
         nm = f'<a href="{prefix}{c["page"]}/">{c["name"]}</a>' if os.path.exists(os.path.join(ROOT, c["page"], "index.html")) else c["name"]
         rows += (f'<tr><th scope="row">{nm}<span>{LEN[mins]} min classes</span></th>'
-                 + "".join(f'<td>{cell(p, cur)}</td>' for p in c["prices"][mins]) + "</tr>")
+                 + "".join(f'<td>{cell(dict(zip(plans(c), c["prices"][mins]))[k], cur, c.get("round_to")) if k in plans(c) else '<span class="fee-na">&ndash;</span>'}</td>' for k in keys) + "</tr>")
     return (f'<div class="fee-card fee-card-wide"><div class="fee-scroll"><table class="fee-table">'
-            f'{head_row("Course")}<tbody>{rows}</tbody></table></div></div>')
+            f'{head_row("Course", keys)}<tbody>{rows}</tbody></table></div></div>')
 
 
 def note(prefix, cur):
@@ -110,10 +123,16 @@ def put(s, key, block, where):
     return s[:i] + start + block + end + s[i:]
 
 
-def hero_price(s, low, cur):
+def low_of(ids):
+    """Cheapest monthly price among these courses -> (pkr, round_to)."""
+    return min(((p, C[i].get("round_to")) for i in ids for v in C[i]["prices"].values() for p in v),
+               key=lambda t: conv(t[0], "USD", t[1]))
+
+
+def hero_price(s, low, cur, rnd=None):
     """One line under the hero intro: From <price> a month - 2 free classes first."""
     s = re.sub(r"<!--FEEHERO-->.*?<!--/FEEHERO-->", "", s, flags=re.S)
-    line = (f'<!--FEEHERO--><p class="hero-price"><span class="hp-from">From</span> <span class="fee" data-pkr="{low}">{fmt_html(low, cur)}</span>'
+    line = (f'<!--FEEHERO--><p class="hero-price"><span class="hp-from">From</span> <span class="fee" data-pkr="{low}"{f' data-r="{rnd}"' if rnd else ""}>{fmt_html(low, cur, rnd)}</span>'
             f'<span class="hp-per"> a month</span><span class="hp-dot">&middot;</span><span class="hp-trial">2 free classes first</span></p><!--/FEEHERO-->')
     m = re.search(r'<p class="hero-lead">.*?</p>', s[s.index('<section class="page-hero'):], re.S)
     i = s.index('<section class="page-hero') + m.end()
@@ -171,10 +190,10 @@ def p2(cid, mins, i, cur):  # formatted single price
 
 
 def how_much_answer(cur, place=None):
-    f = lambda cid, mins, i: fmt(C[cid]["prices"][mins][i], cur)
+    f = lambda cid, mins, i: fmt(C[cid]["prices"][mins][i], cur, C[cid].get("round_to"))
     where = f" in {place}" if place else ""
-    return (f"Monthly fees{where} start at {f('qaida','30',0)} for Noorani Qaida, 2 days a week with 25–30 minute classes. "
-            f"Quran reading (Nazra) is {f('nazra','30',0)} for 2 days, {f('nazra','30',1)} for 4 days and {f('nazra','30',2)} for 5 days a week. "
+    return (f"Monthly fees{where} for Noorani Qaida, Quran reading (Nazra) and Tajweed are {f('nazra','30',0)} for 2 days a week, "
+            f"{f('nazra','30',1)} for 4 days a week and {f('nazra','30',2)} for weekend classes (Saturday and Sunday), with 25–30 minute classes. "
             + ("" if cur == "PKR" else "It is the same fair fee we charge in Pakistan, simply converted to your currency. ") +
             f"Every new student starts with 2 free classes, so you pay nothing until you decide to continue. See the full fees table for every course.")
 
@@ -182,7 +201,7 @@ def how_much_answer(cur, place=None):
 def course_answer(cid, cur="USD"):
     c = C[cid]
     def line(cc):
-        return "; ".join(f"{LEN[mins]} minute classes are " + ", ".join(f"{fmt(p, cc)} for {d} days" for p, d in zip(pr, DAYS)) + " a week"
+        return "; ".join(f"{LEN[mins]} minute classes are " + ", ".join(f"{fmt(p, cc, c.get('round_to'))} for {plan_txt(k)}" for p, k in zip(pr, plans(c)))
                          for mins, pr in c["prices"].items())
     return (f"{c['name']} fees are monthly, per student: {line(cur)}. In Pakistan, {line('PKR')}. "
             "The first 2 classes are free, and families with more than one student get a family discount.")
@@ -219,14 +238,16 @@ def set_offer(s, cid):
     c = C[cid]
     low = min(min(v) for v in c["prices"].values())
     high = max(max(v) for v in c["prices"].values())
+    rnd = c.get("round_to")
+    when = ", ".join(plan_txt(k).replace(" (Saturday and Sunday)", "") for k in plans(c))
     offers = [
         {"@type": "Offer", "category": "Free trial", "price": "0", "priceCurrency": "USD", "description": "2 free trial classes"},
         {"@type": "AggregateOffer", "category": "Subscription", "priceCurrency": "USD",
-         "lowPrice": str(conv(low, "USD")), "highPrice": str(conv(high, "USD")),
-         "description": "Monthly plan, 2, 4 or 5 days a week, live 1-on-1 with a female teacher"},
+         "lowPrice": str(conv(low, "USD", rnd)), "highPrice": str(conv(high, "USD", rnd)),
+         "description": f"Monthly plan: {when}; live 1-on-1 with a female teacher"},
         {"@type": "AggregateOffer", "category": "Subscription", "priceCurrency": "PKR",
          "lowPrice": str(low), "highPrice": str(high),
-         "description": "Monthly plan in Pakistan, 2, 4 or 5 days a week"},
+         "description": f"Monthly plan in Pakistan: {when}"},
     ]
     return re.sub(r'"offers": (\{[^{}]*\}|\[.*?\])\}</script>',
                   lambda m: '"offers": ' + json.dumps(offers, ensure_ascii=False) + '}</script>', s, count=1)
@@ -247,8 +268,8 @@ def main():
         s = open(p).read()
         inner = switcher("USD") + '<div class="fee-grid">' + "".join(course_table(C[i], "USD", link=len(ids) > 1, prefix=PREFIX) for i in ids) + "</div>" + note(PREFIX, "USD")
         name = C[ids[0]]["name"] if len(ids) == 1 else "Noorani Qaida and Quran Reading"
-        s = put(s, "course", section(inner, "Monthly Fees", f"{name} Fees", "Simple monthly plans for 2, 4 or 5 days a week. Pick the class length that suits you."), "section2")
-        s = hero_price(s, min(min(C[i]["prices"][m][0] for m in C[i]["prices"]) for i in ids), "USD")
+        s = put(s, "course", section(inner, "Monthly Fees", f"{name} Fees", "Simple monthly plans: " + ("2 or 4 days a week, or weekend classes." if "weekend" in plans(C[ids[0]]) else "2, 4 or 5 days a week.")), "section2")
+        s = hero_price(s, *low_of(ids)[:1], "USD", low_of(ids)[1])
         for i in ids[:1] if len(ids) == 1 else ids:
             s = set_faq(s, f"How much do {C[i].get('faq_name', C[i]['name'])} classes cost?", course_answer(i), add_if_missing=True)
         s = set_offer(s, ids[-1] if page != "learn-quran-online-for-beginners" else "nazra")
@@ -258,8 +279,8 @@ def main():
         p = os.path.join(ROOT, page, "index.html")
         s = open(p).read()
         inner = switcher(cur) + overview_table(ids, cur, PREFIX) + note(PREFIX, cur)
-        s = put(s, "overview", section(inner, "Monthly Fees", "Fees for Every Course", "Monthly fee per student for 2, 4 or 5 days a week, with 25–30 minute classes."), "section2")
-        s = hero_price(s, min(C[i]["prices"][min(C[i]["prices"])][0] for i in ids), cur)
+        s = put(s, "overview", section(inner, "Monthly Fees", "Fees for Every Course", "Monthly fee per student for 2 or 4 days a week, or weekend classes."), "section2")
+        s = hero_price(s, low_of(ids)[0], cur, low_of(ids)[1])
         write(p, s)
     # country pages
     for page, (cur, place, word) in COUNTRY.items():
@@ -268,8 +289,8 @@ def main():
         inner = '<div class="fee-grid">' + "".join(course_table(C[i], cur, prefix=PREFIX) for i in OVERVIEW) + "</div>" + note(PREFIX, cur)
         s = put(s, "country", section(inner, "Fees in " + word.title(),
                                       f"Online Quran Class Fees in {place}",
-                                      f"Monthly fee per student in {word} for every course, 2, 4 or 5 days a week."), "hero")
-        s = hero_price(s, min(C[i]["prices"][min(C[i]["prices"])][0] for i in OVERVIEW), cur)
+                                      f"Monthly fee per student in {word} for every course: 2 or 4 days a week, or weekend classes."), "hero")
+        s = hero_price(s, low_of(OVERVIEW)[0], cur, low_of(OVERVIEW)[1])
         for q in re.findall(r'"name": "(How much [^"]*)"', s)[:1]:
             s = set_faq(s, q, how_much_answer(cur, place))
         write(p, s)
@@ -295,7 +316,7 @@ FEES_FAQ = [
     ("How do I pay in Pakistan?",
      "You can pay by JazzCash, Easypaisa or bank transfer. The fee is paid monthly, in advance."),
     ("Do I pay per class or per month?",
-     "Plans are monthly and paid in advance, based on how many days a week you study (2, 4 or 5) and how long each class is."),
+     "Plans are monthly and paid in advance, based on your plan (2 days a week, 4 days a week or weekends) and how long each class is."),
     ("Is there a discount for siblings?",
      "Yes, families with more than one student get a small family discount. Message us on WhatsApp with how many children, or a mother and child, will study and we will tell you your family fee."),
     ("What happens if the teacher misses a class?",
@@ -311,7 +332,7 @@ FEES_FAQ = [
     ("Can I change my teacher or class time?",
      "Yes. If you would like a different teacher, we arrange one within 2 to 3 days. A new class time is possible whenever your teacher is free at that time."),
     ("Can I change my plan later?",
-     "Yes. You can move to more or fewer days a week from the next month. Just tell us on WhatsApp before your next payment."),
+     "Yes. You can switch between 2 days, 4 days and weekend classes from the next month. Just tell us on WhatsApp before your next payment."),
 ]
 
 
@@ -334,28 +355,32 @@ def fees_page():
     PREFIX = "../"
     p = os.path.join(ROOT, "fees", "index.html")
     s = open(p).read()
-    q = C["qaida"]["prices"]["30"]; n = C["nazra"]["prices"]
-    lows = [min(min(c["prices"][m][i] for m in c["prices"]) for c in C.values()) for i in range(3)]
+    def plan_low(k):
+        opts = [(dict(zip(plans(c), v))[k], c.get("round_to")) for c in C.values() if k in plans(c) for v in c["prices"].values()]
+        return min(opts, key=lambda t: conv(t[0], "USD", t[1]))
     cards = ""
-    meta = [("2 Days Plan", "About 8 to 9 classes a month", "Great for busy schedules and older students", ""),
-            ("4 Days Plan", "About 16 to 17 classes a month", "Steady progress without rushing", " feat"),
-            ("5 Days Plan", "About 20 to 22 classes a month", "Best for Qaida, Hifz and fast progress", "")]
-    for d, low, (h, cnt, why, feat) in zip(DAYS, lows, meta):
+    meta = [("2", "2 Days Plan", "About 8 to 9 classes a month", "Great for busy schedules and older students", "", "2 days a week"),
+            ("4", "4 Days Plan", "About 16 to 17 classes a month", "Steady progress without rushing", " feat", "4 days a week"),
+            ("weekend", "Weekend Plan", "Saturday and Sunday, about 8 to 9 classes a month", "Best when weekdays are full with school or work", "", "weekend")]
+    for k, h, cnt, why, feat, wtxt in meta:
+        low, rnd = plan_low(k)
         tag = '<span class=tag>Most popular</span>' if feat else ""
         btn = "btn-gold" if feat else "btn-dark"
+        r = f' data-r="{rnd}"' if rnd else ""
         cards += (f'<div class="price-card{feat}">{tag}<h3>{h}</h3><div class="from">from</div>'
-                  f'<div class="days"><span class="fee" data-pkr="{low}">{fmt_html(low, "USD")}</span></div>'
+                  f'<div class="days"><span class="fee" data-pkr="{low}"{r}>{fmt_html(low, "USD", rnd)}</span></div>'
                   f'<div class="per">a month</div>'
                   f'<ul><li>{cnt}</li><li>Live 1-on-1 with a female teacher</li><li>25–30 minute classes (Tafseer 45–60)</li><li>{why}</li></ul>'
-                  f'<a href="https://wa.me/923345259952" data-wa="Assalamu alaikum, I would like to know more about the {d} days a week plan." data-wa-loc="fees-card" class="btn {btn}">Ask About This Plan</a></div>')
-    plans = (f'<section class="sec bg-cream" id="plans"><div class="container"><div class="section-head"><span class="eyebrow">Plans</span>'
+                  f'<a href="https://wa.me/923345259952" data-wa="Assalamu alaikum, I would like to know more about the {wtxt} plan." data-wa-loc="fees-card" class="btn {btn}">Ask About This Plan</a></div>')
+    lo, lo_r = low_of(list(C))
+    plans_sec = (f'<section class="sec bg-cream" id="plans"><div class="container"><div class="section-head"><span class="eyebrow">Plans</span>'
              f'<h2>Choose How Many Days a Week You Study</h2><p>One fair monthly fee per student, wherever you live. Every plan starts with 2 free classes.</p></div>'
              + switcher("USD") + f'<div class="fgrid">{cards}</div></div></section>')
     table = section(
         '<div class="fee-grid">' + "".join(course_table(c, "USD", prefix=PREFIX) for c in C.values()) + "</div>"
         + note(PREFIX, 'USD'),
         "Fee Table", "Monthly Fees for Every Course",
-        "Live one-to-one classes with a female teacher, 2, 4 or 5 days a week. Tap a currency above to see fees in your money.",
+        "Live one-to-one classes with a female teacher, 2 or 4 days a week, or weekends. Tap a currency above to see fees in your money.",
         bg="bg-cream-2", sid="fee-table")
     inc = ["Live one-to-one classes with a female teacher", "The same teacher every class",
            "Book pages shared by your teacher as pictures", "WhatsApp updates from your teacher on how the student is doing",
@@ -371,7 +396,7 @@ def fees_page():
                 f'<div class="inc-card"><h3>How to pay</h3><p><b>In Pakistan:</b> JazzCash, Easypaisa or bank transfer.</p>'
                 f'<p><b>From abroad:</b> bank transfer or Western Union, or a relative in Pakistan can pay for you by JazzCash, Easypaisa or bank transfer.</p>'
                 f'<p>Fees are paid monthly, in advance. We share payment details on WhatsApp after your <a href="{PREFIX}free-trial/" class="in-link">2 free classes</a>.</p></div></div></div></section>')
-    block = plans + table + included
+    block = plans_sec + table + included
     # replace from Plans section up to the enrol CTA (first build) or marker block (later builds)
     start = "<!--FEES:page-->"
     if start in s:
@@ -389,9 +414,9 @@ def fees_page():
     # hero points + meta
     s = re.sub(r'(<ul class="hero-points">).*?(</ul>)', lambda m: m.group(1) + "".join(
         f'<li><span class="tick"><svg width="14" height="14"><use href="#i-tick"/></svg></span>{t}</li>' for t in
-        ["2 free classes first", f"From {fmt(lows[0], 'USD')} a month", "Same fair fee worldwide", "Family discount"]) + m.group(2), s, count=1, flags=re.S)
-    desc = (f"Online Quran classes fees from {fmt(lows[0], 'USD')} a month (Rs {lows[0]:,}). Live 1-on-1 classes with female teachers, "
-            f"2, 4 or 5 days a week, for kids and women. Start with 2 free classes.")
+        ["2 free classes first", f"From {fmt(lo, 'USD', lo_r)} a month", "Same fair fee worldwide", "Family discount"]) + m.group(2), s, count=1, flags=re.S)
+    desc = (f"Online Quran classes fees from {fmt(lo, 'USD', lo_r)} a month (Rs {lo:,}). Live 1-on-1 classes with female teachers, "
+            f"2 or 4 days a week or weekends, for kids and women. Start with 2 free classes.")
     s = re.sub(r'(<meta (?:name|property)="(?:description|og:description|twitter:description)" content=")[^"]*(")', lambda m: m.group(1) + desc + m.group(2), s)
     write(p, s)
 

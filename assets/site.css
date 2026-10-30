@@ -824,3 +824,4 @@ a.fcard{display:block}
 @media (min-width:1025px) and (max-width:1120px){.qot-menu>li>a{padding:10px 5px;font-size:13.5px!important;gap:4px}.qot-nav{gap:10px}.qot-btn{padding:11px 13px;font-size:13.5px!important}}
 /* form subline: two clean lines */
 .form-card .sub b{display:block;margin-top:2px}
+.fee-na{color:#b8ab93;font-weight:600}

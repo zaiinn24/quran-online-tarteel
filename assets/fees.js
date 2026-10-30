@@ -4,16 +4,16 @@
   if (!sw.length) return;
   var cfg = JSON.parse(sw[0].getAttribute("data-fee-rates"));
   var SYM = { PKR: "Rs ", USD: "$", GBP: "£", CAD: "C$", AUD: "A$", AED: "AED " };
-  function conv(pkr, cur) {
+  function conv(pkr, cur, rnd) {
     if (cur === "PKR") return pkr;
     var o = cfg.ovr && cfg.ovr[cur];
     if (o && o[pkr] != null) return o[pkr];
-    var st = cfg.step[cur];
+    var st = Math.max(cfg.step[cur], rnd || 0);
     return Math.ceil(pkr / cfg.rates[cur] / st) * st;
   }
   function show(cur) {
     document.querySelectorAll(".fee[data-pkr]").forEach(function (e) {
-      var v = conv(+e.getAttribute("data-pkr"), cur).toLocaleString("en-US"), sym = SYM[cur];
+      var v = conv(+e.getAttribute("data-pkr"), cur, +e.getAttribute("data-r") || 0).toLocaleString("en-US"), sym = SYM[cur];
       if (/ $/.test(sym)) { e.innerHTML = '<span class="cs">' + sym.trim() + "</span> " + v; } else { e.textContent = sym + v; }
     });
     document.documentElement.classList.toggle("fees-pkr", cur === "PKR");
