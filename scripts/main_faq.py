@@ -27,7 +27,7 @@ SECTIONS = [
  ]),
  ("Trial, Fees and Payment", [
   ("Is there a free trial?", "Yes. Every new student gets 2 free classes with a female teacher, with nothing to pay. " + L("free-trial/", "Book your 2 free classes") + "."),
-  ("How much are the fees?", "Fees are monthly, per student. Noorani Qaida, Quran reading and Tajweed are $40 (Rs 10,000) for 2 days a week, $60 (Rs 15,000) for 4 days a week and $60 (Rs 15,000) for weekend classes, with 25–30 minute classes. Every course and currency is on our " + L("fees/", "fees and plans page") + "."),
+  ("How much are the fees?", "Fees are monthly, per student. Noorani Qaida, Quran reading and Tajweed are $40 (Rs 5,000) for 2 days a week, $60 (Rs 8,000) for 4 days a week and $60 (Rs 8,000) for weekend classes, with 25–30 minute classes. Every course and currency is on our " + L("fees/", "fees and plans page") + "."),
   ("How do I pay in Pakistan?", "By JazzCash, Easypaisa or bank transfer. The fee is paid monthly, in advance."),
   ("How do I pay from abroad?", "Families in the USA, UK, Canada, Australia, the UAE and elsewhere pay by bank transfer or Western Union, or a relative in Pakistan pays for them by JazzCash, Easypaisa or bank transfer. We share the payment details on WhatsApp after your free classes. We do not take card or PayPal payments at the moment."),
   ("Is there a family discount?", "Yes. When more than one child, or a mother and child, learn with us, you get a special family discount. Just ask us on WhatsApp."),

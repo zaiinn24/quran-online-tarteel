@@ -28,9 +28,9 @@
       "page": "noorani-qaida-online",
       "prices": {
         "30": [
-          10000,
-          15000,
-          15000
+          5000,
+          8000,
+          8000
         ]
       },
       "plans": [
@@ -46,9 +46,9 @@
       "page": "learn-quran-online-for-beginners",
       "prices": {
         "30": [
-          10000,
-          15000,
-          15000
+          5000,
+          8000,
+          8000
         ]
       },
       "plans": [
@@ -64,9 +64,9 @@
       "page": "online-tajweed-classes",
       "prices": {
         "30": [
-          10000,
-          15000,
-          15000
+          5000,
+          8000,
+          8000
         ]
       },
       "plans": [
@@ -202,7 +202,27 @@
     "_note": "Shown on the site as the class length for each price row."
   },
   "overrides": {
-    "_note": "Fixed overseas prices that replace the converted value. Keyed by the PKR price."
+    "_note": "Fixed overseas prices that replace the converted value. Keyed by the PKR price. 5000/8000 keep the old overseas prices of the Rs 10,000/15,000 plans (owner changed PKR only, 1 Nov 2026).",
+    "USD": {
+      "5000": 40,
+      "8000": 60
+    },
+    "GBP": {
+      "5000": 30,
+      "8000": 50
+    },
+    "CAD": {
+      "5000": 60,
+      "8000": 80
+    },
+    "AUD": {
+      "5000": 60,
+      "8000": 80
+    },
+    "AED": {
+      "5000": 140,
+      "8000": 200
+    }
   },
   "plan_labels": {
     "_note": "Column labels. Each course lists its own 'plans' (default plans_days).",
