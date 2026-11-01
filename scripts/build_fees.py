@@ -195,7 +195,7 @@ def how_much_answer(cur, place=None):
     where = f" in {place}" if place else ""
     return (f"Monthly fees{where} for Noorani Qaida, Quran reading (Nazra) and Tajweed are {f('nazra','30',0)} for 2 days a week, "
             f"{f('nazra','30',1)} for 4 days a week and {f('nazra','30',2)} for weekend classes (Saturday and Sunday), with 25–30 minute classes. "
-            + ("" if cur in ("PKR", "PHP") else "It is the same fair fee we charge in Pakistan, simply converted to your currency. ") +
+            +
             f"Every new student starts with 2 free classes, so you pay nothing until you decide to continue. See the full fees table for every course.")
 
 
@@ -311,7 +311,7 @@ FEES_FAQ = [
     ("Are there free classes before paying?",
      "Yes. Every new student gets 2 free trial classes with a female teacher. We do not ask for card or payment details to book them."),
     ("Why are your fees lower than other online Quran academies?",
-     "We keep one fair fee for every family. Our overseas fees are simply our Pakistan fee converted to your currency and rounded up a little for exchange rates, so a family in London or Toronto pays the same as a family in Lahore. The teaching is the same: live, one-to-one, with a female teacher."),
+     "We keep our fees simple and fair: one monthly fee for each plan, shown in your own currency, so you always know exactly what you pay. The teaching is the same in every country: live, one-to-one, with a female teacher. Every new student also starts with 2 free classes, so you can judge the teacher before you pay anything."),
     ("How do I pay from the USA, UK, Canada, Australia or the UAE?",
      "Families abroad usually pay by bank transfer or Western Union, or a relative in Pakistan pays for them by JazzCash, Easypaisa or bank transfer. We share the payment details on WhatsApp after your free classes. We do not take card or PayPal payments at the moment."),
     ("How do I pay in Pakistan?",
@@ -375,7 +375,7 @@ def fees_page():
                   f'<a href="https://wa.me/923345259952" data-wa="Assalamu alaikum, I would like to know more about the {wtxt} plan." data-wa-loc="fees-card" class="btn {btn}">Ask About This Plan</a></div>')
     lo, lo_r = low_of(list(C))
     plans_sec = (f'<section class="sec bg-cream" id="plans"><div class="container"><div class="section-head"><span class="eyebrow">Plans</span>'
-             f'<h2>Choose How Many Days a Week You Study</h2><p>One fair monthly fee per student, wherever you live. Every plan starts with 2 free classes.</p></div>'
+             f'<h2>Choose How Many Days a Week You Study</h2><p>One fair monthly fee per student, shown in your own currency. Every plan starts with 2 free classes.</p></div>'
              + switcher("USD") + f'<div class="fgrid">{cards}</div></div></section>')
     table = section(
         '<div class="fee-grid">' + "".join(course_table(c, "USD", prefix=PREFIX) for c in C.values()) + "</div>"
