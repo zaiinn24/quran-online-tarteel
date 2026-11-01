@@ -18,9 +18,9 @@ LEN = {k: v for k, v in D["class_length_labels"].items() if not k.startswith("_"
 C_ALL = {c["id"]: c for c in D["courses"]}
 HIDDEN = {k for k, c in C_ALL.items() if c.get("hidden")}   # courses whose prices are not shown anywhere (owner's choice)
 C = {k: c for k, c in C_ALL.items() if k not in HIDDEN}
-SYM = {"PKR": "Rs ", "USD": "$", "GBP": "£", "CAD": "C$", "AUD": "A$", "AED": "AED "}
+SYM = {"PKR": "Rs ", "USD": "$", "GBP": "£", "CAD": "C$", "AUD": "A$", "AED": "AED ", "PHP": "₱"}
 CUR_ORDER = ["USD", "GBP", "CAD", "AUD", "AED", "PKR"]
-CUR_LABEL = {"USD": "US $", "GBP": "UK £", "CAD": "CA $", "AUD": "AU $", "AED": "AED", "PKR": "PKR"}
+CUR_LABEL = {"USD": "US $", "GBP": "UK £", "CAD": "CA $", "AUD": "AU $", "AED": "AED", "PKR": "PKR", "PHP": "PHP"}
 
 
 def plans(c):
@@ -164,6 +164,7 @@ COUNTRY = {
     "online-quran-classes-australia": ("AUD", "Australia", "Australian dollars"),
     "online-quran-classes-uae": ("AED", "the UAE", "dirhams"),
     "online-quran-classes-pakistan": ("PKR", "Pakistan", "rupees"),
+    "online-quran-classes-philippines": ("PHP", "the Philippines", "Philippine pesos"),
 }
 OVERVIEW = ["qaida", "nazra", "tajweed", "hifz", "tafseer", "islamic", "juzamma", "salah", "duas", "hadith40", "newmuslim"]
 ENROL = '<section class="cta-sec dark pattern-dark" id="enrol">'
@@ -194,7 +195,7 @@ def how_much_answer(cur, place=None):
     where = f" in {place}" if place else ""
     return (f"Monthly fees{where} for Noorani Qaida, Quran reading (Nazra) and Tajweed are {f('nazra','30',0)} for 2 days a week, "
             f"{f('nazra','30',1)} for 4 days a week and {f('nazra','30',2)} for weekend classes (Saturday and Sunday), with 25–30 minute classes. "
-            + ("" if cur == "PKR" else "It is the same fair fee we charge in Pakistan, simply converted to your currency. ") +
+            + ("" if cur in ("PKR", "PHP") else "It is the same fair fee we charge in Pakistan, simply converted to your currency. ") +
             f"Every new student starts with 2 free classes, so you pay nothing until you decide to continue. See the full fees table for every course.")
 
 

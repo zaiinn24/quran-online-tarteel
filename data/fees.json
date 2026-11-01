@@ -12,14 +12,16 @@
     "GBP": 370,
     "CAD": 195,
     "AUD": 192,
-    "AED": 75.6
+    "AED": 75.6,
+    "PHP": 4.3281
   },
   "round_step": {
     "USD": 5,
     "GBP": 5,
     "CAD": 5,
     "AUD": 5,
-    "AED": 10
+    "AED": 10,
+    "PHP": 100
   },
   "courses": [
     {
@@ -222,7 +224,15 @@
     "AED": {
       "5000": 140,
       "8000": 200
-    }
+    },
+    "PHP": {
+      "5000": 2600,
+      "8000": 3900,
+      "12000": 3200,
+      "18000": 4500,
+      "20000": 5200
+    },
+    "_note_php": "PHP = the USD price x 64 (USD/PHP, 26 Oct 2026), rounded up to the next 100. Keyed by the PKR price."
   },
   "plan_labels": {
     "_note": "Column labels. Each course lists its own 'plans' (default plans_days).",
