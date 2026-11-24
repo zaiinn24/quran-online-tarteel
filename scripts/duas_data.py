@@ -57,8 +57,8 @@ PAGES = {
         ("How can I help my child remember duas?", "Say each dua together at the right moment, every day. Repetition in real life is what makes a dua stick. Our <a href=\"../../online-duas-course/\" class=\"in-link\">online duas course</a> also teaches duas with meaning, one by one.")],
  ),
  "morning-evening-azkar": dict(
-  title="Morning and Evening Azkar (Subah Shaam ke Azkar) with Meaning",
-  desc="Morning and evening azkar from the Quran and Sunnah: Ayatul Kursi, the 3 Quls, Sayyid al-Istighfar and more, with Arabic, transliteration and meaning in English and Roman Urdu.",
+  title="Morning and Evening Adhkar PDF with Meaning (Subah Shaam Azkar)",
+  desc="Morning and evening adhkar (azkar) with Arabic, transliteration and meaning in English and Roman Urdu, plus a free PDF to download and print.",
   h1='Morning and Evening Azkar <span class="gold">(Subah Shaam ke Azkar)</span>', ar_title="أَذْكَارُ الصَّبَاحِ وَالْمَسَاء",
   eyebrow="Daily Protection and Peace", card="Ayatul Kursi, the 3 Quls, Sayyid al-Istighfar and more.",
   intro="The morning azkar are read after Fajr until sunrise, and the evening azkar after Asr until sunset (many scholars allow them after Maghrib too). They are a shield and a source of peace for the whole day. Read them with understanding: every dhikr below has its Arabic, transliteration, meaning in English and Roman Urdu, how many times to say it and its reference.",

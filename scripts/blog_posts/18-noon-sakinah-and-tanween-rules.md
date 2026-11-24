@@ -40,7 +40,7 @@ Getting these rules wrong does not usually change the meaning, but it is one of 
 
 ## The Four Rules at a Glance
 
-This chart is worth printing and keeping next to your mushaf.
+This chart is worth printing and keeping next to your mushaf. It is also in our free [Tajweed rules PDF](/downloads/tajweed-rules-pdf-quran-online-tarteel.pdf), together with all the other main rules.
 
 | Rule | Meaning | Letters | What you do | Example |
 |---|---|---|---|---|

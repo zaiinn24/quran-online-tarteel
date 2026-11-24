@@ -862,3 +862,12 @@ a.fcard{display:block}
 .lb-more{text-align:center;margin-top:28px}
 @media (max-width:960px){.lb-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.lb-grid .lb-card:nth-child(3){display:none}}
 @media (max-width:640px){.lb-grid{grid-template-columns:1fr}.lb-grid .lb-card:nth-child(3){display:flex}}
+/* free PDF download block */
+.pdf-dl-sec{padding:34px 0 0;background:var(--white)}
+.pdf-dl{display:flex;align-items:center;gap:22px;max-width:980px;margin:0 auto;padding:22px 26px;border-radius:20px;background:linear-gradient(135deg,#fbf3e1,#fffaf0);border:1px solid rgba(199,155,69,.5)}
+.pdf-ic{flex-shrink:0;width:56px;height:56px;border-radius:14px;background:var(--ink);color:var(--gold-2);display:grid;place-items:center}
+.pdf-ic svg{width:28px;height:28px}
+.pdf-tx h2{font-size:22px;margin:0 0 4px}
+.pdf-tx p{margin:0;color:var(--muted);font-size:15px;line-height:1.6}
+.pdf-dl .btn{flex-shrink:0;white-space:nowrap}
+@media (max-width:760px){.pdf-dl{flex-direction:column;align-items:flex-start;padding:20px}.pdf-dl .btn{width:100%}}

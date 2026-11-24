@@ -41,7 +41,7 @@ Dhikr praises Allah. Dua asks Him for something. Many duas begin with dhikr, whi
 
 ### Azkar, adhkar and dhikr
 
-*Adhkar* (also spelled *azkar*) is the plural of dhikr. It usually refers to set words for set times, such as the [morning and evening azkar](/duas-azkar/morning-evening-azkar/) or the [azkar after namaz](/duas-azkar/azkar-after-namaz/).
+*Adhkar* (also spelled *azkar*) is the plural of dhikr. You can download all the morning and evening adhkar as a free [morning and evening adhkar PDF](/downloads/morning-evening-adhkar-pdf-quran-online-tarteel.pdf). It usually refers to set words for set times, such as the [morning and evening azkar](/duas-azkar/morning-evening-azkar/) or the [azkar after namaz](/duas-azkar/azkar-after-namaz/).
 
 ## Types of Dhikr
 

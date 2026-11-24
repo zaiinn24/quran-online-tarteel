@@ -59,7 +59,7 @@ No one should give up because Tajweed feels hard. The Prophet, peace be upon him
 
 ## The Main Rules of Tajweed at a Glance
 
-Here are the topics every Tajweed course covers. Our [Tajweed rules for beginners](/resources/tajweed-rules/) explains each one with examples.
+Here are the topics every Tajweed course covers. Our [Tajweed rules for beginners](/resources/tajweed-rules/) explains each one with examples. You can also download the free [Tajweed rules PDF](/downloads/tajweed-rules-pdf-quran-online-tarteel.pdf) to print and keep next to your mushaf.
 
 | Topic | What it covers | Example |
 |---|---|---|
