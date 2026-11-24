@@ -383,9 +383,7 @@ def related_for(p, posts):
             break
         if q is not p and q not in rel:
             rel.append(q)
-    for l in LEGACY:
-        if len(rel) >= 6:
-            break
+    for l in LEGACY:  # always-live fallbacks, so the section is never empty
         rel.append(dict(l, url="../" + l["url"]))
     return rel
 
