@@ -1,14 +1,18 @@
 /* Quran Online Tarteel: blog listing + article layout */
-.bp-hero{padding:46px 0 150px}
+.bp-hero{padding:56px 0 64px}
+.bp-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:56px;align-items:center;max-width:1140px;margin:0 auto}
+.bp-emblem{position:relative;width:300px;height:300px}
+.bp-emblem::before{content:"";position:absolute;inset:-40px;background:radial-gradient(circle,rgba(199,155,69,.30),transparent 65%)}
+.bp-emblem svg{position:relative;width:100%;height:100%}
 .bp-hero .crumbs{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13.5px;color:#bfb39a;margin-bottom:18px}
 .bp-hero .crumbs a{color:var(--gold-2)}
 .bp-hero .crumbs a:hover{text-decoration:underline}
 .bp-hero .crumbs span[aria-hidden]{opacity:.5}
-.bp-hero-in{max-width:880px;margin:0 auto;text-align:center}
+.bp-hero-in{text-align:left}
 .bp-chip{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:7px 14px;border-radius:999px;background:rgba(226,196,126,.14);border:1px solid rgba(226,196,126,.4);color:var(--gold-2)}
 .bp-hero h1{font-size:clamp(30px,4.4vw,50px);margin:16px 0 16px;color:#fff}
-.bp-hero .hero-lead{margin:0 auto;max-width:720px}
-.bp-meta{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 22px;margin-top:22px;font-size:14px;color:#cfc4ac}
+.bp-hero .hero-lead{margin:0;max-width:680px}
+.bp-meta{display:flex;flex-wrap:wrap;justify-content:flex-start;gap:10px 22px;margin-top:22px;font-size:14px;color:#cfc4ac}
 .bp-meta span{display:inline-flex;align-items:center;gap:7px}
 .bp-meta svg{width:16px;height:16px;color:var(--gold-2)}
 .bp-feature{max-width:1000px;margin:-120px auto 0;position:relative;z-index:3;padding:0 20px}
@@ -142,6 +146,11 @@
 .bl-empty{text-align:center;color:var(--muted);display:none}
 @media (max-width:1100px){.bp-layout{grid-template-columns:minmax(0,1fr) 280px;gap:30px}.bp-content{padding:40px 38px}}
 @media (max-width:960px){
+  .bp-hero-grid{grid-template-columns:1fr;gap:0}
+  .bp-emblem{order:-1;width:150px;height:150px;margin:0 auto 18px}
+  .bp-hero-in{text-align:center}
+  .bp-hero .hero-lead{margin:0 auto}
+  .bp-meta{justify-content:center}
   .bp-layout{grid-template-columns:1fr}
   .bp-aside{position:static;grid-template-columns:1fr 1fr}
   .bp-aside .bp-toc{display:none}
@@ -152,9 +161,8 @@
   .bl-grid .bl-card.bl-big .bl-body{padding:22px 24px}
 }
 @media (max-width:640px){
-  .bp-hero{padding:34px 0 96px}
-  .bp-feature{margin-top:-74px;padding:0 14px}
-  .bp-feature img{border-radius:16px}
+  .bp-hero{padding:30px 0 44px}
+  .bp-emblem{width:120px;height:120px}
   .bp-wrap{padding:30px 0 56px}
   .bp-wrap>.container{padding:0 12px}
   .bp-content{padding:26px 18px;border-radius:18px}

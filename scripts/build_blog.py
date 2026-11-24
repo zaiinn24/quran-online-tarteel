@@ -395,6 +395,21 @@ def related_for(p, posts):
     return rel
 
 
+def emblem(cat):
+    """the post artwork's medallion, drawn inline in the hero (no second banner)"""
+    import sys
+    sys.path.insert(0, os.path.join(ROOT, "scripts"))
+    from blog_images import SVGS, MOTIF, TINT
+    acc = TINT.get(cat, "#c79b45")
+    icon = SVGS[MOTIF.get(cat, "book")].replace("ACC", acc)
+    return ('<svg viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg"><g fill="none" stroke="#c79b45">'
+            '<rect x="62" y="62" width="236" height="236" rx="6" stroke-width="3"/>'
+            '<rect x="62" y="62" width="236" height="236" rx="6" stroke-width="3" transform="rotate(45 180 180)"/>'
+            '<circle cx="180" cy="180" r="112" stroke-opacity=".45" stroke-width="2"/>'
+            '<circle cx="180" cy="180" r="150" stroke-opacity=".22" stroke-width="1.5" stroke-dasharray="4 8"/></g>'
+            f'<svg x="92" y="92" width="176" height="176" viewBox="0 0 360 340">{icon}</svg></svg>')
+
+
 def write_post(p, posts, sched, ga, icon, sitecss, header, footer, brand_svg):
     canon = f"{SITE}/blog/{p['slug']}/"
     img = f"{SITE}/blog/img/{p['slug']}-og.webp"  # titled version for social sharing
@@ -417,13 +432,12 @@ def write_post(p, posts, sched, ga, icon, sitecss, header, footer, brand_svg):
              f'<meta property="article:section" content="{esc(CAT[p["cat"]])}">\n')
     out = head(p["title"], p["desc"], canon, extra, ld, "../../", ga, icon, sitecss, kw=p["kw"], og_img=img)
     out += header + "<main>\n"
-    out += (f'<section class="page-hero pattern-dark bp-hero"><div class="container"><div class="bp-hero-in">'
+    out += (f'<section class="page-hero pattern-dark bp-hero"><div class="container"><div class="bp-hero-grid"><div class="bp-hero-in">'
             f'<span class="bp-chip">{esc(CAT[p["cat"]])}</span><h1>{esc(p["h1"])}</h1>'
             f'<p class="hero-lead">{esc(p["excerpt"])}</p>'
             f'<div class="bp-meta"><span>{SVG_USER}Quran Online Tarteel</span><span>{SVG_CAL}<time datetime="{p["date"]}">{nice_date(p["date"])}</time></span>'
-            f'<span>{SVG_CLOCK}{p["mins"]} min read</span></div></div></div></section>\n')
-    out += (f'<div class="bp-feature"><img src="../img/{p["slug"]}.webp?v={iv(p["slug"] + ".webp")}" width="1200" height="630" alt="{esc(p["alt"])}" '
-            f'fetchpriority="high" decoding="async"></div>\n')
+            f'<span>{SVG_CLOCK}{p["mins"]} min read</span></div></div>'
+            f'<div class="bp-emblem" aria-hidden="true">{emblem(p["cat"])}</div></div></div></section>\n')
     toc_items = "".join(f'<li><a href="#{i}">{esc(t)}</a></li>' for i, t in p["toc"])
     if p["faq"]:
         toc_items += '<li><a href="#faq">Frequently asked questions</a></li>'
