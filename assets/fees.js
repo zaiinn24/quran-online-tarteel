@@ -3,13 +3,13 @@
   var sw = document.querySelectorAll(".cur-switch");
   if (!sw.length) return;
   var cfg = JSON.parse(sw[0].getAttribute("data-fee-rates"));
-  var SYM = { PKR: "Rs ", USD: "$", GBP: "£", CAD: "C$", AUD: "A$", AED: "AED " };
+  var SYM = { PKR: "Rs ", USD: "$", GBP: "£", CAD: "C$", AUD: "A$", AED: "AED ", PHP: "₱", SAR: "SAR ", QAR: "QAR ", KWD: "KWD ", OMR: "OMR ", BHD: "BHD ", NZD: "NZ$", EUR: "€", ZAR: "R " };
   function conv(pkr, cur, rnd) {
     if (cur === "PKR") return pkr;
     var o = cfg.ovr && cfg.ovr[cur];
     if (o && o[pkr] != null) return o[pkr];
-    var st = Math.max(cfg.step[cur], rnd || 0);
-    return Math.ceil(pkr / cfg.rates[cur] / st) * st;
+    var st = cfg.step[cur] < 1 ? cfg.step[cur] : Math.max(cfg.step[cur], rnd || 0);
+    return Math.round(Math.ceil(pkr / cfg.rates[cur] / st - 1e-9) * st * 1000) / 1000;
   }
   function show(cur) {
     document.querySelectorAll(".fee[data-pkr]").forEach(function (e) {

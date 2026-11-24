@@ -1,257 +1,330 @@
 {
-  "_note": "Single source of truth for fees. Monthly, per student, in PKR. Edit here, then run: python3 scripts/build_fees.py",
-  "plans_days": [
-    2,
-    4,
-    5
-  ],
-  "rates": {
-    "_note": "PKR per 1 unit, open-market buying rate (Pakistan Observer, 20 Oct 2026). Overseas price = PKR / rate, rounded UP to the next step.",
-    "date": "2026-10-20",
-    "USD": 277,
-    "GBP": 370,
-    "CAD": 195,
-    "AUD": 192,
-    "AED": 75.6,
-    "PHP": 4.3281
-  },
-  "round_step": {
-    "USD": 5,
-    "GBP": 5,
-    "CAD": 5,
-    "AUD": 5,
-    "AED": 10,
-    "PHP": 100
-  },
-  "courses": [
-    {
-      "id": "qaida",
-      "name": "Noorani Qaida",
-      "page": "noorani-qaida-online",
-      "prices": {
-        "30": [
-          5000,
-          8000,
-          8000
-        ]
-      },
-      "plans": [
-        "2",
-        "4",
-        "weekend"
-      ],
-      "round_to": 10
-    },
-    {
-      "id": "nazra",
-      "name": "Quran Reading (Nazra)",
-      "page": "learn-quran-online-for-beginners",
-      "prices": {
-        "30": [
-          5000,
-          8000,
-          8000
-        ]
-      },
-      "plans": [
-        "2",
-        "4",
-        "weekend"
-      ],
-      "round_to": 10
-    },
-    {
-      "id": "tajweed",
-      "name": "Tajweed",
-      "page": "online-tajweed-classes",
-      "prices": {
-        "30": [
-          5000,
-          8000,
-          8000
-        ]
-      },
-      "plans": [
-        "2",
-        "4",
-        "weekend"
-      ],
-      "round_to": 10
-    },
-    {
-      "id": "hifz",
-      "name": "Hifz (Memorisation)",
-      "page": "online-hifz-program",
-      "prices": {
-        "30": [
-          12000,
-          18000,
-          20000
-        ]
-      },
-      "plans": [
-        "2",
-        "4",
-        "weekend"
-      ],
-      "round_to": 10
-    },
-    {
-      "id": "tafseer",
-      "name": "Translation and Tafseer",
-      "page": "quran-translation-tafseer-classes",
-      "prices": {
-        "45": [
-          12000,
-          18000,
-          20000
-        ]
-      },
-      "plans": [
-        "2",
-        "4",
-        "weekend"
-      ],
-      "round_to": 10
-    },
-    {
-      "id": "islamic",
-      "name": "Islamic Studies",
-      "page": "online-islamic-studies",
-      "prices": {
-        "30": [
-          3500,
-          6000,
-          7500
-        ]
-      },
-      "hidden": true
-    },
-    {
-      "id": "juzamma",
-      "name": "Juz Amma Memorisation",
-      "page": "juz-amma-memorization-online",
-      "prices": {
-        "30": [
-          4000,
-          6500,
-          8000
-        ]
-      },
-      "faq_name": "Juz Amma memorization",
-      "hidden": true
-    },
-    {
-      "id": "salah",
-      "name": "Salah (Prayer) Lessons",
-      "page": "online-salah-classes",
-      "prices": {
-        "30": [
-          3500,
-          6000,
-          7500
-        ]
-      },
-      "faq_name": "online salah",
-      "hidden": true
-    },
-    {
-      "id": "duas",
-      "name": "Daily Duas Course",
-      "page": "online-duas-course",
-      "prices": {
-        "30": [
-          3500,
-          6000,
-          7500
-        ]
-      },
-      "faq_name": "online duas",
-      "hidden": true
-    },
-    {
-      "id": "hadith40",
-      "name": "40 Hadith for Kids",
-      "page": "40-hadith-for-kids",
-      "prices": {
-        "30": [
-          3500,
-          6000,
-          7500
-        ]
-      },
-      "faq_name": "40 Hadith",
-      "hidden": true
-    },
-    {
-      "id": "newmuslim",
-      "name": "Classes for New Muslims",
-      "page": "quran-classes-for-new-muslims",
-      "prices": {
-        "30": [
-          3500,
-          6000,
-          7500
-        ]
-      },
-      "faq_name": "new Muslim",
-      "hidden": true
-    }
-  ],
-  "class_length_labels": {
-    "30": "25–30",
-    "45": "45–60",
-    "_note": "Shown on the site as the class length for each price row."
-  },
-  "overrides": {
-    "_note": "Fixed overseas prices that replace the converted value. Keyed by the PKR price. 5000/8000 keep the old overseas prices of the Rs 10,000/15,000 plans (owner changed PKR only, 1 Nov 2026).",
-    "USD": {
-      "5000": 40,
-      "8000": 60
-    },
-    "GBP": {
-      "5000": 30,
-      "8000": 50
-    },
-    "CAD": {
-      "5000": 60,
-      "8000": 80
-    },
-    "AUD": {
-      "5000": 60,
-      "8000": 80
-    },
-    "AED": {
-      "5000": 140,
-      "8000": 200
-    },
-    "PHP": {
-      "5000": 2600,
-      "8000": 3900,
-      "12000": 3200,
-      "18000": 4500,
-      "20000": 5200
-    },
-    "_note_php": "PHP = the USD price x 64 (USD/PHP, 26 Oct 2026), rounded up to the next 100. Keyed by the PKR price."
-  },
-  "plan_labels": {
-    "_note": "Column labels. Each course lists its own 'plans' (default plans_days).",
-    "2": [
-      "2 days",
-      "a week"
-    ],
-    "4": [
-      "4 days",
-      "a week"
-    ],
-    "5": [
-      "5 days",
-      "a week"
-    ],
-    "weekend": [
-      "Weekend",
-      "Sat & Sun"
+ "_note": "Single source of truth for fees. Monthly, per student, in PKR. Edit here, then run: python3 scripts/build_fees.py",
+ "plans_days": [
+  2,
+  4,
+  5
+ ],
+ "rates": {
+  "_note": "PKR per 1 unit, open-market buying rate (Pakistan Observer, 20 Oct 2026). Overseas price = PKR / rate, rounded UP to the next step.",
+  "date": "2026-10-20",
+  "USD": 277,
+  "GBP": 370,
+  "CAD": 195,
+  "AUD": 192,
+  "AED": 75.6,
+  "PHP": 4.3281,
+  "SAR": 73.8667,
+  "QAR": 76.0989,
+  "KWD": 902.2801,
+  "OMR": 720.4161,
+  "BHD": 736.7021,
+  "NZD": 155.618,
+  "EUR": 311.236,
+  "ZAR": 16.6867
+ },
+ "round_step": {
+  "USD": 5,
+  "GBP": 5,
+  "CAD": 5,
+  "AUD": 5,
+  "AED": 10,
+  "PHP": 100,
+  "SAR": 5,
+  "QAR": 5,
+  "KWD": 0.5,
+  "OMR": 0.5,
+  "BHD": 0.5,
+  "NZD": 5,
+  "EUR": 5,
+  "ZAR": 10
+ },
+ "courses": [
+  {
+   "id": "qaida",
+   "name": "Noorani Qaida",
+   "page": "noorani-qaida-online",
+   "prices": {
+    "30": [
+     5000,
+     8000,
+     8000
     ]
+   },
+   "plans": [
+    "2",
+    "4",
+    "weekend"
+   ],
+   "round_to": 10
   },
-  "_rounding_note": "Overseas price = PKR / rate, rounded UP to round_step (or the course's round_to, e.g. 10 -> $36.10 becomes $40)."
+  {
+   "id": "nazra",
+   "name": "Quran Reading (Nazra)",
+   "page": "learn-quran-online-for-beginners",
+   "prices": {
+    "30": [
+     5000,
+     8000,
+     8000
+    ]
+   },
+   "plans": [
+    "2",
+    "4",
+    "weekend"
+   ],
+   "round_to": 10
+  },
+  {
+   "id": "tajweed",
+   "name": "Tajweed",
+   "page": "online-tajweed-classes",
+   "prices": {
+    "30": [
+     5000,
+     8000,
+     8000
+    ]
+   },
+   "plans": [
+    "2",
+    "4",
+    "weekend"
+   ],
+   "round_to": 10
+  },
+  {
+   "id": "hifz",
+   "name": "Hifz (Memorisation)",
+   "page": "online-hifz-program",
+   "prices": {
+    "30": [
+     12000,
+     18000,
+     20000
+    ]
+   },
+   "plans": [
+    "2",
+    "4",
+    "weekend"
+   ],
+   "round_to": 10
+  },
+  {
+   "id": "tafseer",
+   "name": "Translation and Tafseer",
+   "page": "quran-translation-tafseer-classes",
+   "prices": {
+    "45": [
+     12000,
+     18000,
+     20000
+    ]
+   },
+   "plans": [
+    "2",
+    "4",
+    "weekend"
+   ],
+   "round_to": 10
+  },
+  {
+   "id": "islamic",
+   "name": "Islamic Studies",
+   "page": "online-islamic-studies",
+   "prices": {
+    "30": [
+     3500,
+     6000,
+     7500
+    ]
+   },
+   "hidden": true
+  },
+  {
+   "id": "juzamma",
+   "name": "Juz Amma Memorisation",
+   "page": "juz-amma-memorization-online",
+   "prices": {
+    "30": [
+     4000,
+     6500,
+     8000
+    ]
+   },
+   "faq_name": "Juz Amma memorization",
+   "hidden": true
+  },
+  {
+   "id": "salah",
+   "name": "Salah (Prayer) Lessons",
+   "page": "online-salah-classes",
+   "prices": {
+    "30": [
+     3500,
+     6000,
+     7500
+    ]
+   },
+   "faq_name": "online salah",
+   "hidden": true
+  },
+  {
+   "id": "duas",
+   "name": "Daily Duas Course",
+   "page": "online-duas-course",
+   "prices": {
+    "30": [
+     3500,
+     6000,
+     7500
+    ]
+   },
+   "faq_name": "online duas",
+   "hidden": true
+  },
+  {
+   "id": "hadith40",
+   "name": "40 Hadith for Kids",
+   "page": "40-hadith-for-kids",
+   "prices": {
+    "30": [
+     3500,
+     6000,
+     7500
+    ]
+   },
+   "faq_name": "40 Hadith",
+   "hidden": true
+  },
+  {
+   "id": "newmuslim",
+   "name": "Classes for New Muslims",
+   "page": "quran-classes-for-new-muslims",
+   "prices": {
+    "30": [
+     3500,
+     6000,
+     7500
+    ]
+   },
+   "faq_name": "new Muslim",
+   "hidden": true
+  }
+ ],
+ "class_length_labels": {
+  "30": "25–30",
+  "45": "45–60",
+  "_note": "Shown on the site as the class length for each price row."
+ },
+ "overrides": {
+  "_note": "Fixed overseas prices that replace the converted value. Keyed by the PKR price. 5000/8000 keep the old overseas prices of the Rs 10,000/15,000 plans (owner changed PKR only, 1 Nov 2026).",
+  "USD": {
+   "5000": 40,
+   "8000": 60
+  },
+  "GBP": {
+   "5000": 30,
+   "8000": 50
+  },
+  "CAD": {
+   "5000": 60,
+   "8000": 80
+  },
+  "AUD": {
+   "5000": 60,
+   "8000": 80
+  },
+  "AED": {
+   "5000": 140,
+   "8000": 200
+  },
+  "PHP": {
+   "5000": 2600,
+   "8000": 3900,
+   "12000": 3200,
+   "18000": 4500,
+   "20000": 5200
+  },
+  "_note_php": "PHP = the USD price x 64 (USD/PHP, 26 Oct 2026), rounded up to the next 100. Keyed by the PKR price.",
+  "SAR": {
+   "5000": 150,
+   "8000": 225,
+   "12000": 190,
+   "18000": 265,
+   "20000": 300
+  },
+  "QAR": {
+   "5000": 150,
+   "8000": 220,
+   "12000": 185,
+   "18000": 255,
+   "20000": 295
+  },
+  "KWD": {
+   "5000": 12.5,
+   "8000": 18.5,
+   "12000": 15.5,
+   "18000": 21.5,
+   "20000": 25
+  },
+  "OMR": {
+   "5000": 15.5,
+   "8000": 23.5,
+   "12000": 19.5,
+   "18000": 27,
+   "20000": 31
+  },
+  "BHD": {
+   "5000": 15.5,
+   "8000": 23,
+   "12000": 19,
+   "18000": 26.5,
+   "20000": 30.5
+  },
+  "NZD": {
+   "5000": 75,
+   "8000": 110,
+   "12000": 90,
+   "18000": 125,
+   "20000": 145
+  },
+  "EUR": {
+   "5000": 40,
+   "8000": 55,
+   "12000": 45,
+   "18000": 65,
+   "20000": 75
+  },
+  "ZAR": {
+   "5000": 670,
+   "8000": 1000,
+   "12000": 830,
+   "18000": 1170,
+   "20000": 1330
+  },
+  "_note_new": "SAR, QAR, KWD, OMR, BHD = the USD price x the fixed USD peg (3.75, 3.64, 0.307, 0.3845, 0.376); NZD, EUR, ZAR = the USD price x the market rate (1.78, 0.89, 16.60, early Nov 2026). Rounded up to the round_step. Keyed by the PKR price."
+ },
+ "plan_labels": {
+  "_note": "Column labels. Each course lists its own 'plans' (default plans_days).",
+  "2": [
+   "2 days",
+   "a week"
+  ],
+  "4": [
+   "4 days",
+   "a week"
+  ],
+  "5": [
+   "5 days",
+   "a week"
+  ],
+  "weekend": [
+   "Weekend",
+   "Sat & Sun"
+  ]
+ },
+ "_rounding_note": "Overseas price = PKR / rate, rounded UP to round_step (or the course's round_to, e.g. 10 -> $36.10 becomes $40)."
 }

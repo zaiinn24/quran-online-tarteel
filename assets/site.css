@@ -846,3 +846,4 @@ a.fcard{display:block}
 .pay-step p{margin:0;font-size:14.5px;color:var(--muted);line-height:1.6}
 @media (max-width:960px){.pay-steps{grid-template-columns:1fr 1fr}}
 @media (max-width:560px){.pay-steps{grid-template-columns:1fr}}
+@media (min-width:1025px){.qot-dropdown.qot-dd-countries{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));min-width:520px;column-gap:4px}}

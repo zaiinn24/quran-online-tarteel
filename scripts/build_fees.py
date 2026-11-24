@@ -18,9 +18,9 @@ LEN = {k: v for k, v in D["class_length_labels"].items() if not k.startswith("_"
 C_ALL = {c["id"]: c for c in D["courses"]}
 HIDDEN = {k for k, c in C_ALL.items() if c.get("hidden")}   # courses whose prices are not shown anywhere (owner's choice)
 C = {k: c for k, c in C_ALL.items() if k not in HIDDEN}
-SYM = {"PKR": "Rs ", "USD": "$", "GBP": "£", "CAD": "C$", "AUD": "A$", "AED": "AED ", "PHP": "₱"}
-CUR_ORDER = ["USD", "GBP", "CAD", "AUD", "AED", "PKR"]
-CUR_LABEL = {"USD": "US $", "GBP": "UK £", "CAD": "CA $", "AUD": "AU $", "AED": "AED", "PKR": "PKR", "PHP": "PHP"}
+SYM = {"PKR": "Rs ", "USD": "$", "GBP": "£", "CAD": "C$", "AUD": "A$", "AED": "AED ", "PHP": "₱", "SAR": "SAR ", "QAR": "QAR ", "KWD": "KWD ", "OMR": "OMR ", "BHD": "BHD ", "NZD": "NZ$", "EUR": "€", "ZAR": "R "}
+CUR_ORDER = ["USD", "GBP", "CAD", "AUD", "NZD", "EUR", "AED", "SAR", "QAR", "KWD", "OMR", "BHD", "ZAR", "PHP", "PKR"]
+CUR_LABEL = {"USD": "US $", "GBP": "UK £", "CAD": "CA $", "AUD": "AU $", "AED": "AED", "PKR": "PKR", "PHP": "PHP", "SAR": "SAR", "QAR": "QAR", "KWD": "KWD", "OMR": "OMR", "BHD": "BHD", "NZD": "NZ $", "EUR": "EUR €", "ZAR": "ZAR"}
 
 
 def plans(c):
@@ -36,8 +36,9 @@ def conv(pkr, cur, rnd=None):
         return pkr
     if str(pkr) in OVR.get(cur, {}):
         return OVR[cur][str(pkr)]
-    step = max(STEP[cur], rnd or 0)
-    return int(math.ceil(pkr / RATES[cur] / step) * step)
+    step = STEP[cur] if STEP[cur] < 1 else max(STEP[cur], rnd or 0)  # 3-decimal currencies (KWD, OMR, BHD) keep 0.5 steps
+    v = round(math.ceil(pkr / RATES[cur] / step - 1e-9) * step, 3)
+    return int(v) if float(v).is_integer() else v
 
 
 def fmt(pkr, cur, rnd=None):
@@ -165,6 +166,14 @@ COUNTRY = {
     "online-quran-classes-uae": ("AED", "the UAE", "dirhams"),
     "online-quran-classes-pakistan": ("PKR", "Pakistan", "rupees"),
     "online-quran-classes-philippines": ("PHP", "the Philippines", "Philippine pesos"),
+    "online-quran-classes-saudi-arabia": ("SAR", "Saudi Arabia", "Saudi riyals"),
+    "online-quran-classes-qatar": ("QAR", "Qatar", "Qatari riyals"),
+    "online-quran-classes-kuwait": ("KWD", "Kuwait", "Kuwaiti dinars"),
+    "online-quran-classes-oman": ("OMR", "Oman", "Omani rials"),
+    "online-quran-classes-bahrain": ("BHD", "Bahrain", "Bahraini dinars"),
+    "online-quran-classes-new-zealand": ("NZD", "New Zealand", "New Zealand dollars"),
+    "online-quran-classes-ireland": ("EUR", "Ireland", "euros"),
+    "online-quran-classes-south-africa": ("ZAR", "South Africa", "South African rand"),
 }
 OVERVIEW = ["qaida", "nazra", "tajweed", "hifz", "tafseer", "islamic", "juzamma", "salah", "duas", "hadith40", "newmuslim"]
 ENROL = '<section class="cta-sec dark pattern-dark" id="enrol">'
