@@ -8,6 +8,8 @@ s = open(p).read()
 
 def lm(m):
     rel = m.group(1).replace("https://quranonlinetarteel.net/", "")
+    if rel.startswith("blog/") and rel != "blog/":
+        return m.group(0)  # blog posts keep their publish date (set by build_blog.py)
     f = rel if rel.endswith(".pdf") else rel + "index.html"
     d = subprocess.run(["git", "-C", ROOT, "log", "-1", "--format=%cs", "--", f], capture_output=True, text=True).stdout.strip()
     return re.sub(r"<lastmod>[^<]*", "<lastmod>" + d, m.group(0)) if d else m.group(0)
