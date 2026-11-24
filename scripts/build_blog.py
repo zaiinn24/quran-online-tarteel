@@ -38,6 +38,13 @@ SVG_CLOCK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-w
 SVG_USER = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>'
 
 
+def iv(name):
+    """cache-busting version for a blog image file"""
+    import hashlib
+    f = os.path.join(ROOT, "blog", "img", name)
+    return hashlib.md5(open(f, "rb").read()).hexdigest()[:8] if os.path.exists(f) else "0"
+
+
 def esc(s):
     return html.escape(s, quote=True)
 
@@ -324,7 +331,7 @@ def card(p, base, big=False, pub_attr=True):
     attr = f' data-pub="{p["date"]}"' if pub_attr else ""
     cls = "bl-card bl-big" if big else "bl-card"
     return (f'<a class="{cls}" href="{url}" data-cat="{p["cat"]}"{attr}>'
-            f'<div class="bl-img"><img src="{base}img/{img}-640.webp" srcset="{base}img/{img}-640.webp 640w, {base}img/{img}.webp 1200w" '
+            f'<div class="bl-img"><img src="{base}img/{img}-640.webp?v={iv(img + "-640.webp")}" srcset="{base}img/{img}-640.webp?v={iv(img + "-640.webp")} 640w, {base}img/{img}.webp?v={iv(img + ".webp")} 1200w" '
             f'sizes="(max-width:640px) 100vw, (max-width:960px) 50vw, 400px" width="1200" height="630" loading="lazy" decoding="async" alt="{esc(p["title"])}"></div>'
             f'<div class="bl-body"><span class="bl-cat">{esc(CAT[p["cat"]])}</span><h3>{esc(p["title"])}</h3>'
             f'<p>{esc(p["excerpt"])}</p><div class="bl-foot"><span>{nice_date(p["date"])}</span><b>{p["mins"]} min read</b></div></div></a>')
@@ -415,7 +422,7 @@ def write_post(p, posts, sched, ga, icon, sitecss, header, footer, brand_svg):
             f'<p class="hero-lead">{esc(p["excerpt"])}</p>'
             f'<div class="bp-meta"><span>{SVG_USER}Quran Online Tarteel</span><span>{SVG_CAL}<time datetime="{p["date"]}">{nice_date(p["date"])}</time></span>'
             f'<span>{SVG_CLOCK}{p["mins"]} min read</span></div></div></div></section>\n')
-    out += (f'<div class="bp-feature"><img src="../img/{p["slug"]}.webp" width="1200" height="630" alt="{esc(p["alt"])}" '
+    out += (f'<div class="bp-feature"><img src="../img/{p["slug"]}.webp?v={iv(p["slug"] + ".webp")}" width="1200" height="630" alt="{esc(p["alt"])}" '
             f'fetchpriority="high" decoding="async"></div>\n')
     toc_items = "".join(f'<li><a href="#{i}">{esc(t)}</a></li>' for i, t in p["toc"])
     if p["faq"]:
