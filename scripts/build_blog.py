@@ -411,8 +411,6 @@ def write_post(p, posts, sched, ga, icon, sitecss, header, footer, brand_svg):
     out = head(p["title"], p["desc"], canon, extra, ld, "../../", ga, icon, sitecss, kw=p["kw"], og_img=img)
     out += header + "<main>\n"
     out += (f'<section class="page-hero pattern-dark bp-hero"><div class="container"><div class="bp-hero-in">'
-            f'<nav class="crumbs" aria-label="Breadcrumb"><a href="../../">Home</a><span aria-hidden="true">/</span>'
-            f'<a href="../">Blog</a><span aria-hidden="true">/</span><a href="../#{p["cat"]}">{esc(CAT[p["cat"]])}</a></nav>'
             f'<span class="bp-chip">{esc(CAT[p["cat"]])}</span><h1>{esc(p["h1"])}</h1>'
             f'<p class="hero-lead">{esc(p["excerpt"])}</p>'
             f'<div class="bp-meta"><span>{SVG_USER}Quran Online Tarteel</span><span>{SVG_CAL}<time datetime="{p["date"]}">{nice_date(p["date"])}</time></span>'
