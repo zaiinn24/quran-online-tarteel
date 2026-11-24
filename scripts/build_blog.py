@@ -390,7 +390,7 @@ def related_for(p, posts):
 
 def write_post(p, posts, sched, ga, icon, sitecss, header, footer, brand_svg):
     canon = f"{SITE}/blog/{p['slug']}/"
-    img = f"{SITE}/blog/img/{p['slug']}.webp"
+    img = f"{SITE}/blog/img/{p['slug']}-og.webp"  # titled version for social sharing
     ld = [{
         "@context": "https://schema.org", "@type": "BlogPosting", "headline": p["h1"], "description": p["desc"],
         "image": [img], "datePublished": p["date"], "dateModified": p.get("updated", p["date"]),
@@ -499,7 +499,7 @@ def write_index(posts, ga, icon, sitecss):
           {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
               {"@type": "ListItem", "position": 1, "name": "Home", "item": SITE + "/"},
               {"@type": "ListItem", "position": 2, "name": "Blog", "item": canon}]}]
-    out = head(title, desc, canon, "", ld, "../", ga, icon, sitecss.replace("../../", "../../"), og_img=f"{SITE}/blog/img/blog-cover.webp", og_type="website")
+    out = head(title, desc, canon, "", ld, "../", ga, icon, sitecss.replace("../../", "../../"), og_img=f"{SITE}/blog/img/blog-cover-og.webp", og_type="website")
     out = out.replace('href="../../assets/site.css', 'href="../assets/site.css')
     out += header + "<main>\n"
     out += ('<section class="page-hero pattern-dark center"><div class="container page-hero-grid"><div class="hero-text">'

@@ -57,6 +57,16 @@ h1{font-family:F;font-weight:600;color:#fff;font-size:SIZEpx;line-height:1.12;ma
 <svg class="ic" viewBox="0 0 360 340">ICON</svg></div><div class="ar">ARABIC</div></div>
 </body></html>"""
 
+ART = TPL.split("<body>")[0].replace(".r{position:absolute;right:70px;top:60px;width:380px;height:510px;", ".r{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:520px;height:560px;") + """<body><div class="bg"></div><div class="pat"></div><div class="frame"></div>
+<div class="glow"></div>
+<div class="r"><div class="medal">MEDAL</div><div class="ar">ARABIC</div></div>
+<style>.glow{position:absolute;left:50%;top:44%;width:620px;height:620px;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(199,155,69,.28),transparent 62%)}
+.r .medal{width:380px;height:380px}.r .ar{margin-top:4px}
+.side{position:absolute;top:50%;transform:translateY(-50%);width:230px;height:230px;opacity:.5}</style>
+<svg class="side" style="left:70px" viewBox="0 0 360 360"><g fill="none" stroke="#c79b45" stroke-width="2"><rect x="62" y="62" width="236" height="236" rx="6"/><rect x="62" y="62" width="236" height="236" rx="6" transform="rotate(45 180 180)"/><circle cx="180" cy="180" r="70"/></g></svg>
+<svg class="side" style="right:70px" viewBox="0 0 360 360"><g fill="none" stroke="#c79b45" stroke-width="2"><rect x="62" y="62" width="236" height="236" rx="6"/><rect x="62" y="62" width="236" height="236" rx="6" transform="rotate(45 180 180)"/><circle cx="180" cy="180" r="70"/></g></svg>
+</body></html>"""
+
 
 def hexa(c, a):
     c = c.lstrip("#")
@@ -65,12 +75,20 @@ def hexa(c, a):
 
 def render(page, slug, title, cat, ar):
     acc = TINT.get(cat, "#c79b45")
+    medal = TPL[TPL.index('<div class="medal">') + len('<div class="medal">'):TPL.index('<div class="ar">')].rsplit("</div>", 1)[0]
+    art = (ART.replace("FONTS", FONTS).replace("ACCA", hexa(acc, .22)).replace("ARSIZE", str(84 if len(ar) <= 10 else 70 if len(ar) <= 16 else 58))
+           .replace("MEDAL", medal).replace("ARABIC", ar).replace("ICON", SVGS[MOTIF.get(cat, "book")].replace("ACC", acc)))
+    shoot(page, art, slug)
     n = len(title)
     size = 62 if n <= 38 else 56 if n <= 52 else 50 if n <= 64 else 44
     arsize = 64 if len(ar) <= 10 else 52 if len(ar) <= 16 else 42
     h = (TPL.replace("FONTS", FONTS).replace("ACCA", hexa(acc, .22)).replace("ARSIZE", str(arsize)).replace("SIZE", str(size))
          .replace("CHIP", CAT.get(cat, "Guide")).replace("TITLE", title).replace("ARABIC", ar)
          .replace("ICON", SVGS[MOTIF.get(cat, "book")].replace("ACC", acc)))
+    shoot(page, h, slug + "-og", small=False)
+
+
+def shoot(page, h, slug, small=True):
     tmp = os.path.join(ROOT, "scripts", "_img_tmp.html")
     open(tmp, "w", encoding="utf-8").write(h)
     page.goto("file://" + tmp)
@@ -80,7 +98,8 @@ def render(page, slug, title, cat, ar):
     png = page.screenshot(type="png")
     im = Image.open(io.BytesIO(png)).convert("RGB")
     im.save(os.path.join(OUT, slug + ".webp"), "WEBP", quality=84, method=6)
-    im.resize((640, 336), Image.LANCZOS).save(os.path.join(OUT, slug + "-640.webp"), "WEBP", quality=82, method=6)
+    if small:
+        im.resize((640, 336), Image.LANCZOS).save(os.path.join(OUT, slug + "-640.webp"), "WEBP", quality=82, method=6)
 
 
 def main():
