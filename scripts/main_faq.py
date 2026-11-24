@@ -12,7 +12,7 @@ SECTIONS = [
   ("What courses do you offer?", "We teach " + L("noorani-qaida-online/", "Noorani Qaida") + ", " + L("learn-quran-online-for-beginners/", "Quran reading (Nazra)") + ", " + L("online-tajweed-classes/", "Tajweed") + ", " + L("online-hifz-program/", "Hifz") + ", " + L("quran-translation-tafseer-classes/", "Translation and Tafseer") + " and " + L("online-islamic-studies/", "Islamic Studies") + ", plus Juz Amma memorisation, Salah lessons, a daily Duas course, 40 Hadith for kids and classes for new Muslims. We do not teach Arabic language, Ijazah or Qirat courses."),
   ("Are classes one-to-one or in groups?", "Every class is one-to-one: one student, one teacher, full attention. There are no group classes."),
   ("How long is each class?", "Classes are 25 to 30 minutes. Translation and Tafseer classes are 45 to 60 minutes. You choose 2 or 4 days a week, or weekend classes. Young children do well with this length too."),
-  ("Which language do teachers use?", "Our teachers explain in Urdu and English, whichever the student understands best. The Quran itself is always read in Arabic."),
+  ("Which language do teachers use?", "Our teachers explain in English, Urdu or Arabic, whichever the student understands best. The Quran itself is always read in Arabic."),
   ("Which app are classes on?", "Whichever you prefer: WhatsApp video, Skype, Google Meet or Zoom. A laptop, tablet or phone with a camera, a steady internet connection and a quiet corner are all you need. A headset helps."),
   ("Do I need to know Arabic before starting?", "No. Beginners of any age start with Noorani Qaida, which teaches the Arabic letters and sounds step by step until you can read the Quran yourself."),
  ]),
@@ -28,10 +28,11 @@ SECTIONS = [
  ("Trial, Fees and Payment", [
   ("Is there a free trial?", "Yes. Every new student gets 2 free classes with a female teacher, with nothing to pay. " + L("free-trial/", "Book your 2 free classes") + "."),
   ("How much are the fees?", "Fees are monthly, per student. Noorani Qaida, Quran reading and Tajweed are $40 (Rs 5,000) for 2 days a week, $60 (Rs 8,000) for 4 days a week and $60 (Rs 8,000) for weekend classes, with 25–30 minute classes. Every course and currency is on our " + L("fees/", "fees and plans page") + "."),
-  ("How do I pay in Pakistan?", "By JazzCash, Easypaisa or bank transfer. The fee is paid monthly, in advance."),
+  ("How do I pay in Pakistan?", "By JazzCash, Easypaisa or bank transfer. The fee is paid monthly, in advance, after your 2 free classes."),
   ("How do I pay from abroad?", "Families in the USA, UK, Canada, Australia, the UAE and elsewhere pay by bank transfer or Western Union, or a relative in Pakistan pays for them by JazzCash, Easypaisa or bank transfer. We share the payment details on WhatsApp after your free classes. We do not take card or PayPal payments at the moment."),
+  ("Why do you take fees in advance?", "Because your teacher keeps your fixed class time for you for the whole month and plans her schedule around it. You only pay after your 2 free trial classes, so you already know the teacher before paying. If you skip the free trial, the fee is paid before the first class. And if it does not work out, our refund policy protects you: 100% back if you stop within the first 2 classes of a paid month, 50% back if you stop by the middle of the month."),
   ("Is there a family discount?", "Yes. When more than one child, or a mother and child, learn with us, you get a special family discount. Just ask us on WhatsApp."),
-  ("Can I get a refund?", "Yes. If you have paid but decide not to start, you get a full refund. If you stop in the middle of a month, we refund 50% of that month's fee."),
+  ("Can I get a refund?", "Yes. If you decide to stop within the first 2 classes of a paid month, we refund 100% of that month's fee. If you stop by the middle of the month, we refund 50% of that month's fee."),
   ("Are books, tests or certificates included?", "Your teacher shares the pages you need as pictures, so you do not need to buy anything to start. If you would like a printed book, she will tell you which one. We do not run formal tests, reports or certificates. Instead, your teacher keeps you updated on WhatsApp about how the student is doing."),
  ]),
  ("Missed Classes, Holidays and Timings", [

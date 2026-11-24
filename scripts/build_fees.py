@@ -317,7 +317,9 @@ FEES_FAQ = [
     ("How do I pay in Pakistan?",
      "You can pay by JazzCash, Easypaisa or bank transfer. The fee is paid monthly, in advance."),
     ("Do I pay per class or per month?",
-     "Plans are monthly and paid in advance, based on your plan (2 days a week, 4 days a week or weekends) and how long each class is."),
+     "Plans are monthly and paid in advance, at the start of each month, based on your plan (2 days a week, 4 days a week or weekends) and how long each class is."),
+    ("Why do you take fees in advance?",
+     "Because your teacher keeps your fixed class time for you for the whole month and plans her schedule around it. You only pay after your 2 free trial classes, so you already know the teacher before paying. If you skip the free trial, the fee is paid before the first class. And if it does not work out, our refund policy protects you: 100% back if you stop within the first 2 classes of a paid month, 50% back if you stop by the middle of the month."),
     ("Is there a discount for siblings?",
      "Yes, families with more than one student get a small family discount. Message us on WhatsApp with how many children, or a mother and child, will study and we will tell you your family fee."),
     ("What happens if the teacher misses a class?",
@@ -325,7 +327,7 @@ FEES_FAQ = [
     ("What if my child misses a class?",
      "Please let your teacher know as early as you can. Classes missed by the student are not automatically made up, but if your teacher has a free slot she will try her best to fit one in."),
     ("Can I get a refund?",
-     "Yes. If you have paid but decide not to start, you get a full refund. If you stop in the middle of a month, we refund 50% of that month's fee."),
+     "Yes. If you decide to stop within the first 2 classes of a paid month, we refund 100% of that month's fee. If you stop by the middle of the month, we refund 50% of that month's fee."),
     ("Are classes held on Eid and public holidays?",
      "Classes are off on Eid and on Pakistan's public holidays, such as 9th and 10th Muharram and 12 Rabi ul Awwal. These days are not made up. In Ramadan, class timings change and we agree new times with you."),
     ("Are books, tests or certificates included?",
@@ -397,7 +399,16 @@ def fees_page():
                 f'<div class="inc-card"><h3>How to pay</h3><p><b>In Pakistan:</b> JazzCash, Easypaisa or bank transfer.</p>'
                 f'<p><b>From abroad:</b> bank transfer or Western Union, or a relative in Pakistan can pay for you by JazzCash, Easypaisa or bank transfer.</p>'
                 f'<p>Fees are paid monthly, in advance. We share payment details on WhatsApp after your <a href="{PREFIX}free-trial/" class="in-link">2 free classes</a>.</p></div></div></div></section>')
-    block = plans_sec + table + included
+    steps = [("Try 2 free classes", "Meet your female teacher first. No payment details needed."),
+             ("Pay the first month in advance", "Happy to continue? Pay the month's fee before regular classes start. If you skip the free trial, you pay before the first class."),
+             ("Then at the start of every month", "Each month's fee is paid in advance, so your teacher keeps your fixed class time for you."),
+             ("Fair refunds", "Stop within the first 2 classes of a paid month and we refund 100%. Stop by the middle of the month and we refund 50%.")]
+    payment = ('<section class="sec bg-cream" id="payment"><div class="container"><div class="section-head"><span class="eyebrow">Advance Fees</span>'
+               '<h2>How Payment Works</h2><p>We take fees monthly, in advance. Here is exactly how it works, so there are no surprises. '
+               'Teachers explain every lesson in English, Urdu or Arabic.</p></div><div class="pay-steps">'
+               + "".join(f'<div class="pay-step"><span>{i}</span><h3>{t}</h3><p>{d}</p></div>' for i, (t, d) in enumerate(steps, 1))
+               + '</div></div></section>')
+    block = plans_sec + table + included + payment
     # replace from Plans section up to the enrol CTA (first build) or marker block (later builds)
     start = "<!--FEES:page-->"
     if start in s:

@@ -825,3 +825,24 @@ a.fcard{display:block}
 /* form subline: two clean lines */
 .form-card .sub b{display:block;margin-top:2px}
 .fee-na{color:#b8ab93;font-weight:600}
+/* sitewide: good to know before you book */
+.policy-strip{background:var(--cream-2);border-top:3px solid var(--gold);padding:34px 0 36px}
+.policy-strip .ps-head{text-align:center;font-size:12.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-deep);margin:0 0 20px}
+.policy-strip .ps-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.policy-strip .ps-item{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 18px 16px}
+.policy-strip .ps-ic{flex-shrink:0;width:42px;height:42px;border-radius:12px;background:var(--ink);color:var(--gold-2);display:grid;place-items:center}
+.policy-strip .ps-ic svg{width:22px;height:22px}
+.policy-strip strong{display:block;font-family:var(--serif);font-size:17.5px;font-weight:600;color:var(--ink);line-height:1.3;margin-bottom:4px}
+.policy-strip p{margin:0;font-size:14.5px;line-height:1.6;color:var(--muted)}
+.policy-strip a{color:var(--gold-deep);font-weight:700;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+.form-policy{font-size:13px;line-height:1.5;color:var(--text);background:var(--cream);border:1px dashed rgba(199,155,69,.6);border-radius:10px;padding:9px 12px;margin:4px 0 12px;text-align:center}
+.form-policy b{color:var(--gold-deep)}
+@media (max-width:960px){.policy-strip .ps-grid{grid-template-columns:1fr;max-width:620px;margin:0 auto}}
+@media (max-width:640px){.policy-strip{padding:26px 0 28px}.policy-strip .ps-item{padding:15px 14px}.policy-strip strong{font-size:16.5px}}
+.pay-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;max-width:1100px;margin:0 auto}
+.pay-step{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px 20px;position:relative}
+.pay-step span{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--gold-2),var(--gold));color:var(--ink);font-weight:800;margin-bottom:12px}
+.pay-step h3{font-size:18.5px;margin:0 0 6px}
+.pay-step p{margin:0;font-size:14.5px;color:var(--muted);line-height:1.6}
+@media (max-width:960px){.pay-steps{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.pay-steps{grid-template-columns:1fr}}
