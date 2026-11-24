@@ -370,7 +370,7 @@ def build():
     write_schedule(posts)
     write_sitemap(posts)
     write_llms(posts)
-    json.dump([{k: p[k] for k in ("slug", "title", "cat", "date", "ar", "words")} for p in posts],
+    json.dump([{k: p[k] for k in ("slug", "title", "h1", "cat", "date", "ar", "words", "excerpt", "mins")} for p in posts],
               open(os.path.join(ROOT, "scripts", "blog_posts", "_index.json"), "w"), indent=1, ensure_ascii=False)
     for p in posts:
         print(p["date"], p["slug"], p["words"], "words", len(p["faq"]), "faq", len(p["toc"]), "h2")

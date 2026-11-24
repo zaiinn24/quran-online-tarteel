@@ -847,3 +847,18 @@ a.fcard{display:block}
 @media (max-width:960px){.pay-steps{grid-template-columns:1fr 1fr}}
 @media (max-width:560px){.pay-steps{grid-template-columns:1fr}}
 @media (min-width:1025px){.qot-dropdown.qot-dd-countries{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));min-width:520px;column-gap:4px}}
+/* latest from the blog (homepage, service and country pages) */
+.lb-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.lb-card{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;color:inherit;transition:transform .25s,box-shadow .25s}
+.lb-card:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+.lb-img{aspect-ratio:640/336;background:var(--ink);overflow:hidden}
+.lb-img img{width:100%;height:100%;object-fit:cover}
+.lb-body{padding:18px 20px 20px;display:flex;flex-direction:column;flex:1}
+.lb-cat{font-size:11.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-deep)}
+.lb-card h3{font-size:19px;margin:8px 0;line-height:1.3}
+.lb-card p{color:var(--muted);font-size:14.5px;line-height:1.6;margin:0 0 12px}
+.lb-foot{margin-top:auto;display:flex;justify-content:space-between;font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+.lb-foot b{color:var(--gold-deep)}
+.lb-more{text-align:center;margin-top:28px}
+@media (max-width:960px){.lb-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.lb-grid .lb-card:nth-child(3){display:none}}
+@media (max-width:640px){.lb-grid{grid-template-columns:1fr}.lb-grid .lb-card:nth-child(3){display:flex}}

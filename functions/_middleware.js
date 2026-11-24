@@ -1,4 +1,5 @@
 // Quran Online Tarteel - scheduled blog publishing (Cloudflare Pages middleware).
+// Also filters the 'Latest from the blog' section on the homepage, service and country pages (see _routes.json).
 // Every blog post is committed in advance with a publish date. Until that date (Pakistan time, UTC+5):
 //   - /blog/<slug>/ answers 404
 //   - cards and links pointing to it are removed from blog pages
@@ -50,6 +51,16 @@ async function notFound(env, url) {
   return new Response(r.body, { status: 404, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
 }
 
+// 'Latest from the blog' cards: drop posts that are not live yet and keep only the first 3
+class Latest {
+  constructor(t) { this.t = t; this.n = 0; }
+  element(el) {
+    const d = el.getAttribute("data-pub");
+    if ((d && d > this.t) || this.n >= 3) el.remove();
+    else this.n++;
+  }
+}
+
 class Hide {
   constructor(t) { this.t = t; }
   element(el) {
@@ -73,7 +84,7 @@ export async function onRequest(context) {
     const res = await next();
     const ct = res.headers.get("content-type") || "";
     if (!ct.includes("text/html")) return res;
-    const out = new HTMLRewriter().on("[data-pub]", new Hide(t)).transform(res);
+    const out = new HTMLRewriter().on("[data-latest]", new Latest(t)).on("[data-pub]:not([data-latest])", new Hide(t)).transform(res);
     const h = new Headers(out.headers);
     h.set("cache-control", "public, max-age=0, must-revalidate");
     return new Response(out.body, { status: out.status, headers: h });
@@ -97,5 +108,12 @@ export async function onRequest(context) {
     return new Response(body, { status: 200, headers: h });
   }
 
-  return next();
+  // homepage, service and country pages: same filtering for their 'Latest from the blog' section and blog links
+  const res = await next();
+  const ct = res.headers.get("content-type") || "";
+  if (res.status !== 200 || !ct.includes("text/html")) return res;
+  const out = new HTMLRewriter().on("[data-latest]", new Latest(t)).on("a[data-pub]", new Hide(t)).transform(res);
+  const h = new Headers(out.headers);
+  h.set("cache-control", "public, max-age=0, must-revalidate");
+  return new Response(out.body, { status: out.status, headers: h });
 }
