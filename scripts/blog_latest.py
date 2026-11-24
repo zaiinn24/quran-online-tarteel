@@ -32,6 +32,7 @@ PAGES = {  # page -> preferred categories (others follow, newest first)
     "quran-classes-for-new-muslims": ["salah", "learn-quran"],
     "fees": ["guides", "learn-quran"],
     "free-trial": ["learn-quran", "guides"],
+    "faq": ["guides", "learn-quran"],
 }
 for d in sorted(os.listdir(ROOT)):
     if d.startswith("online-quran-classes-") and d not in PAGES and os.path.exists(os.path.join(ROOT, d, "index.html")):

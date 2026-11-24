@@ -871,3 +871,5 @@ a.fcard{display:block}
 .pdf-tx p{margin:0;color:var(--muted);font-size:15px;line-height:1.6}
 .pdf-dl .btn{flex-shrink:0;white-space:nowrap}
 @media (max-width:760px){.pdf-dl{flex-direction:column;align-items:flex-start;padding:20px}.pdf-dl .btn{width:100%}}
+.faq-jump{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:26px}
+[id^="faq-"]{scroll-margin-top:110px}
