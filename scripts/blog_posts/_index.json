@@ -6,5 +6,261 @@
   "date": "2026-11-24",
   "ar": "تعلم القرآن",
   "words": 1823
+ },
+ {
+  "slug": "how-to-pray-salah-step-by-step",
+  "title": "How to Pray Salah Step by Step: A Simple Guide for Beginners",
+  "cat": "salah",
+  "date": "2026-11-27",
+  "ar": "الصلاة",
+  "words": 1703
+ },
+ {
+  "slug": "what-is-tajweed",
+  "title": "What Is Tajweed? Meaning, Rules and Why It Matters",
+  "cat": "tajweed",
+  "date": "2026-11-30",
+  "ar": "التجويد",
+  "words": 1342
+ },
+ {
+  "slug": "best-online-quran-classes",
+  "title": "Best Online Quran Classes: How to Compare Academies (2026)",
+  "cat": "guides",
+  "date": "2026-12-03",
+  "ar": "أفضل الدروس",
+  "words": 1579
+ },
+ {
+  "slug": "what-is-dua",
+  "title": "What Is Dua? Meaning, Etiquette and How to Make Dua",
+  "cat": "duas",
+  "date": "2026-12-06",
+  "ar": "الدعاء",
+  "words": 1351
+ },
+ {
+  "slug": "arabic-alphabet",
+  "title": "Arabic Alphabet: 28 Letters with Names, Sounds and Forms",
+  "cat": "learn-quran",
+  "date": "2026-12-09",
+  "ar": "أ ب ت",
+  "words": 1358
+ },
+ {
+  "slug": "what-is-dhikr",
+  "title": "What Is Dhikr? Meaning, Types, Benefits and a Daily List",
+  "cat": "duas",
+  "date": "2026-12-12",
+  "ar": "الذكر",
+  "words": 1236
+ },
+ {
+  "slug": "how-to-teach-quran-to-kids-at-home",
+  "title": "How to Teach Quran to Kids at Home: 12 Tips for Parents",
+  "cat": "kids",
+  "date": "2026-12-15",
+  "ar": "القرآن للأطفال",
+  "words": 1328
+ },
+ {
+  "slug": "sunnah-prayers",
+  "title": "Sunnah Prayers Explained: Sunnah Rakats of Each Namaz",
+  "cat": "salah",
+  "date": "2026-12-18",
+  "ar": "السنن الرواتب",
+  "words": 1310
+ },
+ {
+  "slug": "how-to-memorize-quran",
+  "title": "How to Memorize the Quran: A Realistic Hifz Plan and Timetable",
+  "cat": "hifz",
+  "date": "2026-12-21",
+  "ar": "الحفظ",
+  "words": 1289
+ },
+ {
+  "slug": "dua-for-success-protection-knowledge",
+  "title": "Dua for Success, Protection and Knowledge (Arabic and English)",
+  "cat": "duas",
+  "date": "2026-12-24",
+  "ar": "دعاء النجاح",
+  "words": 1471
+ },
+ {
+  "slug": "how-to-choose-a-female-quran-teacher",
+  "title": "How to Choose a Female Quran Teacher Online: A Checklist",
+  "cat": "women",
+  "date": "2026-12-27",
+  "ar": "معلمة القرآن",
+  "words": 1218
+ },
+ {
+  "slug": "benefits-of-reciting-quran",
+  "title": "10 Benefits of Reciting the Quran from Quran and Hadith",
+  "cat": "knowledge",
+  "date": "2026-12-30",
+  "ar": "فضل القرآن",
+  "words": 1295
+ },
+ {
+  "slug": "how-to-perform-wudu",
+  "title": "How to Perform Wudu Step by Step (with Dua After Wudu)",
+  "cat": "salah",
+  "date": "2027-01-02",
+  "ar": "الوضوء",
+  "words": 1493
+ },
+ {
+  "slug": "learn-quran-as-an-adult-woman",
+  "title": "Learning Quran as an Adult Woman: Where to Start",
+  "cat": "women",
+  "date": "2027-01-05",
+  "ar": "تعلم القرآن للنساء",
+  "words": 1169
+ },
+ {
+  "slug": "islamic-stories-for-kids",
+  "title": "Islamic Stories for Kids: 8 Short Stories of the Prophets",
+  "cat": "kids",
+  "date": "2027-01-08",
+  "ar": "قصص الأنبياء",
+  "words": 1399
+ },
+ {
+  "slug": "best-english-translation-of-quran",
+  "title": "Best English Translation of the Quran: 6 Compared (2027)",
+  "cat": "guides",
+  "date": "2027-01-11",
+  "ar": "ترجمة القرآن",
+  "words": 1253
+ },
+ {
+  "slug": "noon-sakinah-and-tanween-rules",
+  "title": "Noon Sakinah and Tanween Rules: Izhar, Idgham, Iqlab, Ikhfa",
+  "cat": "tajweed",
+  "date": "2027-01-14",
+  "ar": "النون الساكنة",
+  "words": 1349
+ },
+ {
+  "slug": "how-long-does-it-take-to-learn-quran",
+  "title": "How Long Does It Take to Learn the Quran? Realistic Timelines",
+  "cat": "learn-quran",
+  "date": "2027-01-17",
+  "ar": "كم من الوقت",
+  "words": 1132
+ },
+ {
+  "slug": "what-is-hifz",
+  "title": "What Is Hifz? Meaning, Best Age to Start and Benefits",
+  "cat": "hifz",
+  "date": "2027-01-20",
+  "ar": "حفظ القرآن",
+  "words": 1149
+ },
+ {
+  "slug": "learn-quran-in-urdu-english-arabic",
+  "title": "Learn Quran in Urdu, English or Arabic: Which Is Best?",
+  "cat": "learn-quran",
+  "date": "2027-01-23",
+  "ar": "بأي لغة",
+  "words": 1003
+ },
+ {
+  "slug": "ramadan-quran-plan",
+  "title": "Ramadan Quran Plan: How to Finish the Quran in Ramadan",
+  "cat": "ramadan",
+  "date": "2027-01-26",
+  "ar": "رمضان",
+  "words": 1287
+ },
+ {
+  "slug": "makharij-al-huroof",
+  "title": "Makharij al-Huroof: The 17 Points of Arabic Letters Explained",
+  "cat": "tajweed",
+  "date": "2027-01-29",
+  "ar": "مخارج الحروف",
+  "words": 1314
+ },
+ {
+  "slug": "prepare-kids-for-ramadan",
+  "title": "How to Prepare Kids for Ramadan: 15 Ideas Parents Can Use",
+  "cat": "ramadan",
+  "date": "2027-02-01",
+  "ar": "رمضان للأطفال",
+  "words": 1232
+ },
+ {
+  "slug": "tafseer-for-beginners",
+  "title": "Tafseer for Beginners: What It Is and Where to Start",
+  "cat": "knowledge",
+  "date": "2027-02-04",
+  "ar": "التفسير",
+  "words": 1097
+ },
+ {
+  "slug": "surah-al-mulk-benefits",
+  "title": "Surah Al-Mulk Benefits, Meaning and How to Memorize It",
+  "cat": "knowledge",
+  "date": "2027-02-07",
+  "ar": "سورة الملك",
+  "words": 1143
+ },
+ {
+  "slug": "short-surahs-for-kids",
+  "title": "Short Surahs for Kids: The First 14 to Memorize, in Order",
+  "cat": "kids",
+  "date": "2027-02-10",
+  "ar": "قصار السور",
+  "words": 1053
+ },
+ {
+  "slug": "qalqalah-in-tajweed",
+  "title": "Qalqalah in Tajweed: Letters, Levels and Examples",
+  "cat": "tajweed",
+  "date": "2027-02-13",
+  "ar": "القلقلة",
+  "words": 1025
+ },
+ {
+  "slug": "online-vs-local-quran-classes",
+  "title": "Online vs Local Quran Classes: Which Is Better for Your Child?",
+  "cat": "guides",
+  "date": "2027-02-16",
+  "ar": "أونلاين أم محلي",
+  "words": 1005
+ },
+ {
+  "slug": "madd-in-tajweed",
+  "title": "Madd in Tajweed: Types of Madd with Examples and Counts",
+  "cat": "tajweed",
+  "date": "2027-02-19",
+  "ar": "المد",
+  "words": 1230
+ },
+ {
+  "slug": "laylatul-qadr-last-ten-nights",
+  "title": "Laylatul Qadr 2027: Last 10 Nights of Ramadan Guide and Dua",
+  "cat": "ramadan",
+  "date": "2027-02-22",
+  "ar": "ليلة القدر",
+  "words": 1221
+ },
+ {
+  "slug": "colour-coded-tajweed-quran",
+  "title": "Colour-Coded Tajweed Quran Explained: What Each Colour Means",
+  "cat": "tajweed",
+  "date": "2027-02-25",
+  "ar": "مصحف التجويد",
+  "words": 1000
+ },
+ {
+  "slug": "surah-al-kahf-on-friday",
+  "title": "Surah Al-Kahf on Friday: Benefits, Stories and Lessons",
+  "cat": "knowledge",
+  "date": "2027-02-28",
+  "ar": "سورة الكهف",
+  "words": 1122
  }
 ]

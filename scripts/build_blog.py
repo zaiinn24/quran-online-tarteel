@@ -85,6 +85,42 @@ def md_inline(text):
     return re.sub(r"^<p>(.*)</p>$", r"\1", h.strip(), flags=re.S)
 
 
+_Q = None
+_D = None
+
+
+def ayah_text(ref):
+    global _Q
+    if _Q is None:
+        _Q = {s["id"]: {v["id"]: v["text"] for v in s["verses"]} for s in json.load(open(os.path.join(ROOT, "data", "quran-uthmani.json"), encoding="utf-8"))}
+    sur, a = ref.split(":")
+    a1, _, a2 = a.partition("-")
+    a2 = a2 or a1
+    return " ".join(_Q[int(sur)][i] + " \uFD3F" + str(i).translate(str.maketrans("0123456789", "٠١٢٣٤٥٦٧٨٩")) + "\uFD3E" if a1 != a2 else _Q[int(sur)][i] for i in range(int(a1), int(a2) + 1))
+
+
+def dua_lookup(q):
+    global _D
+    if _D is None:
+        import sys
+        sys.path.insert(0, os.path.join(ROOT, "scripts"))
+        import duas_data
+        _D = []
+        for pg in duas_data.PAGES.values():
+            _D += [it for it in pg.get("items", []) if isinstance(it, tuple) and len(it) >= 7]
+        try:
+            import duas_more
+            for pg in getattr(duas_more, "PAGES", {}).values():
+                _D += [it for it in pg.get("items", []) if isinstance(it, tuple) and len(it) >= 7]
+        except Exception:
+            pass
+    ql = q.lower()
+    for it in _D:
+        if ql in it[0].lower() or ql in it[2].lower() or ql in it[3].lower():
+            return it
+    raise SystemExit("dua not found: " + q)
+
+
 def render_blocks(body, ctx):
     """Turn :::blocks into HTML placeholders, then run markdown over the rest."""
     stash = []
@@ -118,6 +154,18 @@ def render_blocks(body, ctx):
                 if ":" in l:
                     k, v = l.split(":", 1)
                     d[k.strip()] = v.strip()
+            if d.get("ayah"):
+                d.setdefault("ar", ayah_text(d["ayah"]))
+                if "ref" not in d:
+                    s_, a_ = d["ayah"].split(":")
+                    d["ref"] = f"Quran {s_}:{a_}"
+            if d.get("dua"):
+                it = dua_lookup(d["dua"])
+                ar = it[1]
+                if isinstance(ar, tuple):
+                    _, su, a1, w1, w2 = ar
+                    ar = " ".join(ayah_text(f"{su}:{a1}").split()[w1 or 0:w2])
+                d.setdefault("ar", ar); d.setdefault("tr", it[2]); d.setdefault("en", it[3]); d.setdefault("ref", it[6])
             h = '<figure class="bp-quote">'
             if d.get("ar"):
                 h += f'<div class="q-ar" lang="ar" dir="rtl">{esc(d["ar"])}</div>'
@@ -192,7 +240,11 @@ def fix_links(h, post, sched):
 
 
 def wrap_tables(h):
-    return re.sub(r"<table>(.*?)</table>", r'<div class="bp-table"><table>\1</table></div>', h, flags=re.S)
+    def rep(m):
+        cols = len(re.findall(r"<th[\s>]", m.group(1).split("</tr>")[0]))
+        cls = "bp-table wide" if cols >= 5 else "bp-table"
+        return f'<div class="{cls}"><table>{m.group(1)}</table></div>'
+    return re.sub(r"<table>(.*?)</table>", rep, h, flags=re.S)
 
 
 def add_ids(h, toc):

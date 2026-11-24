@@ -163,6 +163,9 @@
   .bp-content ul li,.bp-content ol li{font-size:16px}
   .bp-content h2{margin-top:36px}
   .bp-cards,.bp-cards.c3{grid-template-columns:1fr}
+  .bp-table table{min-width:0;font-size:14.5px}
+  .bp-table.wide table{min-width:560px}
+  .bp-table th,.bp-table td{padding:11px 12px}
   .bp-cta{flex-direction:column;align-items:flex-start;padding:22px}
   .bp-quote{padding:24px 18px 20px}
   .bp-box{padding:18px 18px}
