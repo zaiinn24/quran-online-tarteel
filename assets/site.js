@@ -2,6 +2,7 @@
 (function () {
   var LEAD_EMAIL = "rehanabashir6543@gmail.com";
   var FORM_ENDPOINT = "https://formsubmit.co/ajax/" + LEAD_EMAIL;
+  var BACKUP_ENDPOINT = "https://formsubmit.co/ajax/zainulabideen4356@gmail.com"; /* used only if the main inbox fails */
   var WA_NUMBER = "923345259952";
   var WA_DEFAULT = "Assalamu alaikum, I would like to know more about your online Quran classes.";
 
@@ -169,21 +170,37 @@
       var err = card.querySelector(".form-error");
       if (err) err.style.display = "none";
 
-      fetch(FORM_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify(data)
-      })
-        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; }); })
-        .then(function (res) {
-          if (!res.ok || String(res.j.success) === "false") throw new Error("send failed");
-          track("generate_lead", { form_name: data.form_source || "form", course: data.course || "", heard_about: data.heard_about, page_path: location.pathname });
-          card.classList.add("sent");
+      function send(url, payload) {
+        return fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify(payload)
         })
+          .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; }); })
+          .then(function (res) { if (!res.ok || String(res.j.success) === "false") throw new Error("send failed"); });
+      }
+      function done(via) {
+        track("generate_lead", { form_name: data.form_source || "form", course: data.course || "", heard_about: data.heard_about, page_path: location.pathname, sent_via: via });
+        card.classList.add("sent");
+      }
+      var backup = {}; for (var k in data) backup[k] = data[k];
+      backup._cc = LEAD_EMAIL; backup._subject = data._subject + " (backup)";
+      send(FORM_ENDPOINT, data)
+        .then(function () { done("main"); })
+        .catch(function () { return send(BACKUP_ENDPOINT, backup).then(function () { done("backup"); }); })
         .catch(function () {
           btn.disabled = false;
           btn.innerHTML = label;
-          if (err) err.style.display = "block";
+          var lines = ["Assalamu alaikum, I would like to book 2 free trial classes.", ""];
+          [["name", "Name"], ["whatsapp", "WhatsApp"], ["email", "Email"], ["country", "Country"], ["student", "Who will learn"], ["course", "Course"], ["preferred_time", "Preferred time"], ["message", "Message"]].forEach(function (p) {
+            if (data[p[0]]) lines.push(p[1] + ": " + data[p[0]]);
+          });
+          var wa = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(lines.join("\n"));
+          if (err) {
+            err.innerHTML = 'Our form is busy right now. Please send your details on WhatsApp instead, they are already filled in for you.<a class="form-wa" target="_blank" rel="noopener" href="' + wa + '">Send my details on WhatsApp</a>';
+            err.querySelector("a").addEventListener("click", function () { track("whatsapp_click", { link_location: "form-fallback", page_path: location.pathname }); track("generate_lead", { form_name: data.form_source || "form", course: data.course || "", page_path: location.pathname, sent_via: "whatsapp_fallback" }); });
+            err.style.display = "block";
+          }
         });
     });
   });
