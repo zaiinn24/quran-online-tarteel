@@ -2,7 +2,7 @@
 (function () {
   var LEAD_EMAIL = "rehanabashir6543@gmail.com";
   var FORM_ENDPOINT = "https://formsubmit.co/ajax/" + LEAD_EMAIL;
-  var BACKUP_ENDPOINT = "https://formsubmit.co/ajax/zainulabideen4356@gmail.com"; /* used only if the main inbox fails */
+  var LEADS_ENDPOINT = "https://script.google.com/macros/s/AKfycbx78kWzrSTfShYs0jTbOocbTC3xK93Ov410mH3ge2UFL6wYAbVO-0-Pk0_cJfUxXco/exec"; /* Google Apps Script in hangul522@gmail.com: emails the lead + saves it to a Google Sheet */
   var WA_NUMBER = "923345259952";
   var WA_DEFAULT = "Assalamu alaikum, I would like to know more about your online Quran classes.";
 
@@ -170,11 +170,12 @@
       var err = card.querySelector(".form-error");
       if (err) err.style.display = "none";
 
-      function send(url, payload) {
+      function send(url, payload, plain) {
         return fetch(url, {
           method: "POST",
-          headers: { "Content-Type": "application/json", "Accept": "application/json" },
-          body: JSON.stringify(payload)
+          headers: plain ? { "Content-Type": "text/plain;charset=utf-8" } : { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify(payload),
+          redirect: "follow"
         })
           .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; }); })
           .then(function (res) { if (!res.ok || String(res.j.success) === "false") throw new Error("send failed"); });
@@ -183,11 +184,9 @@
         track("generate_lead", { form_name: data.form_source || "form", course: data.course || "", heard_about: data.heard_about, page_path: location.pathname, sent_via: via });
         card.classList.add("sent");
       }
-      var backup = {}; for (var k in data) backup[k] = data[k];
-      backup._cc = LEAD_EMAIL; backup._subject = data._subject + " (backup)";
-      send(FORM_ENDPOINT, data)
-        .then(function () { done("main"); })
-        .catch(function () { return send(BACKUP_ENDPOINT, backup).then(function () { done("backup"); }); })
+      send(LEADS_ENDPOINT, data, true)
+        .then(function () { done("sheet"); })
+        .catch(function () { return send(FORM_ENDPOINT, data).then(function () { done("formsubmit"); }); })
         .catch(function () {
           btn.disabled = false;
           btn.innerHTML = label;
