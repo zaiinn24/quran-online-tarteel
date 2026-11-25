@@ -511,8 +511,6 @@ a.fcard{display:block}
 @media(max-width:640px){.since-ribbon{width:150px;height:150px}.sr-sash{top:44px;right:-46px;width:220px;padding:4px 0 5px}.sr-years{font-size:8.5px}.sr-sash strong{font-size:9.5px}.sr-sub{font-size:7px}}
 /* how did you hear about us */
 .sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-.field.heard .heard-other{margin-top:8px;padding:11px 15px;border-style:dashed;font-size:14.5px}
-.field.heard .heard-other:focus{border-style:solid}
 .heard-msg{display:none;color:#c0392b;font-size:13px;font-weight:600;margin-top:6px}
 .heard.bad .heard-msg{display:block}
 /* fees */
@@ -875,9 +873,22 @@ a.fcard{display:block}
 [id^="faq-"]{scroll-margin-top:110px}
 
 /* WhatsApp field: country code picker + number */
-.phone-wrap{display:flex;gap:8px;align-items:stretch}
-.phone-wrap .cc-select{flex:0 0 118px;width:118px;min-width:0;padding-left:12px;padding-right:30px;background-position:right 11px center;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
-.phone-wrap input{flex:1 1 auto;min-width:0}
-@media (max-width:380px){.phone-wrap .cc-select{flex-basis:104px;width:104px}}
-.field-row:has(.phone-wrap){grid-template-columns:1fr 1.35fr}
-@media (min-width:761px){.phone-wrap .cc-select{flex-basis:100px;width:100px;padding-left:10px;padding-right:26px;background-position:right 9px center}}
+.field-row:has(input[name="whatsapp"]){grid-template-columns:1fr;gap:0}
+.phone-wrap{display:flex;gap:8px;align-items:stretch;position:relative}
+.phone-wrap > input{flex:1 1 auto;min-width:0}
+.cc{position:static;flex:0 0 auto}
+.cc-native{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;left:0;bottom:0}
+.cc-btn{height:100%;min-height:48px;display:flex;align-items:center;gap:7px;padding:0 30px 0 12px;border:1.5px solid var(--line);border-radius:11px;background:#fffdf8 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23a97f2e' stroke-width='2' fill='none'/%3E%3C/svg%3E") no-repeat right 11px center;font:600 15px var(--sans);color:var(--text);cursor:pointer;white-space:nowrap;transition:border-color .2s,box-shadow .2s}
+.cc-btn:focus-visible,.cc.open .cc-btn{outline:none;border-color:var(--gold);box-shadow:0 0 0 4px rgba(199,155,69,.16)}
+.cc-flag{width:20px;height:15px;border-radius:2px;object-fit:cover;flex:0 0 20px;box-shadow:0 0 0 1px rgba(0,0,0,.08)}
+.cc-ph{color:#9a8f7c;font-weight:500}
+.cc-panel{display:none;position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:60;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 14px 34px rgba(30,22,8,.16);overflow:hidden}
+.cc.open .cc-panel{display:block}
+.cc-search{display:block;width:100%;border:0!important;border-bottom:1px solid var(--line)!important;border-radius:0!important;padding:12px 14px!important;font:500 14.5px var(--sans);background:#fffdf8!important;box-shadow:none!important}
+.cc-search:focus{outline:none}
+.cc-list{list-style:none;margin:0;padding:4px 0;max-height:240px;overflow-y:auto;overscroll-behavior:contain}
+.cc-list li[data-r]{display:flex;align-items:center;gap:10px;padding:9px 14px;cursor:pointer;font-size:14.5px;line-height:1.2}
+.cc-list li[data-r]:hover{background:#f7efdc}
+.cc-name{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text)}
+.cc-code{flex:0 0 auto;color:var(--ink-3);font-weight:600;font-variant-numeric:tabular-nums}
+.cc-sep{height:1px;background:var(--line);margin:4px 0}
