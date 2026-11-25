@@ -873,3 +873,11 @@ a.fcard{display:block}
 @media (max-width:760px){.pdf-dl{flex-direction:column;align-items:flex-start;padding:20px}.pdf-dl .btn{width:100%}}
 .faq-jump{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:26px}
 [id^="faq-"]{scroll-margin-top:110px}
+
+/* WhatsApp field: country code picker + number */
+.phone-wrap{display:flex;gap:8px;align-items:stretch}
+.phone-wrap .cc-select{flex:0 0 118px;width:118px;min-width:0;padding-left:12px;padding-right:30px;background-position:right 11px center;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
+.phone-wrap input{flex:1 1 auto;min-width:0}
+@media (max-width:380px){.phone-wrap .cc-select{flex-basis:104px;width:104px}}
+.field-row:has(.phone-wrap){grid-template-columns:1fr 1.35fr}
+@media (min-width:761px){.phone-wrap .cc-select{flex-basis:100px;width:100px;padding-left:10px;padding-right:26px;background-position:right 9px center}}
