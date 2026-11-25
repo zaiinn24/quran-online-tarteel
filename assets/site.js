@@ -170,7 +170,7 @@
       var err = card.querySelector(".form-error");
       if (err) err.style.display = "none";
 
-      var waLines = ["Assalamu alaikum, I just filled the form on your website to book 2 free trial classes.", ""];
+      var waLines = ["Assalamu alaikum, I just filled the form on your website.", ""];
       [["name", "Name"], ["whatsapp", "WhatsApp"], ["email", "Email"], ["country", "Country"], ["student", "Who will learn"], ["course", "Course"], ["preferred_time", "Preferred time"], ["message", "Message"]].forEach(function (p) {
         if (data[p[0]]) waLines.push(p[1] + ": " + data[p[0]]);
       });
@@ -188,16 +188,6 @@
       function done(via) {
         track("generate_lead", { form_name: data.form_source || "form", course: data.course || "", heard_about: data.heard_about, page_path: location.pathname, sent_via: via });
         card.classList.add("sent");
-        /* then take them straight to our WhatsApp chat with their details typed in */
-        var ok = card.querySelector(".form-success");
-        if (ok && !ok.querySelector(".form-wa")) {
-          var p = document.createElement("p"); p.className = "form-wa-note"; p.textContent = "Opening WhatsApp so you can send us your details. Just tap Send.";
-          var a = document.createElement("a"); a.className = "form-wa"; a.href = wa; a.target = "_blank"; a.rel = "noopener"; a.textContent = "Open WhatsApp";
-          a.addEventListener("click", function () { track("whatsapp_click", { link_location: "form-success", page_path: location.pathname }); });
-          ok.appendChild(p); ok.appendChild(a);
-        }
-        track("whatsapp_click", { link_location: "form-auto-redirect", page_path: location.pathname });
-        setTimeout(function () { window.location.href = wa; }, 1200);
       }
       send(LEADS_ENDPOINT, data, true)
         .then(function () { done("sheet"); })
